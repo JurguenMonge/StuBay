@@ -34,7 +34,8 @@
                 </tr>
             </form>
             <?php 
-            
+            $articuloBusiness = new ArticuloBusiness();
+            //$allArticulos = $articuloBusiness->getAllTB
             ?>
         </table>
     </section>
