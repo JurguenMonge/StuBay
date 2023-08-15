@@ -1,13 +1,12 @@
 <?php 
 
-include '../data/ArticuloData.php';
+include '../data/articuloData.php';
 
 class ArticuloBusiness{
 
     private $articuloData;
     
-    function __construct()
-    {
+    function __construct(){
         $this->articuloData = new ArticuloData();
     }
 
@@ -28,5 +27,3 @@ class ArticuloBusiness{
     }
 
 }
-
-?>

@@ -6,7 +6,7 @@
     <title>Registro articulo</title>
     <?php
         error_reporting(0);
-        include '../business/ArticuloBusiness.php';
+        include '../business/articuloBusiness.php';
     ?>
 </head>
 <body>
@@ -26,7 +26,7 @@
                 <th>Serie</th>
                 <th>Activo</th>
             </tr>
-            <form method="post" enctype="multipart/form-data" action="../business/ArticuloAction.php">
+            <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
             <tr>
                     <td><input required type="text" name="nombre" id="nombre" /></td>
                     <td><input required type="number" name="categoria" id="categoria" /></td>
@@ -34,10 +34,10 @@
                     <td><input required type="text" name="marca" id="marca" /></td>
                     <td><input required type="text" name="modelo" id="modelo" /></td>
                     <td><input required type="text" name="serie" id="serie" /></td>
-                    <td>
+                    <!--<td>
                         <input type="checkbox" name="activo" id="activo" checked disabled />
                         <input type="hidden" name="activo" value="1" />
-                    </td>
+                    </td>-->
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -45,7 +45,7 @@
             $articuloBusiness = new ArticuloBusiness();
             $allArticulos = $articuloBusiness->getAllTBArticulo();
             foreach($allArticulos as $current){
-                echo '<form method="post" enctype="multipart/form-data" action="../business/ArticuloAction.php">';
+                echo '<form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">';
                 echo '<input type="hidden" name="id" value="' . $current->getId() . '">';
                 echo '<tr>';
                 echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getNombre() . '"/></td>';

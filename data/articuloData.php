@@ -1,7 +1,7 @@
 <?php
 
 include_once 'data.php';
-include '../domain/Articulo.php';
+include '../domain/articulo.php';
 
 class ArticuloData extends Data{
 
@@ -24,7 +24,7 @@ class ArticuloData extends Data{
             $articulo->getSubCategoriaId() . "','" .
             $articulo->getMarca() . "','" .
             $articulo->getModelo() . "','" .
-            $articulo->getSerie() . "','" .
+            $articulo->getSerie() . "'," .
             $articulo->getActivo() . ");";
 
 
@@ -43,8 +43,8 @@ class ArticuloData extends Data{
         "', tbarticulomarca'" . $articulo->getMarca() . 
         "', tbarticulomodelo'" . $articulo->getModelo() .
         "', tbarticuloserie'" . $articulo->getSerie() .
-        "', tbarticuloactivo'" . $articulo->getActivo() .
-        "WHERE tbarticuloid = " . $articulo->getId() . ");";
+        "', tbarticuloactivo " . $articulo->getActivo() .
+        " WHERE tbarticuloid = " . $articulo->getId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate); 
         mysqli_close($conn); 
