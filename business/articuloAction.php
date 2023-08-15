@@ -77,5 +77,47 @@ if(isset($_POST['update'])){
     }  else {
         header("location: ../index.php?error=error"); //redirect to the index.php page with an error message
     }
+}else if(isset($_POST['delete'])){
+
+    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['categoria']) && isset($_POST['subcategoria']) && isset($_POST['marca'])
+    && isset($_POST['modelo']) && isset($_POST['serie'])) {
+       
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $categoria = $_POST['categoria'];
+        $subcategoria = $_POST['subcategoria'];
+        $marca = $_POST['marca'];
+        $modelo = $_POST['modelo'];
+        $serie = $_POST['serie'];
+        $activo = 0;
+
+        if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($categoria) > 0 && strlen($subcategoria) > 0 && strlen($marca) > 0 &&
+            strlen($modelo) > 0 && strlen($serie) > 0
+        ){
+            $articulo = new Articulo(
+                $id,
+                $nombre,
+                $categoria,
+                $subcategoria,
+                $marca,
+                $modelo,
+                $serie,
+                $activo
+            );
+
+            $articuloBusiness = new ArticuloBusiness();
+            $result = $articuloBusiness->deleteTBArticulo($articulo);
+
+            if($result == 1){
+                header("location: ../view/articuloView.php?success=delete");
+            } else {        
+                header("location: ../view/articuloView.php?error=dbError");
+            }
+        }else{
+            header("location: ../view/articuloView.php?error=emptyField");
+        }
+    }else {
+        header("location: ../view/articuloView.php?error=error");
+    }
 }
 
