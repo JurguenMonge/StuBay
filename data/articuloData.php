@@ -37,13 +37,13 @@ class ArticuloData extends Data{
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getNombre() .
-        "', tbcategoriaid'" . $articulo->getCategoriaId() . 
-        "', tbsubcategoriaid'" . $articulo->getSubCategoriaId() .
-        "', tbarticulomarca'" . $articulo->getMarca() . 
-        "', tbarticulomodelo'" . $articulo->getModelo() .
-        "', tbarticuloserie'" . $articulo->getSerie() .
-        "', tbarticuloactivo " . $articulo->getActivo() .
+        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre = '" . $articulo->getNombre() .
+        "', tbcategoriaid = '" . $articulo->getCategoriaId() . 
+        "', tbsubcategoriaid = '" . $articulo->getSubCategoriaId() .
+        "', tbarticulomarca = '" . $articulo->getMarca() . 
+        "', tbarticulomodelo = '" . $articulo->getModelo() .
+        "', tbarticuloserie = '" . $articulo->getSerie() .
+        "', tbarticuloactivo = " . $articulo->getActivo() .
         " WHERE tbarticuloid = " . $articulo->getId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate); 
