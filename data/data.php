@@ -19,14 +19,14 @@ class Data {
                 $this->server = "127.0.0.1";
                 $this->user = "root";
                 $this->password = "";
-                $this->db = "dbstubay";
+                $this->db = "bdstubay";
                 break;
             case "hostName": //laptop's PC
                 $this->isActive = false;
                 $this->server = "127.0.0.1";
                 $this->user = "root";
                 $this->password = "";
-                $this->db = "dbstubay";
+                $this->db = "bdstubay";
                 break;
             default: //Hosting
                  $this->isActive = false;

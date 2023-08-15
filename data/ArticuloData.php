@@ -23,8 +23,8 @@ class ArticuloData extends Data{
             $articulo->getCategoriaId() . "','" .
             $articulo->getSubCategoriaId() . "','" .
             $articulo->getMarca() . "','" .
-            $articulo->getModelo() . "'," .
-            $articulo->getSerie() . "'," .
+            $articulo->getModelo() . "','" .
+            $articulo->getSerie() . "','" .
             $articulo->getActivo() . ");";
 
 
@@ -75,7 +75,7 @@ class ArticuloData extends Data{
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbarticulo WHERE active = 1;";
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbarticuloactivo = 1;";
         $result = mysqli_query($conn, $querySelect);
 
         $array = array();
