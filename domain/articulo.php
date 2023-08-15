@@ -1,6 +1,7 @@
 <?php
 
 class Articulo{
+    
     private $id;
     private $nombre;
     private $categoriaid;
@@ -57,7 +58,35 @@ class Articulo{
 
     //Setters
     function setId($id){
-        
+        $this->id = $id;
+    }
+
+    function setNombre($nombre){
+        $this->nombre = $nombre;
+    }
+
+    function setCategoriaId($categoriaid){
+        $this->categoriaid = $categoriaid;
+    }
+
+    function setSubCategoriaId($subcategoriaid){
+        $this->subcategoriaid = $subcategoriaid;
+    }
+
+    function setMarca($marca){
+        $this->marca = $marca;
+    }
+
+    function setModelo($modelo){
+        $this->modelo = $modelo;
+    }
+
+    function setSerie($serie){
+        $this->serie = $serie;
+    }
+
+    function setActivo($activo){
+        $this->activo = $activo;
     }
 }
 

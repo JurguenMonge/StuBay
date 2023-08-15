@@ -12,5 +12,7 @@
     </header>
 
     <a href="../StuBay/view/studentView.php">Registro Estudiante</a>
+    <br>
+    <a href="../StuBay/view/articuloView.php">Registro Articulo</a>
 </body>
 </html>
