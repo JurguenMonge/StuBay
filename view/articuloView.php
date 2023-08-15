@@ -27,17 +27,13 @@
                 <th>Activo</th>
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
-            <tr>
-                    <td><input required type="text" name="nombre" id="nombre" /></td>
-                    <td><input required type="number" name="categoria" id="categoria" /></td>
-                    <td><input required type="number" name="subcategoria" id="subcategoria" /></td>
-                    <td><input required type="text" name="marca" id="marca" /></td>
-                    <td><input required type="text" name="modelo" id="modelo" /></td>
-                    <td><input required type="text" name="serie" id="serie" /></td>
-                    <!--<td>
-                        <input type="checkbox" name="activo" id="activo" checked disabled />
-                        <input type="hidden" name="activo" value="1" />
-                    </td>-->
+                <tr>
+                    <td><input required type="text" name="nombre" id="nombre" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
+                    <td><input required type="number" name="categoria" id="categoria" pattern="^\d+$" title="Solo se permiten números"/>
+                    <td><input required type="number" name="subcategoria" id="subcategoria" pattern="^\d+$" title="Solo se permiten números"/>
+                    <td><input required type="text" name="marca" id="marca" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
+                    <td><input required type="text" name="modelo" id="modelo" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
+                    <td><input required type="text" name="serie" id="serie" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
