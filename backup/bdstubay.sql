@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 15-08-2023 a las 21:31:59
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Aug 16, 2023 at 01:56 AM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 7.4.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,28 +18,28 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bdstubay`
+-- Database: `bdstubay`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbarticulo`
+-- Table structure for table `tbarticulo`
 --
 
 CREATE TABLE `tbarticulo` (
   `tbarticuloid` int(11) NOT NULL,
-  `tbarticulonombre` varchar(255) NOT NULL,
+  `tbarticulonombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbcategoriaid` int(11) NOT NULL,
   `tbsubcategoriaid` int(11) NOT NULL,
-  `tbarticulomarca` varchar(255) NOT NULL,
-  `tbarticulomodelo` varchar(255) NOT NULL,
-  `tbarticuloserie` varchar(255) NOT NULL,
+  `tbarticulomarca` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tbarticulomodelo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tbarticuloserie` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbarticuloactivo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `tbarticulo`
+-- Dumping data for table `tbarticulo`
 --
 
 INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `tbsubcategoriaid`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`) VALUES
@@ -48,48 +48,36 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbstudent`
+-- Table structure for table `tbcliente`
 --
 
-CREATE TABLE `tbstudent` (
-  `id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
-  `identification` int(9) NOT NULL,
-  `birthdate` date NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `active` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `tbcliente` (
+  `clienteid` int(11) NOT NULL,
+  `clientenombre` varchar(30) NOT NULL,
+  `clienteprimerapellido` varchar(30) NOT NULL,
+  `clientesegundoapellido` varchar(30) NOT NULL,
+  `clientecorreo` varchar(50) NOT NULL,
+  `clientepassword` varchar(100) NOT NULL,
+  `clientefechaingreso` date NOT NULL,
+  `clienteactivo` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `tbstudent`
+-- Dumping data for table `tbcliente`
 --
 
-INSERT INTO `tbstudent` (`id`, `name`, `lastname`, `identification`, `birthdate`, `email`, `active`) VALUES
-(1, 'Giancarlo', 'Arias', 123456789, '2023-08-03', 'arias@gmail.com', 1),
-(2, 'Juan', 'Dolmus', 70980772, '2023-08-10', 'juan.dol@gmail.com', 1),
-(3, 'Jurguen', 'Monge', 702870755, '2023-08-24', 'jur.monge@gmail.com', 1),
-(4, 'Jose', 'Gonzalez', 706760324, '2023-08-18', 'jose@gmail.com', 0);
+INSERT INTO `tbcliente` (`clienteid`, `clientenombre`, `clienteprimerapellido`, `clientesegundoapellido`, `clientecorreo`, `clientepassword`, `clientefechaingreso`, `clienteactivo`) VALUES
+(1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$vfvQtoT2RQDnrOz142bqV.vfwd4PAheX/oBZrRA65wBtMvlk2St2i', '2023-08-14', 1);
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `tbstudent`
+-- Indexes for table `tbcliente`
 --
-ALTER TABLE `tbstudent`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `tbstudent`
---
-ALTER TABLE `tbstudent`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `tbcliente`
+  ADD PRIMARY KEY (`clienteid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

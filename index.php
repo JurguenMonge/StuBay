@@ -11,8 +11,8 @@
         <h1>StuBay</h1>
     </header>
 
-    <a href="../StuBay/view/studentView.php">Registro Estudiante</a>
-    <br>
+    <a href="../StuBay/view/clienteView.php">Registro Cliente</a>
+    <br><br>
     <a href="../StuBay/view/articuloView.php">Registro Articulo</a>
 </body>
 </html>
