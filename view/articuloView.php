@@ -7,6 +7,9 @@
     <?php
         error_reporting(0);
         include '../business/articuloBusiness.php';
+        include '../business/categoriaBusiness.php';
+        $articuloCategoriaBusiness = new CategoriaBusiness();
+        $getCat = $articuloCategoriaBusiness->getAllTBCategoria();
     ?>
 </head>
 <body>
@@ -29,7 +32,20 @@
             <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                 <tr>
                     <td><input required type="text" name="nombre" id="nombre" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
-                    <td><input required type="number" name="categoria" id="categoria" pattern="^\d+$" title="Solo se permiten números"/>
+                    <td>
+                        <select name="articulocategoria" id="articulocategoria">
+                            <option value="">Seleccionar categoria</option>
+                            <?php 
+                                if(count($getCat) > 0){
+                                    foreach($getCat as $categoria){
+                                        echo '<option value="'.$categoria->getId().'">'.$categoria->getNombre().'</option>';
+                                    }
+                                }else{ 
+                                    echo '<option value="">Ninguna categoria registrada</option>'; 
+                                } 
+                            ?> 
+                        </select>
+                    </td>
                     <td><input required type="number" name="subcategoria" id="subcategoria" pattern="^\d+$" title="Solo se permiten números"/>
                     <td><input required type="text" name="marca" id="marca" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
                     <td><input required type="text" name="modelo" id="modelo" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
@@ -37,6 +53,7 @@
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
+            
             <?php 
             $articuloBusiness = new ArticuloBusiness();
             $allArticulos = $articuloBusiness->getAllTBArticulo();
@@ -45,7 +62,18 @@
                 echo '<input type="hidden" name="id" value="' . $current->getId() . '">';
                 echo '<tr>';
                 echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getNombre() . '"/></td>';
-                echo '<td><input type="number" name="categoria" id="categoria" value="' . $current->getCategoriaId() . '"/></td>';
+
+
+                echo '<td>  <select name="articulocategoria" id="articulocategoria">';
+                    foreach($getCat as $categoria){
+                        if($current->getCategoriaId() == $categoria->getId()){
+                            echo "<option selected value='".$categoria->getId()."'>".$categoria->getNombre()."</option>";
+                        }else{
+                            echo "<option value='".$categoria->getId()."'>".$categoria->getNombre()."</option>";
+                        }
+                    }
+                echo ' </select></td>';
+
                 echo '<td><input type="number" name="subcategoria" id="subcategoria" value="' . $current->getSubCategoriaId() . '"/></td>';
                 echo '<td><input type="text" name="marca" id="marca" value="' . $current->getMarca() . '"/></td>';
                 echo '<td><input type="text" name="modelo" id="modelo" value="' . $current->getModelo() . '"/></td>';
