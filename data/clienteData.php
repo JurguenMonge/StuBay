@@ -12,7 +12,7 @@ class ClienteData extends Data
         $conn->set_charset('utf8');
 
         //get the last id in the database
-        $queryGetLastId = "SELECT MAX(clienteid) AS clienteid FROM tbcliente";
+        $queryGetLastId = "SELECT MAX(tbclienteid) AS tbclienteid FROM tbcliente";
         $idCont = mysqli_query($conn, $queryGetLastId);
         $nextId = 1;
 
@@ -21,7 +21,7 @@ class ClienteData extends Data
         }
 
         $clienteCorreo = $cliente->getClienteCorreo();
-        $stmt = $conn->prepare("SELECT * FROM tbcliente WHERE clientecorreo = ?"); //verify if the email is already in the database, the stmt is to avoid sql injection 
+        $stmt = $conn->prepare("SELECT * FROM tbcliente WHERE tbclientecorreo = ?"); //verify if the email is already in the database, the stmt is to avoid sql injection 
         $stmt->bind_param("s", $clienteCorreo); //to pass the parameter to the stmt and that "s" is to say that it is a string
         $stmt->execute(); //execute the statement
         $verifyClienteCorreo = $stmt->get_result(); //get the result of the statement 
@@ -57,14 +57,14 @@ class ClienteData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $stmt = $conn->prepare("UPDATE tbcliente SET clientenombre = ?,
-         clienteprimerapellido = ?, 
-         clientesegundoapellido = ?,
-         clientecorreo = ?, 
-         clientepassword = ?, 
-         clientefechaingreso = ?, 
-         clienteactivo = ? 
-         WHERE clienteid = ?"); //in this case the stmt is to avoid sql injection
+        $stmt = $conn->prepare("UPDATE tbcliente SET tbclientenombre = ?,
+         tbclienteprimerapellido = ?, 
+         tbclientesegundoapellido = ?,
+         tbclientecorreo = ?, 
+         tbclientepassword = ?, 
+         tbclientefechaingreso = ?, 
+         tbclienteactivo = ? 
+         WHERE tbclienteid = ?"); //in this case the stmt is to avoid sql injection
         $stmt->bind_param(
             "ssssssii", //this is to say that the first one is an integer and the rest are strings
             $cliente->getClienteNombre(),
@@ -86,14 +86,14 @@ class ClienteData extends Data
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8'); //set the charset to utf8
-        $queryUpdate = "UPDATE tbcliente SET clientenombre = '" . $cliente->getClienteNombre() .
-            "', clienteprimerapellido = '" . $cliente->getClientePrimerApellido() .
-            "', clientesegundoapellido = '" . $cliente->getClienteSegundoApellido() .
-            "', clientecorreo = '" . $cliente->getClienteCorreo() .
-            "', clientepassword = '" . $cliente->getClientePassword() .
-            "', clientefechaingreso = '" . $cliente->getClienteFechaIngreso() .
-            "', clienteactivo = " . $cliente->getClienteActivo() .
-            " WHERE clienteid = " . $cliente->getClienteId() . ";";
+        $queryUpdate = "UPDATE tbcliente SET tbclientenombre = '" . $cliente->getClienteNombre() .
+            "', tbclienteprimerapellido = '" . $cliente->getClientePrimerApellido() .
+            "', tbclientesegundoapellido = '" . $cliente->getClienteSegundoApellido() .
+            "', tbclientecorreo = '" . $cliente->getClienteCorreo() .
+            "', tbclientepassword = '" . $cliente->getClientePassword() .
+            "', tbclientefechaingreso = '" . $cliente->getClienteFechaIngreso() .
+            "', tbclienteactivo = " . $cliente->getClienteActivo() .
+            " WHERE tbclienteid = " . $cliente->getClienteId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate); //execute the query and get the result
         mysqli_close($conn); //close the connection
@@ -151,7 +151,7 @@ class ClienteData extends Data
         $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
 
         // Consulta SQL para seleccionar todos los registros de la tabla tbcliente donde clienteactivo sea 1
-        $querySelect = "SELECT * FROM tbcliente WHERE clienteactivo = 1;";
+        $querySelect = "SELECT * FROM tbcliente WHERE tbclienteactivo = 1;";
 
         // Preparar la consulta
         $stmt = mysqli_prepare($conn, $querySelect);
@@ -205,7 +205,7 @@ class ClienteData extends Data
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
         // obtener el client con el id especificado de la base de datos y guardarlos en un objeto client
-        $querySelect = "SELECT * FROM tbcliente WHERE clienteid = " . $clienteId . ";";
+        $querySelect = "SELECT * FROM tbcliente WHERE tbclienteid = " . $clienteId . ";";
 
         $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
 
@@ -214,14 +214,14 @@ class ClienteData extends Data
         // si se obtuvo un resultado, llenar el objeto client
         if ($row = mysqli_fetch_array($result)) {
             $client = new Cliente(
-                $row['clienteid'],
-                $row['clientenombre'],
-                $row['clienteprimerapellido'],
-                $row['clientesegundoapellido'],
-                $row['clientecorreo'],
-                $row['clientepassword'],
-                $row['clientefechaingreso'],
-                $row['clienteactivo']
+                $row['tbclienteid'],
+                $row['tbclientenombre'],
+                $row['tbclienteprimerapellido'],
+                $row['tbclientesegundoapellido'],
+                $row['tbclientecorreo'],
+                $row['tbclientepassword'],
+                $row['tbclientefechaingreso'],
+                $row['tbclienteactivo']
             );
         }
 
