@@ -69,7 +69,7 @@
                     <td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" /></td>
                     <td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" /></td>
                     <td><input required type="email" name="clientecorreo" id="clientecorreo" /></td>
-                    <td><input required type="password" name="clientepassword" id="clientepassword" /></td>
+                    <td><input required type="password" name="clientepassword" id="clientepassword" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" /></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
@@ -82,11 +82,11 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">';
                 echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input type="text" name="clientenombre" id="clientenombre" value="' . $current->getClienteNombre() . '"/></td>';
-                echo '<td><input type="text" name="clienteprimerapellido" id="clienteprimerapellido" value="' . $current->getClientePrimerApellido() . '"/></td>';
-                echo '<td><input type="text" name="clientesegundoapellido" id="clientesegundoapellido" value="' . $current->getClienteSegundoApellido() . '"/></td>';
+                echo '<td><input type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
+                echo '<td><input type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
+                echo '<td><input type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
                 echo '<td><input type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '"/></td>';
-                echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/></td>';
+                echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
                 echo '<td><input type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
                 echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
@@ -120,6 +120,18 @@
                         window.location.href = "../business/clientAction.php?delete=true&clientid=" + id;
                     }
                 });
+            });
+        });
+
+        const showPasswordButtons = document.querySelectorAll(".showPassword");
+        showPasswordButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const passwordInput = button.previousElementSibling;
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
             });
         });
     </script>
