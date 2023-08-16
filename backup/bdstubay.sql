@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 16, 2023 at 01:56 AM
+-- Generation Time: Aug 16, 2023 at 03:20 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.21
 
@@ -52,21 +52,21 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `
 --
 
 CREATE TABLE `tbcliente` (
-  `clienteid` int(11) NOT NULL,
-  `clientenombre` varchar(30) NOT NULL,
-  `clienteprimerapellido` varchar(30) NOT NULL,
-  `clientesegundoapellido` varchar(30) NOT NULL,
-  `clientecorreo` varchar(50) NOT NULL,
-  `clientepassword` varchar(100) NOT NULL,
-  `clientefechaingreso` date NOT NULL,
-  `clienteactivo` tinyint(4) NOT NULL
+  `tbclienteid` int(11) NOT NULL,
+  `tbclientenombre` varchar(30) NOT NULL,
+  `tbclienteprimerapellido` varchar(30) NOT NULL,
+  `tbclientesegundoapellido` varchar(30) NOT NULL,
+  `tbclientecorreo` varchar(50) NOT NULL,
+  `tbclientepassword` varchar(100) NOT NULL,
+  `tbclientefechaingreso` date NOT NULL,
+  `tbclienteactivo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbcliente`
 --
 
-INSERT INTO `tbcliente` (`clienteid`, `clientenombre`, `clienteprimerapellido`, `clientesegundoapellido`, `clientecorreo`, `clientepassword`, `clientefechaingreso`, `clienteactivo`) VALUES
+INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
 (1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$vfvQtoT2RQDnrOz142bqV.vfwd4PAheX/oBZrRA65wBtMvlk2St2i', '2023-08-14', 1);
 
 --
@@ -77,7 +77,7 @@ INSERT INTO `tbcliente` (`clienteid`, `clientenombre`, `clienteprimerapellido`, 
 -- Indexes for table `tbcliente`
 --
 ALTER TABLE `tbcliente`
-  ADD PRIMARY KEY (`clienteid`);
+  ADD PRIMARY KEY (`tbclienteid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
