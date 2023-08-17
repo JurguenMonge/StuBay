@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 17-08-2023 a las 05:18:13
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 17-08-2023 a las 06:41:49
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbarticulo` (
   `tbarticuloid` int(11) NOT NULL,
   `tbarticulonombre` varchar(255) NOT NULL,
-  `tbcategoriaid` int(11) NOT NULL,
-  `tbsubcategoriaid` int(11) NOT NULL,
+  `tbcategoriaid` varchar(2) NOT NULL,
+  `tbsubcategoriaid` varchar(2) NOT NULL,
   `tbarticulomarca` varchar(255) NOT NULL,
   `tbarticulomodelo` varchar(255) NOT NULL,
   `tbarticuloserie` varchar(255) NOT NULL,
@@ -43,7 +43,9 @@ CREATE TABLE `tbarticulo` (
 --
 
 INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `tbsubcategoriaid`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`) VALUES
-(1, 'celular', 1, 1, 'Samsung', 'Galaxy', '122', 1);
+(1, 'celular', '02', '04', 'Samsung', 'Galaxy', '122', 1),
+(2, 'Computadora', '01', '04', 'MSI', 'SX10', 'Pro', 1),
+(3, 'Martillo', '02', '01', 'Hammer', 'Ultimate', 'Pro', 1);
 
 -- --------------------------------------------------------
 
@@ -53,7 +55,7 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `
 
 CREATE TABLE `tbcategoria` (
   `tbcategoriaid` int(11) NOT NULL,
-  `tbcategoriasigla` tinyint(2) NOT NULL,
+  `tbcategoriasigla` varchar(2) NOT NULL,
   `tbcategorianombre` varchar(30) NOT NULL,
   `tbcategoriadescripcion` varchar(60) NOT NULL,
   `tbcategoriaactivo` tinyint(4) NOT NULL
@@ -64,9 +66,9 @@ CREATE TABLE `tbcategoria` (
 --
 
 INSERT INTO `tbcategoria` (`tbcategoriaid`, `tbcategoriasigla`, `tbcategorianombre`, `tbcategoriadescripcion`, `tbcategoriaactivo`) VALUES
-(1, 1, 'Electrónicos', 'Variados', 1),
-(2, 2, 'Entretenimiento', 'Para computadoras', 1),
-(3, 3, 'Deportes', 'Variados', 0);
+(1, '01', 'Tecnologico', 'Variados', 1),
+(2, '02', 'Muebles', 'Para computadoras', 1),
+(3, '03', 'Ferreteria', 'Variado', 1);
 
 -- --------------------------------------------------------
 
@@ -90,7 +92,8 @@ CREATE TABLE `tbcliente` (
 --
 
 INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
-(1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$vfvQtoT2RQDnrOz142bqV.vfwd4PAheX/oBZrRA65wBtMvlk2St2i', '2023-08-14', 1);
+(1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$vfvQtoT2RQDnrOz142bqV.vfwd4PAheX/oBZrRA65wBtMvlk2St2i', '2023-08-14', 1),
+(2, 'Jurguen', 'Monge', 'Rojas', 'jur.monge@gmail.com', '$2y$10$T2ij5M5Hf1rif/bCd5OzmuN/3dy7eKLASO1YJHQe1IomPf.V.4AUa', '2023-08-02', 1);
 
 -- --------------------------------------------------------
 
@@ -100,7 +103,7 @@ INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapell
 
 CREATE TABLE `tbsubcategoria` (
   `tbsubcategoriaid` int(11) NOT NULL,
-  `tbsubcategoriasigla` tinyint(2) NOT NULL,
+  `tbsubcategoriasigla` varchar(2) NOT NULL,
   `tbsubcategorianombre` varchar(30) NOT NULL,
   `tbcategoriaid` int(11) NOT NULL,
   `tbsubcategoriadescripcion` varchar(60) NOT NULL,
@@ -112,8 +115,10 @@ CREATE TABLE `tbsubcategoria` (
 --
 
 INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubcategorianombre`, `tbcategoriaid`, `tbsubcategoriadescripcion`, `tbsubcategoriaactivo`) VALUES
-(1, 1, 'Libros y revistas', 2, 'Variado', 1),
-(2, 2, 'Ropa Deportiva', 3, 'Disponible', 1);
+(1, '01', 'Libros y revistas', 2, 'Variado', 1),
+(2, '02', 'Ropa Deportiva', 3, 'Disponible', 1),
+(3, '03', 'Audio', 1, 'Variado', 1),
+(4, '04', 'Computadoras', 1, 'Computadoras inteligentes', 1);
 
 --
 -- Índices para tablas volcadas

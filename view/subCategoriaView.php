@@ -34,7 +34,7 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">
                 <tr>
-                    <td><input required type="number" name="sigla" id="sigla" /></td>
+                    <td><input required type="text" name="sigla" id="sigla" /></td>
                     <td><input required type="text" name="nombre" id="nombre" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" /></td>
 
                     <td>

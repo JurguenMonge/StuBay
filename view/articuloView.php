@@ -8,8 +8,11 @@
         error_reporting(0);
         include '../business/articuloBusiness.php';
         include '../business/categoriaBusiness.php';
+        include '../business/subCategoriaBusiness.php';
+        $subcategoriaBusiness = new SubCategoriaBusiness();
         $articuloCategoriaBusiness = new CategoriaBusiness();
         $getCat = $articuloCategoriaBusiness->getAllTBCategoria();
+        $getSubCat = $subcategoriaBusiness->getAllTBSubCategoria();
     ?>
 </head>
 <body>
@@ -38,7 +41,7 @@
                             <?php 
                                 if(count($getCat) > 0){
                                     foreach($getCat as $categoria){
-                                        echo '<option value="'.$categoria->getId().'">'.$categoria->getNombre().'</option>';
+                                        echo '<option value="'.$categoria->getSigla().'">'.$categoria->getSigla().' - '.$categoria->getNombre().'</option>';
                                     }
                                 }else{ 
                                     echo '<option value="">Ninguna categoria registrada</option>'; 
@@ -46,7 +49,18 @@
                             ?> 
                         </select>
                     </td>
-                    <td><input required type="number" name="subcategoria" id="subcategoria" pattern="^\d+$" title="Solo se permiten números"/>
+                    <td>
+                        <select name="subcategoria" id="subcategoria">
+                                <option value="">Seleccionar subcategoria</option>
+                                <?php 
+                                    if(count($getSubCat) > 0){
+                                        foreach($getSubCat as $subcategoria){
+                                            echo '<option value="'.$subcategoria->getSigla().'">'.$subcategoria->getSigla().' - '.$subcategoria->getNombre().'</option>';
+                                        }
+                                    }
+                                ?>
+                        </select>                     
+                    </td>
                     <td><input required type="text" name="marca" id="marca" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
                     <td><input required type="text" name="modelo" id="modelo" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
                     <td><input required type="text" name="serie" id="serie" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
@@ -67,14 +81,23 @@
                 echo '<td>  <select name="articulocategoria" id="articulocategoria">';
                     foreach($getCat as $categoria){
                         if($current->getCategoriaId() == $categoria->getId()){
-                            echo "<option selected value='".$categoria->getId()."'>".$categoria->getNombre()."</option>";
+                            echo "<option selected value='".$categoria->getSigla()."'>".$categoria->getSigla().' - '.$categoria->getNombre()."</option>";
                         }else{
-                            echo "<option value='".$categoria->getId()."'>".$categoria->getNombre()."</option>";
+                            echo "<option value='".$categoria->getSigla()."'>".$categoria->getSigla().' - '.$categoria->getNombre()."</option>";
                         }
                     }
                 echo ' </select></td>';
 
-                echo '<td><input type="number" name="subcategoria" id="subcategoria" value="' . $current->getSubCategoriaId() . '"/></td>';
+                echo '<td>  <select name="subcategoria" id="subcategoria">';
+                    foreach($getSubCat as $subcategoria){
+                        if($current->getSubCategoriaId() == $subcategoria->getId()){
+                            echo "<option selected value='".$subcategoria->getSigla()."'>".$subcategoria->getSigla().' - '.$subcategoria->getNombre()."</option>";
+                        }else{
+                            echo "<option value='".$subcategoria->getSigla()."'>".$subcategoria->getSigla().' - '.$subcategoria->getNombre()."</option>";
+                        }
+                    }
+                echo ' </select></td>';
+
                 echo '<td><input type="text" name="marca" id="marca" value="' . $current->getMarca() . '"/></td>';
                 echo '<td><input type="text" name="modelo" id="modelo" value="' . $current->getModelo() . '"/></td>';
                 echo '<td><input type="text" name="serie" id="serie" value="' . $current->getSerie() . '"/></td>';
