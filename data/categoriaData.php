@@ -16,7 +16,7 @@ class CategoriaData extends Data
         $nextId = 1;
 
         if ($row = mysqli_fetch_row($idCont)) {
-            $nextId = trim($row[0]) + 1;
+            $nextId = isset($row[0]) ? intval($row[0]) + 1 : 1;
         }
 
         $queryInsert = "INSERT INTO tbcategoria VALUES (" . $nextId . ",'" .

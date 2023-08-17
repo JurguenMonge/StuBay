@@ -18,6 +18,8 @@
     <a href="../StuBay/view/articuloView.php">Registro Articulo</a>
     <br><br>
     <a href="../StuBay/view/categoriaView.php">Registro Categorías</a>
+    <br><br>
+    <a href="../StuBay/view/subCategoriaView.php">Registro Subcategorías</a>
 </body>
 
 </html>
