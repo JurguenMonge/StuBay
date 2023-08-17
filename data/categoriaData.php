@@ -19,6 +19,18 @@ class CategoriaData extends Data
             $nextId = isset($row[0]) ? intval($row[0]) + 1 : 1;
         }
 
+        $categoriaSigla = $categoria->getSigla();
+        $stmt = $conn->prepare("SELECT * FROM tbcategoria WHERE tbcategoriasigla = ?"); 
+        $stmt->bind_param("s", $categoriaSigla); //to pass the parameter to the stmt and that "s" is to say that it is a string
+        $stmt->execute(); //execute the statement
+        $verificarSigla = $stmt->get_result(); //get the result of the statement 
+
+        if (mysqli_num_rows($verificarSigla) > 0) {
+            $stmt->close(); //cierra el stmt
+            mysqli_close($conn);
+            return 0;
+        }
+
         $queryInsert = "INSERT INTO tbcategoria VALUES (" . $nextId . ",'" .
             $categoria->getSigla() . "','" .
             $categoria->getNombre() . "','" .
