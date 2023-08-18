@@ -56,12 +56,12 @@ if (isset($_POST['update'])) {
         header("location: ../view/clienteView.php?error=error");
     }
 } else if (isset($_GET['delete1'])) { //if the user clicked on the delete button
-    $clienteId = $_GET['clienteid'];
+    $clienteId = $_GET['tbclienteid'];
     $clienteBusiness = new ClienteBusiness();
     $result = $clienteBusiness->deleteTBCliente($clienteId);
 
     if ($result == 1) { // if the method deleteTBClient was executed successfully it will return 1
-        header("Location: ../view/clienteView.php?success=delete"); // redirect to the userview.php page with a success message
+        header("Location: ../view/clienteView.php?success=delete1"); // redirect to the userview.php page with a success message
     } else {
         header("Location: ../view/clienteView.php?error=dbError"); // redirect to the userview.php page with an error message
     }

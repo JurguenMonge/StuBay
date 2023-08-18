@@ -90,7 +90,7 @@
                 echo '<td><input type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
                 echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
-                echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';
+                echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclienteid="' . $current->getClienteId() . '">Eliminar</button></td>';
                 echo '</tr>';
                 echo '</form>';
             }
@@ -99,12 +99,13 @@
         </table>
     </section>
 
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         $(document).ready(function() {
             $(".delete_cliente").on("click", function() {
-                var id = $(this).attr("id");
+                var clienteid = $(this).attr("tbclienteid");
 
                 Swal.fire({
                     title: '¿Desea eliminar el cliente?',
@@ -117,7 +118,7 @@
                     confirmButtonText: 'Eliminar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../business/clientAction.php?delete=true&clientid=" + id;
+                        window.location.href = "../business/clienteAction.php?delete1=true&tbclienteid=" + clienteid;
                     }
                 });
             });

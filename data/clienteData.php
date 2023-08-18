@@ -82,7 +82,7 @@ class ClienteData extends Data
         return $result; //return the result
     }
 
-    public function deleteTBCliente($cliente)
+    /*public function deleteTBCliente($cliente)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8'); //set the charset to utf8
@@ -99,20 +99,20 @@ class ClienteData extends Data
         mysqli_close($conn); //close the connection
 
         return $result; //return the result
-    }
+    }*/
 
-    // public function deleteTBClient($clientId)
-    // { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
-    //     $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
-    //     $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+     public function deleteTBCliente($clientId)
+     { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
+         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-    //     // actualizar el valor de active a 0
-    //     $queryUpdate = "UPDATE tbclient SET clientactive = 0 WHERE clientid = " . $clientId . ";";
+         // actualizar el valor de active a 0
+         $queryUpdate = "UPDATE tbcliente SET tbclienteactivo = 0 WHERE tbclienteid = " . $clientId . ";";
 
-    //     $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
-    //     mysqli_close($conn); // cerrar la conexión
-    //     return $result; // devolver el resultado
-    // }
+         $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
+         mysqli_close($conn); // cerrar la conexión
+         return $result; // devolver el resultado
+     }
 
     // public function getAllTBCliente()
     // {
