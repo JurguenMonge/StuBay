@@ -79,7 +79,7 @@
             $clienteBusiness = new clienteBusiness();
             $allClientes = $clienteBusiness->getAllTBCliente();
             foreach ($allClientes as $current) {
-                echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">';
+                echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
                 echo '<td><input type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
@@ -99,7 +99,7 @@
         </table>
     </section>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -135,6 +135,15 @@
                 }
             });
         });
+    </script>
+    <script>
+        function confirmarActualizacion() {
+            // Muestra una alerta de confirmación y captura la respuesta del usuario.
+            var confirmacion = confirm("¿Desea confirmar la actualización de este cliente?");
+
+            // Retorna true si el usuario acepta, lo que enviará el formulario.
+            return confirmacion;
+        }
     </script>
 
     <footer>

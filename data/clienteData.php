@@ -161,9 +161,16 @@ class ClienteData extends Data
             mysqli_stmt_execute($stmt);
 
             // Vincular las columnas de resultado a las variables correspondientes
-            mysqli_stmt_bind_result($stmt, $clienteid, $clientenombre, 
-            $clienteprimerapellido, $clientesegundoapellido, 
-            $clientecorreo, $clientepassword, $clientefechaingreso, $clienteactivo);
+            mysqli_stmt_bind_result(
+            $stmt, 
+            $clienteid, 
+            $clientenombre, 
+            $clienteprimerapellido, 
+            $clientesegundoapellido, 
+            $clientecorreo, 
+            $clientepassword, 
+            $clientefechaingreso, 
+            $clienteactivo);
 
             $array = array();// Crear un array para almacenar los resultados de la consulta preparada del mysqli_stmt_fetch
 
