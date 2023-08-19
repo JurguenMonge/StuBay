@@ -11,15 +11,6 @@ class ClienteData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        //get the last id in the database
-        $queryGetLastId = "SELECT MAX(tbclienteid) AS tbclienteid FROM tbcliente";
-        $idCont = mysqli_query($conn, $queryGetLastId);
-        $nextId = 1;
-
-        if ($row = mysqli_fetch_row($idCont)) {
-            $nextId = trim($row[0]) + 1;
-        }
-
         $clienteCorreo = $cliente->getClienteCorreo();
         $stmt = $conn->prepare("SELECT * FROM tbcliente WHERE tbclientecorreo = ?"); //verify if the email is already in the database, the stmt is to avoid sql injection 
         $stmt->bind_param("s", $clienteCorreo); //to pass the parameter to the stmt and that "s" is to say that it is a string
@@ -29,8 +20,18 @@ class ClienteData extends Data
         if (mysqli_num_rows($verifyClienteCorreo) > 0) {
             $stmt->close(); //cierra el stmt
             mysqli_close($conn);
-            return 0;
+            return 2;
         }
+
+        //get the last id in the database
+        $queryGetLastId = "SELECT MAX(tbclienteid) AS tbclienteid FROM tbcliente";
+        $idCont = mysqli_query($conn, $queryGetLastId);
+        $nextId = 1;
+
+        if ($row = mysqli_fetch_row($idCont)) {
+            $nextId = trim($row[0]) + 1;
+        }
+
         // Insert the new cliente in the database
         $stmt = $conn->prepare("INSERT INTO tbcliente VALUES (?, ?, ?, ?, ?, ?, ?, ?)"); //in this case the stmt is to avoid sql injection
         $stmt->bind_param(
@@ -51,7 +52,7 @@ class ClienteData extends Data
     }
 
 
-    public function updateTBCliente($cliente)
+    /*public function updateTBCliente($cliente)
     {
 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
@@ -80,7 +81,56 @@ class ClienteData extends Data
         $stmt->close(); //close the stmt
         mysqli_close($conn); //close the connection
         return $result; //return the result
+    }*/
+
+    public function updateTBCliente($cliente)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Check if the email is already registered in other records (excluding the current one)
+        $checkStmt = $conn->prepare("SELECT tbclienteid FROM tbcliente WHERE tbclientecorreo = ? AND tbclienteid != ?");
+        $checkStmt->bind_param("si", $cliente->getClienteCorreo(), $cliente->getClienteId());
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+
+        if ($checkResult->num_rows > 0) {
+            // The email is already registered in another record, handle this situation here
+            $checkStmt->close();
+            mysqli_close($conn);
+            return 2; // You can return a special value or display an error message
+        }
+
+        // The email is not registered in other records, proceed with the update
+        $updateStmt = $conn->prepare("UPDATE tbcliente SET tbclientenombre = ?,
+         tbclienteprimerapellido = ?, 
+         tbclientesegundoapellido = ?,
+         tbclientecorreo = ?, 
+         tbclientepassword = ?, 
+         tbclientefechaingreso = ?, 
+         tbclienteactivo = ? 
+         WHERE tbclienteid = ?");
+        $updateStmt->bind_param(
+            "ssssssii", // This specifies the data type of each parameter
+            $cliente->getClienteNombre(),
+            $cliente->getClientePrimerApellido(),
+            $cliente->getClienteSegundoApellido(),
+            $cliente->getClienteCorreo(),
+            $cliente->getClientePassword(),
+            $cliente->getClienteFechaIngreso(),
+            $cliente->getClienteActivo(),
+            $cliente->getClienteId()
+        );
+
+        $result = $updateStmt->execute();
+
+        $updateStmt->close();
+        mysqli_close($conn);
+
+        return $result;
     }
+
+
 
     /*public function deleteTBCliente($cliente)
     {
@@ -101,18 +151,18 @@ class ClienteData extends Data
         return $result; //return the result
     }*/
 
-     public function deleteTBCliente($clientId)
-     { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
-         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
-         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+    public function deleteTBCliente($clientId)
+    { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-         // actualizar el valor de active a 0
-         $queryUpdate = "UPDATE tbcliente SET tbclienteactivo = 0 WHERE tbclienteid = " . $clientId . ";";
+        // actualizar el valor de active a 0
+        $queryUpdate = "UPDATE tbcliente SET tbclienteactivo = 0 WHERE tbclienteid = " . $clientId . ";";
 
-         $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
-         mysqli_close($conn); // cerrar la conexión
-         return $result; // devolver el resultado
-     }
+        $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
+        mysqli_close($conn); // cerrar la conexión
+        return $result; // devolver el resultado
+    }
 
     // public function getAllTBCliente()
     // {
@@ -162,17 +212,18 @@ class ClienteData extends Data
 
             // Vincular las columnas de resultado a las variables correspondientes
             mysqli_stmt_bind_result(
-            $stmt, 
-            $clienteid, 
-            $clientenombre, 
-            $clienteprimerapellido, 
-            $clientesegundoapellido, 
-            $clientecorreo, 
-            $clientepassword, 
-            $clientefechaingreso, 
-            $clienteactivo);
+                $stmt,
+                $clienteid,
+                $clientenombre,
+                $clienteprimerapellido,
+                $clientesegundoapellido,
+                $clientecorreo,
+                $clientepassword,
+                $clientefechaingreso,
+                $clienteactivo
+            );
 
-            $array = array();// Crear un array para almacenar los resultados de la consulta preparada del mysqli_stmt_fetch
+            $array = array(); // Crear un array para almacenar los resultados de la consulta preparada del mysqli_stmt_fetch
 
             // Recorrer el conjunto de resultados y extraer los datos en las variables
             while (mysqli_stmt_fetch($stmt)) {

@@ -59,8 +59,8 @@
                 <th>Primer Apellido</th>
                 <th>Segundo Apellido</th>
                 <th>Correo</th>
-                <th>Password</th>
                 <th>Fecha Ingreso</th>
+                <th>Password</th>
                 <th></th>
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
@@ -69,8 +69,8 @@
                     <td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" /></td>
                     <td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" /></td>
                     <td><input required type="email" name="clientecorreo" id="clientecorreo" /></td>
-                    <td><input required type="password" name="clientepassword" id="clientepassword" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" /></td>
+                    <td><input required type="password" name="clientepassword" id="clientepassword" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -86,8 +86,8 @@
                 echo '<td><input type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
                 echo '<td><input type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
                 echo '<td><input type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '"/></td>';
-                echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
                 echo '<td><input type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
+                echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
                 echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclienteid="' . $current->getClienteId() . '">Eliminar</button></td>';

@@ -45,9 +45,16 @@ if (isset($_POST['update'])) {
 
             if ($result == 1) {
                 header("location: ../view/clienteView.php?success=updated");
+                session_start();
+                $_SESSION['msj'] = "Cliente actualizado correctamente";
+            } else if ($result == 2) {
+                header("location: ../view/clienteView.php?error=exist"); //redirect to the index.php page with an error message
+                session_start();
+                $_SESSION['error'] = "El correo ya existe";
             } else {
-
                 header("location: ../view/clienteView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al actualizar el cliente";
             }
         } else {
             header("location: ../view/clienteView.php?error=emptyField");
@@ -62,6 +69,8 @@ if (isset($_POST['update'])) {
 
     if ($result == 1) { // if the method deleteTBClient was executed successfully it will return 1
         header("Location: ../view/clienteView.php?success=delete1"); // redirect to the userview.php page with a success message
+        session_start();
+        $_SESSION['msj'] = "Cliente eliminado correctamente";
     } else {
         header("Location: ../view/clienteView.php?error=dbError"); // redirect to the userview.php page with an error message
     }
@@ -86,11 +95,11 @@ if (isset($_POST['update'])) {
         $clienteActivo = 1; //set the client to 1
 
         if (
-            strlen($clienteNombre) > 0 
+            strlen($clienteNombre) > 0
             && strlen($clientePrimerApellido) > 0
-            && strlen($clienteSegundoApellido) > 0 
+            && strlen($clienteSegundoApellido) > 0
             && strlen($clienteCorreo) > 0
-            && strlen($clientePassword) > 0 
+            && strlen($clientePassword) > 0
             && strlen($clienteFechaIngreso) > 0
         ) { //check if the variables have values
 
@@ -113,6 +122,11 @@ if (isset($_POST['update'])) {
                 header("location: ../view/clienteView.php?success=insert"); //redirect to the index.php page with a success message
                 session_start();
                 $_SESSION['msj'] = "Cliente registrado correctamente";
+            } else if ($result == 2) {
+                header("location: ../view/clienteView.php?error=exist"); //redirect to the index.php page with an error message
+                session_start();
+                $_SESSION['error'] = "El correo ya esta en uso";
+                
             } else {
                 header("location: ../view/clienteView.php?error=dbError"); //redirect to the index.php page with an error message
                 session_start();
@@ -124,7 +138,7 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/clienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-} else if (isset($_POST['delete'])) { //if the user clicked on the delete button
+} /*else if (isset($_POST['delete'])) { //if the user clicked on the delete button
 
     if (
         isset($_POST['clienteid']) 
@@ -179,4 +193,4 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/clienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-}
+}*/
