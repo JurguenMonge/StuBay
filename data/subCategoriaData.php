@@ -39,9 +39,9 @@ class SubCategoriaData extends Data
         $queryInsert = "INSERT INTO tbsubcategoria VALUES (" . $nextId . ",'" .
             $subCategoria->getSigla() . "','" .
             $subCategoria->getNombre() . "','" .
-            $subCategoria->getCategoriaId() . "','" .
-            $subCategoria->getDescripcion() . "'," .
-            $subCategoria->getActivo() . ");";
+            $subCategoria->getDescripcion() . "','" .
+            $subCategoria->getActivo() . "'," .
+            $subCategoria->getCategoriaId() . ");";
 
         $result = mysqli_query($conn, $queryInsert);
         mysqli_close($conn);
@@ -55,9 +55,9 @@ class SubCategoriaData extends Data
         $conn->set_charset('utf8');
         $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriasigla = '" . $subCategoria->getSigla() .
             "', tbsubcategorianombre = '" . $subCategoria->getNombre() .
-            "', tbcategoriaid = '" . $subCategoria->getCategoriaId() . 
-            "', tbsubcategoriadescripcion = '" . $subCategoria->getDescripcion() .
-            "', tbsubcategoriaactivo = " . $subCategoria->getActivo() .
+            "', tbsubcategoriadescripcion = '" . $subCategoria->getDescripcion() . 
+            "', tbsubcategoriaactivo = '" . $subCategoria->getActivo() .
+            "', tbcategoriaid = " . $subCategoria->getCategoriaId() .
             " WHERE tbsubcategoriaid = " . $subCategoria->getId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate);
@@ -72,9 +72,9 @@ class SubCategoriaData extends Data
         $conn->set_charset('utf8');
         $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriasigla='" . $subCategoria->getSigla() .
             "', tbsubcategorianombre='" . $subCategoria->getNombre() .
-            "', tbcategoriaid='" . $subCategoria->getCategoriaId() .
-            "', tbsubcategoriadescripcion='" . $subCategoria->getDescripcion() .
-            "', tbsubcategoriaactivo=" . $subCategoria->getActivo() .
+            "', tbsubcategoriadescripcion = '" . $subCategoria->getDescripcion() . 
+            "', tbsubcategoriaactivo = '" . $subCategoria->getActivo() .
+            "', tbcategoriaid = " . $subCategoria->getCategoriaId() .
             " WHERE tbsubcategoriaid=" . $subCategoria->getId() . ";";
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);

@@ -14,9 +14,9 @@ class SubCategoria{
         $this->id = $id;
         $this->nombre = $nombre;
         $this->sigla = $sigla;
-        $this->categoriaid = $categoriaid;
         $this->descripcion = $descripcion;
         $this->activo = $activo;
+        $this->categoriaid = $categoriaid;
     }
 
     //Getters

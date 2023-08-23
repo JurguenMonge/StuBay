@@ -10,24 +10,26 @@ include '../business/subCategoriaBusiness.php';
 if (isset($_POST['update'])) {
 
     if (
-        isset($_POST['id']) && isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['subcategoriaIdView']) && isset($_POST['subcategoriaSiglaView']) && isset($_POST['subcategoriaNombreView'])
+        && isset($_POST['subcategoriaDescripcionView'])
     ) {
-        $id = $_POST['id'];
-        $sigla = $_POST['sigla'];
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['categoria'];
-        $descripcion = $_POST['descripcion'];
-        $activo = isset($_POST['activo']) ? 1 : 0;
+        
 
-        if (strlen($id) > 0 && strlen($sigla) > 0 && strlen($nombre) > 0 && strlen($categoria) && strlen($descripcion) > 0) {
+        $subcategoriaId = $_POST['subcategoriaIdView'];
+        $subcategoriaSigla = $cadena[1].$_POST['subcategoriaSiglaView'];
+        $subcategoriaNombre = $_POST['subcategoriaNombreView'];
+        $categoria = $_POST['categoriaId'];
+        $subcategoriaDescripcion = $_POST['subcategoriaDescripcionView'];
+        $subcategoriaActivo = isset($_POST['subcategoriaActivoView']) ? 1 : 0;
+
+        if (strlen($subcategoriaId) > 0 && strlen($subcategoriaSigla) > 0 && strlen($subcategoriaNombre) > 0 && strlen($categoria) && strlen($subcategoriaDescripcion) > 0) {
             $subCategoria = new SubCategoria(
-                $id,
-                $sigla,
-                $nombre,
+                $subcategoriaId,
+                $subcategoriaSigla,
+                $subcategoriaNombre,
                 $categoria,
-                $descripcion,
-                $activo
+                $subcategoriaDescripcion,
+                $subcategoriaActivo
             );
 
             $subCategoriaBusiness = new SubCategoriaBusiness();
@@ -47,27 +49,27 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['delete'])) { //if the user clicked on the delete button
 
     if (
-        isset($_POST['id']) && isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['subcategoriaIdView']) && isset($_POST['subcategoriaSiglaView']) && isset($_POST['subcategoriaNombreView'])
+        && isset($_POST['subcategoriaDescripcionView'])
     ) { //check if the variables have values 
-        $id = $_POST['id']; //get the id from the form
-        $sigla = $_POST['sigla'];
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['categoria'];
-        $descripcion = $_POST['descripcion'];
-        $activo = 0;
+        $subcategoriaId = $_POST['subcategoriaIdView']; //get the id from the form
+        $subcategoriaSigla = $_POST['subcategoriaSiglaView'];
+        $subcategoriaNombre = $_POST['subcategoriaNombreView'];
+        $categoria = $_POST['categoriaId'];
+        $subcategoriaDescripcion = $_POST['subcategoriaDescripcionView'];
+        $subcategoriaActivo = 0;
         if (
-            strlen($id) > 0 && strlen($sigla) > 0 && strlen($nombre) > 0 && strlen($categoria)
-            && strlen($descripcion) > 0
+            strlen($subcategoriaId) > 0 && strlen($subcategoriaSigla) > 0 && strlen($subcategoriaNombre) > 0 && strlen($categoria)
+            && strlen($subcategoriaDescripcion) > 0
         ) { //check if the variables have values 
 
             $subCategoria = new SubCategoria(
-                $id,
-                $sigla,
-                $nombre,
+                $subcategoriaId,
+                $subcategoriaSigla,
+                $subcategoriaNombre,
                 $categoria,
-                $descripcion,
-                $activo
+                $subcategoriaDescripcion,
+                $subcategoriaActivo
             );
 
             $subCategoriaBusiness = new SubCategoriaBusiness();
@@ -87,31 +89,33 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
     if (
-        isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['subcategoriaSiglaView']) && isset($_POST['subcategoriaNombreView'])
+        && isset($_POST['subcategoriaDescripcionView'])
     ) { //check if the variables have values
 
-        $sigla = $_POST['sigla']; //get the name from the form
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['categoria'];
-        $descripcion = $_POST['descripcion'];
-        $activo = 1;
+        $cadena = explode("-",$_POST['categoria']);
+
+        $subcategoriaSigla = $cadena[1].$_POST['subcategoriaSiglaView']; //get the name from the form
+        $subcategoriaNombre = $_POST['subcategoriaNombreView'];
+        $categoria = $cadena[0];
+        $subcategoriaDescripcion = $_POST['subcategoriaDescripcionView'];
+        $subcategoriaActivo = 1;
 
         if (
-            strlen($sigla) > 0 &&
+            strlen($subcategoriaSigla) > 0 &&
             strlen($categoria) &&
-            strlen($nombre) > 0
-            && strlen($descripcion) > 0
+            strlen($subcategoriaNombre) > 0
+            && strlen($subcategoriaDescripcion) > 0
         ) { //check if the variables have values
 
 
             $subCategoria = new SubCategoria(
                 0,
-                $sigla,
-                $nombre,
+                $subcategoriaSigla,
+                $subcategoriaNombre,
                 $categoria,
-                $descripcion,
-                $activo
+                $subcategoriaDescripcion,
+                $subcategoriaActivo
             );
 
             $subCategoriaBusiness = new SubCategoriaBusiness();

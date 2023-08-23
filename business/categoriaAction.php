@@ -1,26 +1,28 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 include '../business/categoriaBusiness.php';
 
 if (isset($_POST['update'])) {
 
     if (
-        isset($_POST['id']) && isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['categoriaIdView']) && isset($_POST['categoriaSiglaView']) && isset($_POST['categoriaNombreView'])
+        && isset($_POST['categoriaDescripcionView'])
     ) {
-        $id = $_POST['id'];
-        $sigla = $_POST['sigla'];
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $activo = isset($_POST['activo']) ? 1 : 0;
+        $categoriaId = $_POST['categoriaIdView'];
+        $categoriaSigla = $_POST['categoriaSiglaView'];
+        $categoriaNombre = $_POST['categoriaNombreView'];
+        $categoriaDescripcion = $_POST['categoriaDescripcionView'];
+        $categoriaActivo = isset($_POST['categoriaActivoView']) ? 1 : 0;
 
-        if (strlen($id) > 0 && strlen($sigla) > 0 && strlen($nombre) > 0 && strlen($descripcion) > 0) {
+        if (strlen($categoriaId) > 0 && strlen($categoriaSigla) > 0 && strlen($categoriaNombre) > 0 && strlen($categoriaDescripcion) > 0) {
             $categoria = new Categoria(
-                $id,
-                $sigla,
-                $nombre,
-                $descripcion,
-                $activo
+                $categoriaId,
+                $categoriaSigla,
+                $categoriaNombre,
+                $categoriaDescripcion,
+                $categoriaActivo
             ); //create a student object
 
             $categoriaBusiness = new CategoriaBusiness();
@@ -40,25 +42,25 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['delete'])) { //if the user clicked on the delete button
 
     if (
-        isset($_POST['id']) && isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['categoriaIdView']) && isset($_POST['categoriaSiglaView']) && isset($_POST['categoriaNombreView'])
+        && isset($_POST['categoriaDescripcionView'])
     ) { //check if the variables have values 
-        $id = $_POST['id']; //get the id from the form
-        $sigla = $_POST['sigla'];
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $activo = 0;
+        $categoriaId = $_POST['categoriaIdView']; //get the id from the form
+        $categoriaSigla = $_POST['categoriaSiglaView'];
+        $categoriaNombre = $_POST['categoriaNombreView'];
+        $categoriaDescripcion = $_POST['categoriaDescripcionView'];
+        $categoriaActivo = 0;
         if (
-            strlen($id) > 0 && strlen($sigla) > 0 && strlen($nombre) > 0
-            && strlen($descripcion) > 0
+            strlen($categoriaId) > 0 && strlen($categoriaSigla) > 0 && strlen($categoriaNombre) > 0
+            && strlen($categoriaDescripcion) > 0
         ) { //check if the variables have values 
 
             $categoria = new Categoria(
-                $id,
-                $sigla,
-                $nombre,
-                $descripcion,
-                $activo
+                $categoriaId,
+                $categoriaSigla,
+                $categoriaNombre,
+                $categoriaDescripcion,
+                $categoriaActivo
             );
 
             $categoriaBusiness = new CategoriaBusiness();
@@ -78,25 +80,25 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
     if (
-        isset($_POST['sigla']) && isset($_POST['nombre'])
-        && isset($_POST['descripcion'])
+        isset($_POST['categoriaSiglaView']) && isset($_POST['categoriaNombreView'])
+        && isset($_POST['categoriaDescripcionView'])
     ) { //check if the variables have values
 
-        $sigla = $_POST['sigla']; //get the name from the form
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $activo = 1;
+        $categoriaSigla = $_POST['categoriaSiglaView']; //get the name from the form
+        $categoriaNombre = $_POST['categoriaNombreView'];
+        $categoriaDescripcion = $_POST['categoriaDescripcionView'];
+        $categoriaActivo = 1;
         if (
-            strlen($sigla) > 0 && strlen($nombre) > 0
-            && strlen($descripcion) > 0
+            strlen($categoriaSigla) > 0 && strlen($categoriaNombre) > 0
+            && strlen($categoriaDescripcion) > 0
         ) { //check if the variables have values
 
             $categoria = new Categoria(
                 0,
-                $sigla,
-                $nombre,
-                $descripcion,
-                $activo
+                $categoriaSigla,
+                $categoriaNombre,
+                $categoriaDescripcion,
+                $categoriaActivo
             );
 
             $categoriaBusiness = new CategoriaBusiness();
