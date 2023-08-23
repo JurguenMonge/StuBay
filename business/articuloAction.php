@@ -4,17 +4,16 @@ include '../business/articuloBusiness.php';
 
 if(isset($_POST['update'])){
 
-    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['articulocategoria']) && isset($_POST['subcategoria']) && isset($_POST['marca'])
-    && isset($_POST['modelo']) && isset($_POST['serie'])) {
+    if (isset($_POST['articuloidview']) && isset($_POST['articulonombreview']) && isset($_POST['articulosubcategoriaview']) && isset($_POST['articulomarcaview'])
+    && isset($_POST['articulomodeloview']) && isset($_POST['articuloserieview'])) {
        
-        $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['articulocategoria'];
-        $subcategoria = $_POST['subcategoria'];
-        $marca = $_POST['marca'];
-        $modelo = $_POST['modelo'];
-        $serie = $_POST['serie'];
-        $activo = isset($_POST['activo']) ? 1 : 0;
+        $articuloId = $_POST['articuloidview'];
+        $articuloNombre = $_POST['articulonombreview'];
+        $articuloMarca = $_POST['articulomarcaview'];
+        $articuloModelo = $_POST['articulomodeloview'];
+        $articuloSerie = $_POST['articuloserieview'];
+        $articuloActivo = isset($_POST['articuloactivoview']) ? 1 : 0;
+        $articuloSubCategoria = $_POST['articulosubcategoriaview'];
 
         if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($categoria) > 0 && strlen($subcategoria) > 0 && strlen($marca) > 0 &&
             strlen($modelo) > 0 && strlen($serie) > 0
@@ -46,22 +45,21 @@ if(isset($_POST['update'])){
     }
 } else if(isset($_POST['create'])){
     //Validaciones
-    if(isset($_POST['nombre']) && isset($_POST['articulocategoria']) && isset($_POST['subcategoria']) 
-        && isset($_POST['marca']) && isset($_POST['modelo']) && isset($_POST['serie'])){
+    if(isset($_POST['articulonombreview']) && isset($_POST['articulosubcategoriaview']) 
+        && isset($_POST['articulomarcaview']) && isset($_POST['articulomodeloview']) && isset($_POST['articuloserieview'])){
         
         //Obtener los datos del formulario
-        $nombre = $_POST['nombre'];
-        $categoria = $_POST['articulocategoria'];
-        $subcategoria = $_POST['subcategoria'];
-        $marca = $_POST['marca'];
-        $modelo = $_POST['modelo'];
-        $serie = $_POST['serie'];
-        $activo = 1;
+        $articuloNombre = $_POST['articulonombreview'];
+        $articuloMarca = $_POST['articulomarcaview'];
+        $articuloModelo = $_POST['articulomodeloview'];
+        $articuloSerie = $_POST['articuloserieview'];
+        $articuloSubCategoriaId = $_POST['articulosubcategoriaview'];
+        $articuloActivo = 1;
 
         //Validar variables
-        if(strlen($nombre) > 0 && strlen($marca) > 0 && strlen($modelo) > 0 && strlen($serie) > 0)
+        if(strlen($articuloNombre) > 0 && strlen($articuloMarca) > 0 && strlen($articuloModelo) > 0 && strlen($articuloSerie) > 0)
         {
-            $articulo = new Articulo(0,$nombre,$categoria,$subcategoria,$marca,$modelo,$serie,$activo);
+            $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId);
             
             $articuloBusiness = new ArticuloBusiness();
             $result = $articuloBusiness->insertarTBArticulo($articulo);

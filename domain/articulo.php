@@ -2,91 +2,81 @@
 
 class Articulo{
     
-    private $id;
-    private $nombre;
-    private $categoriaid;
-    private $subcategoriaid;
-    private $marca;
-    private $modelo;
-    private $serie;
-    private $activo;
+    private $articuloId;
+    private $articuloNombre;
+    private $articuloMarca;
+    private $articuloModelo;
+    private $articuloSerie;
+    private $articuloActivo;
+    private $articuloSubCategoriaId;
 
-    function __construct($id, $nombre, $categoriaid, $subcategoriaid, $marca, $modelo, $serie, $activo)
+    function __construct($articuloId, $articuloNombre, $articuloMarca, $articuloModelo, $articuloSerie, $articuloActivo, $articuloSubCategoriaId)
     {
-        $this->id = $id;
-        $this->nombre = $nombre;
-        $this->categoriaid = $categoriaid;
-        $this->subcategoriaid = $subcategoriaid;
-        $this->marca = $marca;
-        $this->modelo = $modelo;
-        $this->serie = $serie;
-        $this->activo = $activo;
+        $this->articuloId = $articuloId;
+        $this->articuloNombre = $articuloNombre;      
+        $this->articuloMarca = $articuloMarca;
+        $this->articuloModelo = $articuloModelo;
+        $this->articuloSerie = $articuloSerie;
+        $this->articuloActivo = $articuloActivo;
+        $this->articuloSubCategoriaId = $articuloSubCategoriaId;
     }
 
     //Getters
-    function getId(){
-        return $this->id;
+    function getArticuloId(){
+        return $this->articuloId;
     }
 
-    function getNombre(){
-        return $this->nombre;
+    function getArticuloNombre(){
+        return $this->articuloNombre;
     }
 
-    function getCategoriaId(){
-        return $this->categoriaid;
+    function getArticuloMarca(){
+        return $this->articuloMarca;
     }
 
-    function getSubCategoriaId(){
-        return $this->subcategoriaid;
+    function getArticuloModelo(){
+        return $this->articuloModelo;
     }
 
-    function getMarca(){
-        return $this->marca;
+    function getArticuloSerie(){
+        return $this->articuloSerie;
     }
 
-    function getModelo(){
-        return $this->modelo;
+    function getArticuloActivo(){
+        return $this->articuloActivo;
     }
 
-    function getSerie(){
-        return $this->serie;
-    }
-
-    function getActivo(){
-        return $this->activo;
+    function getArticuloSubCategoriaId(){
+        return $this->articuloSubCategoriaId;
     }
 
     //Setters
-    function setId($id){
-        $this->id = $id;
+    function setArticuloId($articuloId){
+        $this->articuloId = $articuloId;
     }
 
-    function setNombre($nombre){
-        $this->nombre = $nombre;
+    function setArticuloNombre($articuloNombre){
+        $this->articuloNombre = $articuloNombre;
     }
 
-    function setCategoriaId($categoriaid){
-        $this->categoriaid = $categoriaid;
+    function setArticuloMarca($articuloMarca){
+        $this->articuloMarca = $articuloMarca;
     }
 
-    function setSubCategoriaId($subcategoriaid){
-        $this->subcategoriaid = $subcategoriaid;
+    function setArticuloModelo($articuloModelo){
+        $this->articuloModelo = $articuloModelo;
     }
 
-    function setMarca($marca){
-        $this->marca = $marca;
+    function setArticuloSerie($articuloSerie){
+        $this->articuloSerie = $articuloSerie;
     }
 
-    function setModelo($modelo){
-        $this->modelo = $modelo;
+    function setArticuloActivo($articuloActivo){
+        $this->articuloActivo = $articuloActivo;
     }
 
-    function setSerie($serie){
-        $this->serie = $serie;
-    }
-
-    function setActivo($activo){
-        $this->activo = $activo;
+    function setArticuloSubCategoriaId($articuloSubCategoriaId){
+        $this->articuloSubCategoriaId = $articuloSubCategoriaId;
     }
 }
 

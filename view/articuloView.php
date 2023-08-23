@@ -34,36 +34,36 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                 <tr>
-                    <td><input required type="text" name="nombre" id="nombre" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
-                    <td>
+                    <td><input required type="text" name="articulonombreview" id="articulonombreview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
+                    <!--"Realizar cambios "  <td>
                         <select name="articulocategoria" id="articulocategoria">
                             <option value="">Seleccionar categoria</option>
                             <?php 
-                                if(count($getCat) > 0){
-                                    foreach($getCat as $categoria){
-                                        echo '<option value="'.$categoria->getSigla().'">'.$categoria->getSigla().' - '.$categoria->getNombre().'</option>';
-                                    }
-                                }else{ 
-                                    echo '<option value="">Ninguna categoria registrada</option>'; 
-                                } 
+                                // if(count($getCat) > 0){
+                                //     foreach($getCat as $categoria){
+                                //         echo '<option value="'.$categoria->getSigla().'">'.$categoria->getSigla().' - '.$categoria->getNombre().'</option>';
+                                //     }
+                                // }else{ 
+                                //     echo '<option value="">Ninguna categoria registrada</option>'; 
+                                // } 
                             ?> 
                         </select>
-                    </td>
-                    <td>
-                        <select name="subcategoria" id="subcategoria">
+                    </td>-->
+                    <!--<td>
+                        <select name="articulosubcategoriaview" id="articulosubcategoriaview">
                                 <option value="">Seleccionar subcategoria</option>
                                 <?php 
-                                    if(count($getSubCat) > 0){
-                                        foreach($getSubCat as $subcategoria){
-                                            echo '<option value="'.$subcategoria->getSigla().'">'.$subcategoria->getSigla().' - '.$subcategoria->getNombre().'</option>';
-                                        }
-                                    }
+                                    // if(count($getSubCat) > 0){
+                                    //     foreach($getSubCat as $subcategoria){
+                                    //         echo '<option value="'.$subcategoria->getSigla().'">'.$subcategoria->getSigla().' - '.$subcategoria->getNombre().'</option>';
+                                    //     }
+                                    // }
                                 ?>
                         </select>                     
-                    </td>
-                    <td><input required type="text" name="marca" id="marca" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
-                    <td><input required type="text" name="modelo" id="modelo" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
-                    <td><input required type="text" name="serie" id="serie" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
+                    </td>-->
+                    <td><input required type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
+                    <td><input required type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
+                    <td><input required type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
