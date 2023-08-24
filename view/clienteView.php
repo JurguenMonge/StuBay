@@ -83,8 +83,8 @@
                 echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
                 echo '<td><input required  type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
-                echo '<td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
-                echo '<td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
+                echo '<td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
 
                 echo '<td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
@@ -139,40 +139,40 @@
     </script>
     <script>
         function validarCampo(input) {
-            const valor = input.value;
-            const id = input.id;
-            const errorSpan = document.getElementById(id + "-error");
+        const valor = input.value;
+        const id = input.id;
+        const errorSpan = document.getElementById(id + "-error");
 
-            if (id === "clientecorreo") {
-                if (!isValidEmail(valor)) {
-                    input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
-                    errorSpan.textContent = "Correo inválido.";
-                } else {
-                    input.setCustomValidity("");
-                    errorSpan.textContent = "";
-                }
-            } else if (id === "clientenombre" || id === "clienteprimerapellido" || id === "clientesegundoapellido") {
-                if (!isValidName(valor)) {
-                    input.setCustomValidity("Ingrese un nombre válido (solo letras).");
-                    errorSpan.textContent = "Nombre inválido.";
-                } else {
-                    input.setCustomValidity("");
-                    errorSpan.textContent = "";
-                }
+        if (id === "clientecorreo") {
+            if (!isValidEmail(valor)) {
+                input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
+                errorSpan.textContent = "Correo inválido.";
+            } else {
+                input.setCustomValidity("");
+                errorSpan.textContent = "";
             }
-            // Agrega más validaciones para otros campos aquí si es necesario.
-        }
-
-        function isValidEmail(email) {
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailPattern.test(email);
-        }
-
-        function isValidName(name) {
-            const namePattern = /^[A-Za-z]+$/;
-            return namePattern.test(name);
+        } else if (id === "clientenombre" || id === "clienteprimerapellido" || id === "clientesegundoapellido") {
+            if (!isValidName(valor)) {
+                input.setCustomValidity("Ingrese un nombre válido (solo letras) y comience con mayúscula.");
+                errorSpan.textContent = "Nombre inválido.";
+            } else {
+                input.setCustomValidity("");
+                errorSpan.textContent = "";
+            }
         }
         
+    }
+
+    function isValidEmail(email) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+    }
+
+    function isValidName(name) {
+        const namePattern = /^[A-Z][a-z]+$/;
+        return namePattern.test(name);
+    }
+
         document.addEventListener("DOMContentLoaded", function() {
             const fechaIngresoInput = document.getElementById("clientefechaingreso");
             const fechaActual = new Date();
@@ -196,7 +196,7 @@
         }
     </script>
     <script>
-        function validateEmail(input) {
+        function validateEmail(input) { //del update
             const email = input.value;
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -204,6 +204,17 @@
                 input.setCustomValidity('Ingrese una dirección de correo electrónico válida con un dominio completo (por ejemplo, "correo@gmail.com").');
             } else {
                 input.setCustomValidity('');
+            }
+        }
+
+        function validateName(input) {
+            const nameValue = input.value;
+
+            // Comprueba si el campo está vacío o no comienza con mayúscula
+            if (nameValue === '' || !/^[A-Z][a-z]*$/.test(nameValue)) {
+                input.setCustomValidity("Ingrese un nombre válido (solo letras y la primera letra en mayúscula).");
+            } else {
+                input.setCustomValidity(""); // Restablece el mensaje de validación
             }
         }
     </script>
