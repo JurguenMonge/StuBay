@@ -85,7 +85,8 @@
                 echo '<td><input type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
                 echo '<td><input type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
                 echo '<td><input type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
-                echo '<td><input type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '"/></td>';
+                echo '<td><input type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
+
                 echo '<td><input type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
                 echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
                 echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
@@ -99,7 +100,7 @@
         </table>
     </section>
 
-
+    <!-- Scripts JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -137,6 +138,43 @@
         });
     </script>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", function(event) {
+                const correoInput = document.getElementById("clientecorreo");
+                const correoValue = correoInput.value;
+
+                if (!isValidEmail(correoValue)) {
+                    event.preventDefault(); // Evitar el envío del formulario si el correo no es válido
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Correo inválido',
+                        text: 'Ingrese una dirección de correo electrónico válida con un dominio completo (por ejemplo, "correo@gmail.com").'
+                    });
+                }
+            });
+
+            function isValidEmail(email) {
+                // Utiliza una expresión regular para validar el correo electrónico.
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return emailPattern.test(email);
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const fechaIngresoInput = document.getElementById("clientefechaingreso");
+            const fechaActual = new Date();
+            const yyyy = fechaActual.getFullYear();
+            const mm = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Sumar 1 porque en JavaScript los meses van de 0 a 11
+            const dd = String(fechaActual.getDate()).padStart(2, '0');
+
+            const fechaFormatted = `${yyyy}-${mm}-${dd}`;
+            fechaIngresoInput.value = fechaFormatted;
+        });
+    </script>
+
+
+    <script>
         function confirmarActualizacion() {
             // Muestra una alerta de confirmación y captura la respuesta del usuario.
             var confirmacion = confirm("¿Desea confirmar la actualización de este cliente?");
@@ -145,6 +183,19 @@
             return confirmacion;
         }
     </script>
+    <script>
+        function validateEmail(input) {
+            const email = input.value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!emailPattern.test(email)) {
+                input.setCustomValidity('Ingrese una dirección de correo electrónico válida con un dominio completo (por ejemplo, "correo@gmail.com").');
+            } else {
+                input.setCustomValidity('');
+            }
+        }
+    </script>
+
 
     <footer>
     </footer>
