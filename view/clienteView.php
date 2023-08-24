@@ -82,7 +82,7 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input required  type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
+                echo '<td><input required  type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
@@ -207,11 +207,11 @@
             }
         }
 
-        function validateName(input) {
+        function validateName(input) {//del update
             const nameValue = input.value;
 
             // Comprueba si el campo está vacío o no comienza con mayúscula
-            if (nameValue === '' || !/^[A-Z][a-z]*$/.test(nameValue)) {
+            if (nameValue === '' || !/^[A-Z][a-z]+$/.test(nameValue)) {
                 input.setCustomValidity("Ingrese un nombre válido (solo letras y la primera letra en mayúscula).");
             } else {
                 input.setCustomValidity(""); // Restablece el mensaje de validación
