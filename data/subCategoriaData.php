@@ -109,7 +109,7 @@ class SubCategoriaData extends Data
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
         // obtener el estudiante con el id especificado de la base de datos y guardarlos en un objeto estudiante
-        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbsubcategoriaid = " . $id . ";";
+        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid = " . $id . ";";
 
         $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
 

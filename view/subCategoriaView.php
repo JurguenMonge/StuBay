@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Subcategorías</title>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     <?php
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -52,44 +55,23 @@
                     <td><input required type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" /></td>
                     <td><input required type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" /></td>
                     <td><input required type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" /></td>
-                    
+
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
             <p>Seleccionaste la categoría con ID: <span name="categoriaId" id="categoriaId"></span></p>
 
 
-            
+
 
             <?php
 
+
             $subCategoriaBusiness = new SubCategoriaBusiness();
             $allSubCategorias = $subCategoriaBusiness->getAllTBSubCategoria();
-
-
-
             foreach ($allSubCategorias as $current) {
                 //if ($categoriaIdSelected == $current->getCategoriaId()) {
-                    echo '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
-                    echo '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
-                    echo '<tr>';
-                    echo '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
-                    echo '<td></td>';
-                    echo '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getSigla() . '"/></td>';
-                    echo '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
-                    echo '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
-                    echo '<td><input type="checkbox" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
-                    echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-                    echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
-                    echo '</tr>';
-                    echo '</form>';
-                //}
-            }
-            /*$subCategoriaBusiness = new SubCategoriaBusiness();
-            $allSubCategorias = $subCategoriaBusiness->getAllTBSubCategoria();
-
-            foreach ($allSubCategorias as $current) {
-                echo '<form method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
+                echo '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
                 echo '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
                 echo '<tr>';
                 echo '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
@@ -102,7 +84,8 @@
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
                 echo '</tr>';
                 echo '</form>';
-            }*/
+                //}
+            }
             ?>
 
             <tr>
@@ -148,24 +131,8 @@
             }
         }
 
-        //Obtener el id de la categoria seleccionada
-        document.getElementById("categoria").addEventListener("change", function() {
-            var selectedOption = this.options[this.selectedIndex];
-            var categoriaId = selectedOption.getAttribute("data-id");
-            document.getElementById("categoriaId").textContent = categoriaId;
+        
 
-            // Oculta todas las subcategorías
-            var subcategorias = document.querySelectorAll(".subcategoria");
-            subcategorias.forEach(function(subcategoria) {
-                subcategoria.style.display = "none";
-            });
-
-            // Muestra la subcategoría correspondiente
-            var subcategoria = document.getElementById("subcategoria-" + categoriaId);
-            if (subcategoria) {
-                subcategoria.style.display = "block";
-            }
-        });
     </script>
 
     <footer>

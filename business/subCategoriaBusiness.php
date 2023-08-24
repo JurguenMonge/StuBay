@@ -32,6 +32,10 @@ class SubCategoriaBusiness
         return $this->subCategoriaData->eliminarTBSubCategoria($subCategoria);
     }
 
+    public function getTBSubCategoriaById($id){
+        return $this->subCategoriaData->getTBSubCategoriaById($id);
+    }
+
     public function getAllTBSubCategoria()
     {
         return $this->subCategoriaData->getAllTBSubCategorias();
