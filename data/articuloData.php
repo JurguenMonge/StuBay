@@ -89,6 +89,22 @@ class ArticuloData extends Data{
         return $array;
     }
 
+    public function buscarNombres($nombre){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $nombreSeguro = mysqli_real_escape_string($conn, $nombre);
+        $consulta = "SELECT tbarticulonombre FROM tbarticulo WHERE tbarticulonombre LIKE '%$nombreSeguro%' AND tbarticuloactivo = 1 LIMIT 10;";
+        $resultados = $conn->query($consulta);
+
+        $nombres = array();
+        while ($fila = mysqli_fetch_array($resultados)) {
+            $nombres[] = $fila['tbarticulonombre'];
+        }
+
+        mysqli_close($conn);
+        return $nombres;
+    }
 
 }
 

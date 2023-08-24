@@ -26,4 +26,7 @@ class ArticuloBusiness{
         return $this->articuloData->getAllTBArticulo();
     }
 
+    public function getTBArticuloName($nombre){
+        return $this->articuloData->buscarNombres($nombre);
+    }
 }

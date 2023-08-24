@@ -117,5 +117,17 @@ if(isset($_POST['update'])){
     }else {
         header("location: ../view/articuloView.php?error=error");
     }
+}  else if(isset($_GET['termino'])){
+    $termino = $_GET['termino'];
+    $articuloBusiness = new ArticuloBusiness();
+    $nombres = $articuloBusiness->getTBArticuloName($termino); 
+    
+    if ($nombres) { 
+        echo json_encode($nombres);
+    } else {
+        echo json_encode(array("error" => "Error en la consulta"));
+    }
 }
+
+
 
