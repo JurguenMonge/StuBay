@@ -65,10 +65,10 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
                 <tr>
-                    <td><input required type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" /></td>
-                    <td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" /></td>
-                    <td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" /></td>
-                    <td><input required type="email" name="clientecorreo" id="clientecorreo" /></td>
+                    <td><input required type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="email" name="clientecorreo" id="clientecorreo" oninput="validarCampo(this)" /></td>
                     <td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" /></td>
                     <td><input required type="password" name="clientepassword" id="clientepassword" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
@@ -82,12 +82,12 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
-                echo '<td><input type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
-                echo '<td><input type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
-                echo '<td><input type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
+                echo '<td><input required  type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '"/></td>';
+                echo '<td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '"/></td>';
+                echo '<td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '"/></td>';
+                echo '<td><input required type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
 
-                echo '<td><input type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
+                echo '<td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
                 echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
                 echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
@@ -138,29 +138,41 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.querySelector("form");
+        function validarCampo(input) {
+            const valor = input.value;
+            const id = input.id;
+            const errorSpan = document.getElementById(id + "-error");
 
-            form.addEventListener("submit", function(event) {
-                const correoInput = document.getElementById("clientecorreo");
-                const correoValue = correoInput.value;
-
-                if (!isValidEmail(correoValue)) {
-                    event.preventDefault(); // Evitar el envío del formulario si el correo no es válido
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Correo inválido',
-                        text: 'Ingrese una dirección de correo electrónico válida con un dominio completo (por ejemplo, "correo@gmail.com").'
-                    });
+            if (id === "clientecorreo") {
+                if (!isValidEmail(valor)) {
+                    input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
+                    errorSpan.textContent = "Correo inválido.";
+                } else {
+                    input.setCustomValidity("");
+                    errorSpan.textContent = "";
                 }
-            });
-
-            function isValidEmail(email) {
-                // Utiliza una expresión regular para validar el correo electrónico.
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                return emailPattern.test(email);
+            } else if (id === "clientenombre" || id === "clienteprimerapellido" || id === "clientesegundoapellido") {
+                if (!isValidName(valor)) {
+                    input.setCustomValidity("Ingrese un nombre válido (solo letras).");
+                    errorSpan.textContent = "Nombre inválido.";
+                } else {
+                    input.setCustomValidity("");
+                    errorSpan.textContent = "";
+                }
             }
-        });
+            // Agrega más validaciones para otros campos aquí si es necesario.
+        }
+
+        function isValidEmail(email) {
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email);
+        }
+
+        function isValidName(name) {
+            const namePattern = /^[A-Za-z]+$/;
+            return namePattern.test(name);
+        }
+        
         document.addEventListener("DOMContentLoaded", function() {
             const fechaIngresoInput = document.getElementById("clientefechaingreso");
             const fechaActual = new Date();
