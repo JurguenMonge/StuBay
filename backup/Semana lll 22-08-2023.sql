@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 26-08-2023 a las 03:14:28
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 17-08-2023 a las 06:41:49
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,9 +55,9 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `
 
 CREATE TABLE `tbcategoria` (
   `tbcategoriaid` int(11) NOT NULL,
-  `tbcategoriasigla` varchar(4) NOT NULL,
+  `tbcategoriasigla` varchar(2) NOT NULL,
   `tbcategorianombre` varchar(30) NOT NULL,
-  `tbcategoriadescripcion` varchar(1000) NOT NULL,
+  `tbcategoriadescripcion` varchar(60) NOT NULL,
   `tbcategoriaactivo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -68,7 +68,7 @@ CREATE TABLE `tbcategoria` (
 INSERT INTO `tbcategoria` (`tbcategoriaid`, `tbcategoriasigla`, `tbcategorianombre`, `tbcategoriadescripcion`, `tbcategoriaactivo`) VALUES
 (1, '01', 'Tecnologico', 'Variados', 1),
 (2, '02', 'Muebles', 'Para computadoras', 1),
-(3, '03', 'Ferretería', 'Variado', 1);
+(3, '03', 'Ferreteria', 'Variado', 1);
 
 -- --------------------------------------------------------
 
@@ -103,25 +103,22 @@ INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapell
 
 CREATE TABLE `tbsubcategoria` (
   `tbsubcategoriaid` int(11) NOT NULL,
-  `tbsubcategoriasigla` varchar(4) NOT NULL,
+  `tbsubcategoriasigla` varchar(2) NOT NULL,
   `tbsubcategorianombre` varchar(30) NOT NULL,
-  `tbsubcategoriadescripcion` varchar(1000) NOT NULL,
-  `tbsubcategoriaactivo` tinyint(1) NOT NULL,
-  `tbcategoriaid` int(11) NOT NULL
+  `tbcategoriaid` int(11) NOT NULL,
+  `tbsubcategoriadescripcion` varchar(60) NOT NULL,
+  `tbsubcategoriaactivo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `tbsubcategoria`
 --
 
-INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubcategorianombre`, `tbsubcategoriadescripcion`, `tbsubcategoriaactivo`, `tbcategoriaid`) VALUES
-(1, '0201', 'Libros y revistas', 'Variado', 1, 2),
-(2, '0302', 'Ropa Deportiva', 'Disponible', 1, 3),
-(3, '0103', 'Audio', 'Variado', 1, 1),
-(4, '0104', 'Computadoras', 'Computadoras inteligentes', 1, 1),
-(5, '0205', 'otrogg', 'fgsfgs', 1, 2),
-(6, '0105', 'fsdvsd', 'dsf', 0, 1),
-(7, '0202', 'fa', 'dasd', 0, 2);
+INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubcategorianombre`, `tbcategoriaid`, `tbsubcategoriadescripcion`, `tbsubcategoriaactivo`) VALUES
+(1, '01', 'Libros y revistas', 2, 'Variado', 1),
+(2, '02', 'Ropa Deportiva', 3, 'Disponible', 1),
+(3, '03', 'Audio', 1, 'Variado', 1),
+(4, '04', 'Computadoras', 1, 'Computadoras inteligentes', 1);
 
 --
 -- Índices para tablas volcadas
