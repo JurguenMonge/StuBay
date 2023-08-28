@@ -9,6 +9,37 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
+    <script>
+        $(document).ready(function() {
+            $('#categoria').change(function() {
+                recargarLista();
+            });
+        });
+
+        function recargarLista() {
+            $.ajax({
+                type: "POST",
+                url: "../business/subCategoriaAction.php",
+                data: "numCategoria=" + $('#categoria').val(),
+                success: function(response) {
+                    // Inserta la respuesta generada por el bucle PHP en la tabla
+                    $("#tablaSubcategorias").empty(); // Limpia la tabla antes de añadir nuevos datos
+                    $("#tablaSubcategorias").html(response);
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error en la solicitud:", error);
+                }
+            });
+        }
+    </script>
+
+
+
+
+
+
+
     <?php
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -52,6 +83,7 @@
                             ?>
                         </select>
                     </td>
+
                     <td><input required type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" /></td>
                     <td><input required type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" /></td>
                     <td><input required type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" /></td>
@@ -59,10 +91,8 @@
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
-            <p>Seleccionaste la categoría con ID: <span name="categoriaId" id="categoriaId"></span></p>
 
-
-
+            <div id="tablaSubcategorias"></div>
 
             <?php
 
@@ -130,9 +160,6 @@
                 input.setCustomValidity('');
             }
         }
-
-        
-
     </script>
 
     <footer>

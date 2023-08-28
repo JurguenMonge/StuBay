@@ -109,19 +109,20 @@ class SubCategoriaData extends Data
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
         // obtener el estudiante con el id especificado de la base de datos y guardarlos en un objeto estudiante
-        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid = " . $id . ";";
+        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid='$id '&& tbsubcategoriaactivo = 1;";
 
         $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
 
-        $subcategoria = null;
+        $array = array();
 
         // si se obtuvo un resultado, llenar el objeto estudiante
         if ($row = mysqli_fetch_array($result)) {
             $subcategoria = new SubCategoria($row['tbsubcategoriaid'], $row['tbsubcategoriasigla'], $row['tbsubcategorianombre'],$row['tbcategoriaid'], $row['tbsubcategoriadescripcion'], $row['tbsubcategoriaactivo']);
+            array_push($array, $subcategoria);
         }
 
         mysqli_close($conn); // cerrar la conexión
-        return $subcategoria;
+        return $array;
     }
 
     public function getSubcategoriasByCategoriaId($categoriaId){

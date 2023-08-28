@@ -13,10 +13,10 @@ if (isset($_POST['update'])) {
         isset($_POST['subcategoriaIdView']) && isset($_POST['subcategoriaSiglaView']) && isset($_POST['subcategoriaNombreView'])
         && isset($_POST['subcategoriaDescripcionView'])
     ) {
-        
+
 
         $subcategoriaId = $_POST['subcategoriaIdView'];
-        $subcategoriaSigla = $cadena[1].$_POST['subcategoriaSiglaView'];
+        $subcategoriaSigla = $cadena[1] . $_POST['subcategoriaSiglaView'];
         $subcategoriaNombre = $_POST['subcategoriaNombreView'];
         $categoria = $_POST['categoriaId'];
         $subcategoriaDescripcion = $_POST['subcategoriaDescripcionView'];
@@ -93,9 +93,9 @@ if (isset($_POST['update'])) {
         && isset($_POST['subcategoriaDescripcionView'])
     ) { //check if the variables have values
 
-        $cadena = explode("-",$_POST['categoria']);
+        $cadena = explode("-", $_POST['categoria']);
 
-        $subcategoriaSigla = $cadena[1].$_POST['subcategoriaSiglaView']; //get the name from the form
+        $subcategoriaSigla = $cadena[1] . $_POST['subcategoriaSiglaView']; //get the name from the form
         $subcategoriaNombre = $_POST['subcategoriaNombreView'];
         $categoria = $cadena[0];
         $subcategoriaDescripcion = $_POST['subcategoriaDescripcionView'];
@@ -132,19 +132,39 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../index.php?error=error"); //redirect to the index.php page with an error message
     }
-}else if (isset($_POST['valor'])) {
+} else if (isset($_POST['valor'])) {
     $categoriaId = $_POST['valor'];
     $business = new SubCategoriaBusiness();
     $subcategorias = $business->getSubcategoriasByCategoriaId($categoriaId);
     $cadena = "<select id='subcategoriaview' name='subcategoriaview'>";
     $cadena .= '<option value="">Selecciona una subcategoria</option>';
     foreach ($subcategorias as $sub) {
-        $cadena .= '<option value="' . $sub->getId() . '">'. $sub->getSigla() .' - '. $sub->getNombre() . '</option>';
+        $cadena .= '<option value="' . $sub->getId() . '">' . $sub->getSigla() . ' - ' . $sub->getNombre() . '</option>';
     }
     echo $cadena .= "</select>";
+} else if (isset($_POST['numCategoria'])) {
+    $cadena = explode("-", $_POST['numCategoria']);
+    $categoriaId = $cadena[0];
+    $subCategoriaBusiness = new SubCategoriaBusiness();
+    $subcategorias = $subCategoriaBusiness->getTBSubCategoriaById($categoriaId);
+    $acumuladorCadenas = '<form class="subcategoria" id="subcategoria-' . $categoriaId . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
+    foreach ($subcategorias as $current) {
+        
+        $cadena = '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
+        $cadena .= '<tr>';
+        $cadena .= '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
+        $cadena .= '<td></td>';
+        $cadena .= '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getSigla() . '"/></td>';
+        $cadena .= '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
+        $cadena .= '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
+        $cadena .= '<td><input type="checkbox" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
+        $cadena .= '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
+        $cadena .= '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
+        $cadena .= '</tr>';
+        
+        $acumuladorCadenas .= $cadena; // Agregamos la cadena generada al acumulador
+    }
+
+    echo $acumuladorCadenas .= '</form>'; // Imprimimos todas las cadenas generadas
+
 }
-
-
-
-
-
