@@ -123,4 +123,22 @@ class SubCategoriaData extends Data
         mysqli_close($conn); // cerrar la conexión
         return $subcategoria;
     }
+
+    public function getSubcategoriasByCategoriaId($categoriaId){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+    
+        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid='$categoriaId';";
+    
+        $result = mysqli_query($conn, $querySelect);
+    
+        $array = array();
+    
+        while ($row = mysqli_fetch_array($result)) {
+            $currentSubCategoria = new SubCategoria($row['tbsubcategoriaid'], $row['tbsubcategoriasigla'], $row['tbsubcategorianombre'], $row['tbcategoriaid'], $row['tbsubcategoriadescripcion'], $row['tbsubcategoriaactivo']);
+            array_push($array, $currentSubCategoria);
+        }
+        mysqli_close($conn);
+        return $array;
+    }
 }

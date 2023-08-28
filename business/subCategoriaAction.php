@@ -132,4 +132,19 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../index.php?error=error"); //redirect to the index.php page with an error message
     }
+}else if (isset($_POST['valor'])) {
+    $categoriaId = $_POST['valor'];
+    $business = new SubCategoriaBusiness();
+    $subcategorias = $business->getSubcategoriasByCategoriaId($categoriaId);
+    $cadena = "<select id='subcategoriaview' name='subcategoriaview'>";
+    $cadena .= '<option value="">Selecciona una subcategoria</option>';
+    foreach ($subcategorias as $sub) {
+        $cadena .= '<option value="' . $sub->getId() . '">'. $sub->getSigla() .' - '. $sub->getNombre() . '</option>';
+    }
+    echo $cadena .= "</select>";
 }
+
+
+
+
+

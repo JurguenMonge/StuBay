@@ -40,4 +40,8 @@ class SubCategoriaBusiness
     {
         return $this->subCategoriaData->getAllTBSubCategorias();
     }
+
+    public function getSubcategoriasByCategoriaId($categoriaId){
+        return $this->subCategoriaData->getSubcategoriasByCategoriaId($categoriaId);
+    }
 }

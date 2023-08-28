@@ -80,8 +80,8 @@ class ArticuloData extends Data{
         $array = array();
 
         while ($row = mysqli_fetch_array($result)) {
-            $currentArticulo = new Articulo($row['tbarticuloid'],$row['tbarticulonombre'],$row['tbcategoriaid'],$row['tbsubcategoriaid'],$row['tbarticulomarca'],$row['tbarticulomodelo']
-            ,$row['tbarticuloserie'], $row['tbarticuloactivo']);
+            $currentArticulo = new Articulo($row['tbarticuloid'],$row['tbarticulonombre'],$row['tbarticulomarca'],$row['tbarticulomodelo']
+            ,$row['tbarticuloserie'], $row['tbarticuloactivo'],$row['tbsubcategoriaid']);
             array_push($array,$currentArticulo);
         }
 

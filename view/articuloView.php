@@ -22,7 +22,7 @@
                 $.get("../business/articuloAction.php", { termino: termino })
                 .done(function(data) {
                     $("#resultados").empty();
-                    console.log(data); // Asegúrate de que estás recibiendo datos aquí
+                    console.log(data);
                     
                     try {
                         var nombres = JSON.parse(data);
@@ -43,8 +43,24 @@
                 });
             });
         });
-
-        </script>
+    </script>
+    <script>
+       $(document).ready(function(){
+        $('#articulocategoria').change(function(){
+            recargarLista();
+        });
+       })
+       function recargarLista(){
+        $.ajax({
+            type:"POST",
+            url:"../business/subCategoriaAction.php",
+            data:"valor=" + $('#articulocategoria').val(),
+            success:function(r){
+                $('#subcategorias').html(r);
+            }
+        });
+       }
+    </script>
     </head>
     <body>
         <header>
@@ -74,7 +90,7 @@
                                 <?php 
                                     if(count($getCat) > 0){
                                         foreach($getCat as $categoria){
-                                            echo '<option value="'.$categoria->getSigla().'">'.$categoria->getSigla().' - '.$categoria->getNombre().'</option>';
+                                            echo '<option value="'.$categoria->getId().'">'.$categoria->getSigla().' - '.$categoria->getNombre().'</option>';
                                         }
                                     }else{ 
                                         echo '<option value="">Ninguna categoria registrada</option>'; 
@@ -82,18 +98,7 @@
                                 ?> 
                             </select>
                         </td>
-                        <td>
-                            <select name="articulosubcategoriaview" id="articulosubcategoriaview">
-                                    <option value="">Seleccionar subcategoria</option>
-                                    <?php 
-                                        if(count($getSubCat) > 0){
-                                            foreach($getSubCat as $subcategoria){
-                                                echo '<option value="'.$subcategoria->getSigla().'">'.$subcategoria->getSigla().' - '.$subcategoria->getNombre().'</option>';
-                                            }
-                                        }
-                                    ?>
-                            </select>                     
-                        </td>
+                        <td id="subcategorias"></td>
                         <td><input required type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
                         <td><input required type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
                         <td><input required type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
@@ -109,24 +114,13 @@
                     echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
                     echo '<tr>';
                     echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
-
-
-                    /*echo '<td>  <select name="articulocategoria" id="articulocategoria">';
-                        foreach($getCat as $categoria){
-                            if($current->getCategoriaId() == $categoria->getId()){
-                                echo "<option selected value='".$categoria->getSigla()."'>".$categoria->getSigla().' - '.$categoria->getNombre()."</option>";
-                            }else{
-                                echo "<option value='".$categoria->getSigla()."'>".$categoria->getSigla().' - '.$categoria->getNombre()."</option>";
-                            }
-                        }
-                    echo ' </select></td>';*/
-
+                    echo '<td></td>';
                     echo '<td>  <select name="subcategoria" id="subcategoria">';
                         foreach($getSubCat as $subcategoria){
                             if($current->getArticuloSubCategoriaId() == $subcategoria->getId()){
-                                echo "<option selected value='".$subcategoria->getSigla()."'>".$subcategoria->getSigla().' - '.$subcategoria->getNombre()."</option>";
+                                echo "<option selected value='".$subcategoria->getSigla()."'>".$subcategoria->getNombre()."</option>";
                             }else{
-                                echo "<option value='".$subcategoria->getSigla()."'>".$subcategoria->getSigla().' - '.$subcategoria->getNombre()."</option>";
+                                echo "<option value='".$subcategoria->getSigla()."'>".$subcategoria->getNombre()."</option>";
                             }
                         }
                     echo ' </select></td>';
