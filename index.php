@@ -25,6 +25,8 @@
     <a href="../StuBay/view/categoriaView.php">Registro Categorías</a>
     <br><br>
     <a href="../StuBay/view/subCategoriaView.php">Registro Subcategorías</a>
+    <br><br>
+    <a href="../StuBay/view/subastaView.php">Registrar Subasta</a>
 </body>
 
 </html>
