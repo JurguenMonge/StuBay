@@ -25,21 +25,21 @@
                     // Inserta la respuesta generada por el bucle PHP en la tabla
                     $("#tablaSubcategorias").empty(); // Limpia la tabla antes de añadir nuevos datos
                     $("#tablaSubcategorias").html(response);
-                    console.log(response);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error en la solicitud:", error);
                 }
             });
         }
+
     </script>
 
+    <style>
+        .subcategoria-list {
+            padding-left: 159px;
+        }
 
-
-
-
-
-
+    </style>
     <?php
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -92,32 +92,6 @@
                 </tr>
             </form>
 
-            <div id="tablaSubcategorias"></div>
-
-            <?php
-
-
-            $subCategoriaBusiness = new SubCategoriaBusiness();
-            $allSubCategorias = $subCategoriaBusiness->getAllTBSubCategoria();
-            foreach ($allSubCategorias as $current) {
-                //if ($categoriaIdSelected == $current->getCategoriaId()) {
-                echo '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
-                echo '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
-                echo '<tr>';
-                echo '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
-                echo '<td></td>';
-                echo '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getSigla() . '"/></td>';
-                echo '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
-                echo '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
-                echo '<td><input type="checkbox" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
-                echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-                echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
-                echo '</tr>';
-                echo '</form>';
-                //}
-            }
-            ?>
-
             <tr>
                 <td></td>
                 <td>
@@ -136,6 +110,44 @@
             </tr>
         </table>
     </section>
+
+    <table id="tablaSubcategorias" class="subcategoria-list">
+    </table>
+    <br><br>
+
+    <h3 style="padding-left: 270px;">Total de subcategorias registradas</h3>
+    <table class="subcategoria-list">
+        <thead>
+            <th></th>
+            <th>Sigla</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            
+        </thead>
+        <?php
+
+
+        $subCategoriaBusiness = new SubCategoriaBusiness();
+        $allSubCategorias = $subCategoriaBusiness->getAllTBSubCategoria();
+
+        foreach ($allSubCategorias as $current) {
+
+            echo '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
+            echo '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
+            echo '<tr>';
+            echo '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
+            echo '<td></td>';
+            echo '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getSigla() . '"/></td>';
+            echo '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
+            echo '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
+            echo '<td><input type="checkbox" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
+            echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
+            echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
+            echo '</tr>';
+            echo '</form>';
+        }
+        ?>
+    </table>
 
     <script>
         // Obtén una referencia a los campos de entrada

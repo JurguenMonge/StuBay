@@ -115,12 +115,11 @@ class SubCategoriaData extends Data
 
         $array = array();
 
-        // si se obtuvo un resultado, llenar el objeto estudiante
         if ($row = mysqli_fetch_array($result)) {
             $subcategoria = new SubCategoria($row['tbsubcategoriaid'], $row['tbsubcategoriasigla'], $row['tbsubcategorianombre'],$row['tbcategoriaid'], $row['tbsubcategoriadescripcion'], $row['tbsubcategoriaactivo']);
             array_push($array, $subcategoria);
         }
-
+        
         mysqli_close($conn); // cerrar la conexión
         return $array;
     }
@@ -129,7 +128,7 @@ class SubCategoriaData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
     
-        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid='$categoriaId';";
+        $querySelect = "SELECT * FROM tbsubcategoria WHERE tbcategoriaid='$categoriaId' && tbsubcategoriaactivo = 1;";
     
         $result = mysqli_query($conn, $querySelect);
     

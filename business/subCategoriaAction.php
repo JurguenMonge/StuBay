@@ -150,25 +150,25 @@ if (isset($_POST['update'])) {
     $cadena = explode("-", $_POST['numCategoria']);
     $categoriaId = $cadena[0];
     $subCategoriaBusiness = new SubCategoriaBusiness();
-    $subcategorias = $subCategoriaBusiness->getTBSubCategoriaById($categoriaId);
-    $acumuladorCadenas = '<form class="subcategoria" id="subcategoria-' . $categoriaId . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
+    $subcategorias = $subCategoriaBusiness->getSubcategoriasByCategoriaId($categoriaId);
+    //var_dump($subcategorias);
+    $acumuladorCadenas = "";
     foreach ($subcategorias as $current) {
-        
-        $cadena = '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
+        $cadena = '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
+        $cadena .= '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
         $cadena .= '<tr>';
         $cadena .= '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
         $cadena .= '<td></td>';
         $cadena .= '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getSigla() . '"/></td>';
-        $cadena .= '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
-        $cadena .= '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
-        $cadena .= '<td><input type="checkbox" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
-        $cadena .= '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-        $cadena .= '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
-        $cadena .= '</tr>';
+        $cadena .= '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" readonly maxlength="30" value="' . $current->getNombre() . '"/></td>';
+        $cadena .= '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" readonly maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
+        $cadena .= '<td><input type="checkbox" name="subcategoriaActivoView" readonly id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/></td>';
         
+        $cadena .= '</tr>';
+        $cadena .= '</form>';
         $acumuladorCadenas .= $cadena; // Agregamos la cadena generada al acumulador
     }
 
-    echo $acumuladorCadenas .= '</form>'; // Imprimimos todas las cadenas generadas
+    echo $acumuladorCadenas; // Imprimimos todas las cadenas generadas
 
 }
