@@ -82,7 +82,7 @@
                 <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                     <tr>
                         <td><input required type="text" name="articulonombreview" id="articulonombreview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" list="resultados"/>
-                        <datalist id="resultados"></datalist>
+                            <datalist id="resultados"></datalist>
                         </td>
                         <td>
                             <select name="articulocategoria" id="articulocategoria">
@@ -98,7 +98,9 @@
                                 ?> 
                             </select>
                         </td>
-                        <td id="subcategorias"></td>
+                        <td id="subcategorias">
+                            
+                        </td>
                         <td><input required type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
                         <td><input required type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
                         <td><input required type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>
@@ -118,9 +120,12 @@
                     echo '<td>  <select name="subcategoria" id="subcategoria">';
                         foreach($getSubCat as $subcategoria){
                             if($current->getArticuloSubCategoriaId() == $subcategoria->getId()){
-                                echo "<option selected value='".$subcategoria->getSigla()."'>".$subcategoria->getNombre()."</option>";
+                                $subSigla = $subcategoria->getSigla();
+                                $parte1 = substr($subSigla, 0, 2); 
+                                $parte2 = substr($subSigla, 2, 2); 
+                                echo "<option selected value='". $parte2 ."'>".$subcategoria->getNombre()."</option>";
                             }else{
-                                echo "<option value='".$subcategoria->getSigla()."'>".$subcategoria->getNombre()."</option>";
+                                echo "<option value='". $parte2 ."'>".$subcategoria->getNombre()."</option>";
                             }
                         }
                     echo ' </select></td>';

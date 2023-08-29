@@ -139,7 +139,10 @@ if (isset($_POST['update'])) {
     $cadena = "<select id='subcategoriaview' name='subcategoriaview'>";
     $cadena .= '<option value="">Selecciona una subcategoria</option>';
     foreach ($subcategorias as $sub) {
-        $cadena .= '<option value="' . $sub->getId() . '">' . $sub->getSigla() . ' - ' . $sub->getNombre() . '</option>';
+         $subSigla = $sub->getSigla();
+         $parte1 = substr($subSigla, 0, 2); 
+         $parte2 = substr($subSigla, 2, 2); 
+        $cadena .= '<option value="' . $parte2 . '">' . $sub->getSigla() . ' - ' . $sub->getNombre() . '</option>';
     }
     echo $cadena .= "</select>";
 } else if (isset($_POST['numCategoria'])) {
