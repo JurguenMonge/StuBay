@@ -36,22 +36,41 @@ a:hover {
     background-color: #e55500; /* Naranja ligeramente más oscuro al pasar el cursor */
 }
 
-/* Tabla de clientes */
+/* Estilo para la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    border: 1px solid #ddd; /* Borde de la tabla */
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
+/* Estilo para las celdas de encabezado (th) */
 th {
     background-color: #333; /* Fondo oscuro similar a eBay */
     color: #fff; /* Texto en blanco */
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #555; /* Borde de las celdas del encabezado */
 }
+
+/* Estilo para las celdas de datos (td) */
+td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd; /* Borde de las celdas de datos */
+}
+
+/* Estilo para filas alternas (opcional, si deseas resaltarlas) */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo para filas pares */
+}
+
+/* Estilo para filas al pasar el cursor (opcional) */
+tr:hover {
+    background-color: #ddd; /* Color de fondo al pasar el cursor */
+}
+
+
 
 /* Botones */
 button.showPassword {
@@ -80,3 +99,59 @@ footer {
     background-color: #333; /* Fondo oscuro similar a eBay */
     color: #fff; /* Texto en blanco */
 }
+
+/* Estilo para los campos de entrada */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="password"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* Estilo para los botones */
+input[type="submit"],
+button {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #e55500;
+}
+
+/* Estilo para el cuadro de selección */
+select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: 100%; /* Ancho completo del contenedor */
+    font-size: 16px; /* Tamaño de fuente */
+    background-color: #fff; /* Color de fondo */
+    color: #333; /* Color del texto */
+}
+
+/* Estilo para la opción seleccionada */
+select option:checked {
+    background-color: #ff6600; /* Color de fondo cuando está seleccionado */
+    color: #fff; /* Color del texto cuando está seleccionado */
+}
+
+/* Estilo para las opciones en la lista desplegable */
+select option {
+    background-color: #fff; /* Color de fondo de las opciones */
+    color: #333; /* Color del texto de las opciones */
+    padding: 5px;
+}
+
+
