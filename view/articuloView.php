@@ -98,8 +98,10 @@
                                 ?> 
                             </select>
                         </td>
-                        <td id="subcategorias">
-                            
+                        <td>
+                            <select name="subcategorias" id="subcategorias">
+
+                            </select>
                         </td>
                         <td><input required type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios"/>
                         <td><input required type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios"/>

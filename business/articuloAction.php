@@ -44,7 +44,7 @@ if(isset($_POST['update'])){
     }
 } else if(isset($_POST['create'])){
     //Validaciones
-    if(isset($_POST['articulonombreview']) && isset($_POST['articulomarcaview']) && isset($_POST['articulomodeloview']) && isset($_POST['articuloserieview'])){
+    if(isset($_POST['articulonombreview']) && isset($_POST['articulomarcaview']) && isset($_POST['articulomodeloview']) && isset($_POST['articuloserieview']) && isset($_POST['subcategorias'])){
         
         //Obtener los datos del formulario
         $articuloNombre = $_POST['articulonombreview'];
@@ -52,7 +52,7 @@ if(isset($_POST['update'])){
         $articuloModelo = $_POST['articulomodeloview'];
         $articuloSerie = $_POST['articuloserieview'];
         $articuloActivo = 1;
-        $articuloSubCategoriaId = $_POST['subcategoriaview'];
+        $articuloSubCategoriaId = $_POST['subcategorias'];
 
         //Validar variables
         if(strlen($articuloNombre) > 0 && strlen($articuloMarca) > 0 && strlen($articuloModelo) > 0 && strlen($articuloSerie) > 0)
