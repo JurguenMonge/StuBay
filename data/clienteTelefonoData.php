@@ -44,6 +44,51 @@ class ClienteTelefonoData extends Data
         return $result;
     }
 
+    public function updateTBClienteTelefono($clienteTelefono)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+
+        // Update the record
+        $updateStmt = $conn->prepare("UPDATE tbclientetelefono 
+        SET tbclienteid = ?,
+        tbclientetelefononumero = ?,
+        tbclientetelefonodescripcion = ?,
+        tbclientetelefonoactivo = ?
+        WHERE tbclientetelefonoid = ?;");
+
+        $updateStmt->bind_param(
+            "isssi",
+            $clienteTelefono->getClienteId(),
+            $clienteTelefono->getClienteTelefonoNumero(),
+            $clienteTelefono->getClienteTelefonoDescripcion(),
+            $clienteTelefono->getClienteTelefonoActivo(),
+            $clienteTelefono->getClienteTelefonoId()
+        );
+
+        $result = $updateStmt->execute();
+
+        $updateStmt->close();
+        mysqli_close($conn);
+
+        return $result;
+    }
+
+    public function deleteTBClienteTelefono($clienteTelefonoId){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // update value to active for 0
+        $queryUpdate = "UPDATE tbclientetelefono 
+        SET tbclientetelefonoactivo = 0 
+        WHERE tbclientetelefonoid = " . $clienteTelefonoId . ";";
+
+        $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
+        mysqli_close($conn); // cerrar la conexión
+        return $result; // devolver el resultado
+    }
+
     public function getAllTBClienteTelefono()
     {
         // Conexión a la base de datos

@@ -15,13 +15,13 @@ class ClienteTelefonoBusiness{
         return $this->clienteTelefonoData->insertTBClienteTelefono($clienteTelefono);
     }
 
-   /* public function updateTBClienteTelefono($clienteTelefono){
+    public function updateTBClienteTelefono($clienteTelefono){
         return $this->clienteTelefonoData->updateTBClienteTelefono($clienteTelefono);
     }
 
     public function deleteTBClienteTelefono($clienteTelefono){
         return $this->clienteTelefonoData->deleteTBClienteTelefono($clienteTelefono);
-    }*/
+    }
 
     public function getAllTBClienteTelefono(){
         return $this->clienteTelefonoData->getAllTBClienteTelefono();

@@ -109,10 +109,10 @@
     <script>
         $(document).ready(function() {
             $(".delete_cliente").on("click", function() {
-                var clientedireccionid = $(this).attr("tbclientedireccionid");
+                var clientetelefonoid = $(this).attr("tbclientetelefonoid");
 
                 Swal.fire({
-                    title: '¿Desea eliminar el cliente?',
+                    title: '¿Desea eliminar el dato del cliente?',
                     text: "No se podrá revertir el cambio",
                     icon: 'warning',
                     showCancelButton: true,
@@ -122,7 +122,7 @@
                     confirmButtonText: 'Eliminar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../business/clienteDireccionAction.php?delete1=true&tbclientedireccionid=" + clientedireccionid;
+                        window.location.href = "../business/clienteTelefonoAction.php?delete1=true&tbclientetelefonoid=" + clientetelefonoid;
                     }
                 });
             });
