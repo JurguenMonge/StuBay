@@ -29,7 +29,13 @@ if (isset($_POST['create'])) { //if the user clicked on the create button
                 $clienteTelefonoDescripcion,
                 $clienteTelefonoActivo
             ); //create a new client instance 
-
+            // Verifiquemos los valores antes de la inserción
+            // Muestra los datos del objeto ClienteTelefono
+            // echo "Cliente ID: " . $clienteTelefono->getClienteId() . "<br>";
+            // echo "Número de Teléfono: " . $clienteTelefono->getClienteTelefonoNumero() . "<br>";
+            // echo "Descripción: " . $clienteTelefono->getClienteTelefonoDescripcion() . "<br>";
+            // echo "Activo: " . $clienteTelefono->getClienteTelefonoActivo() . "<br>";
+            // exit();
             $clienteTelefonoBusiness = new ClienteTelefonoBusiness(); //create a new instance of clientBusiness
 
             $result = $clienteTelefonoBusiness->insertTBClienteTelefono($clienteTelefono); //call the method insertTBClient from clientBusiness

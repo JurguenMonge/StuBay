@@ -9,7 +9,7 @@ class ClienteTelefono{
     private $clienteTelefonoActivo;
     
 
-    function __construct($clienteTelefonoId, $clienteId, $clienteTelefonoNumero, $clienteTelefonoActivo, $clienteTelefonoDescripcion){
+    function __construct($clienteTelefonoId, $clienteId, $clienteTelefonoNumero,$clienteTelefonoDescripcion, $clienteTelefonoActivo ){
         $this->clienteTelefonoId = $clienteTelefonoId;
         $this->clienteId = $clienteId;
         $this->clienteTelefonoNumero = $clienteTelefonoNumero;
