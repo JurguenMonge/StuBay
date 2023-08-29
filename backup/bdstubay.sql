@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-08-2023 a las 03:14:28
+-- Tiempo de generación: 29-08-2023 a las 06:59:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -30,8 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbarticulo` (
   `tbarticuloid` int(11) NOT NULL,
   `tbarticulonombre` varchar(255) NOT NULL,
-  `tbcategoriaid` varchar(2) NOT NULL,
-  `tbsubcategoriaid` varchar(2) NOT NULL,
+  `tbsubcategoriaid` varchar(4) NOT NULL,
   `tbarticulomarca` varchar(255) NOT NULL,
   `tbarticulomodelo` varchar(255) NOT NULL,
   `tbarticuloserie` varchar(255) NOT NULL,
@@ -42,10 +41,17 @@ CREATE TABLE `tbarticulo` (
 -- Volcado de datos para la tabla `tbarticulo`
 --
 
-INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbcategoriaid`, `tbsubcategoriaid`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`) VALUES
-(1, 'celular', '02', '04', 'Samsung', 'Galaxy', '122', 1),
-(2, 'Computadora', '01', '04', 'MSI', 'SX10', 'Pro', 1),
-(3, 'Martillo', '02', '01', 'Hammer', 'Ultimate', 'Pro', 1);
+INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbsubcategoriaid`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`) VALUES
+(1, 'celular', '04', 'Iphone', 'Galaxy', '122', 0),
+(2, 'Computadora', '04', 'MSI', 'SX10', 'Pro', 1),
+(3, 'Martillo', '01', 'Hammer', 'Ultimate', 'Pro', 0),
+(4, 'Casa', '04', 'asdasd', 'asdad', 'fa', 1),
+(5, 'Computadora', 'MSI', 'SX11', 'PRO23', '1', 3),
+(6, 'ASDASD', 'ASD', 'QWE', 'QWE', '1', 3),
+(7, 'Computadora', '03', 'MSI', 'SXC12', '23RR', 1),
+(8, 'Computadora', '', 'SD', 'QWQ', 'RF', 1),
+(9, 'Celular', '', 'iphone', '11', 'pro', 1),
+(10, 'Parlante', '03', 'REDRAGON', '123', '33', 1);
 
 -- --------------------------------------------------------
 
