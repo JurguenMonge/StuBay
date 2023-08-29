@@ -90,8 +90,8 @@
                     }
                 }
                 echo '</select></td>';
-                echo '<td><input required  type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="[0-9]+" value="' . $current->getClienteTelefonoNumero() . '" oninput="validateInput(this)"/></td>';
-                echo '<td><input required  type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="[A-Za-z0-9\s]+" value="' . $current->getClienteTelefonoDescripcion() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required  type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" value="' . $current->getClienteTelefonoNumero() . '" oninput="validateInput(this)"/></td>';
+                echo '<td><input required  type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" value="' . $current->getClienteTelefonoDescripcion() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input type="checkbox" name="clientetelefonoactivoview" id="clientetelefonoactivoview" ' . ($current->getClienteTelefonoActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclientetelefonoid="' . $current->getClienteTelefonoId() . '">Eliminar</button></td>';
