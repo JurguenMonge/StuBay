@@ -18,6 +18,8 @@
     <br><br>
     <a href="../StuBay/view/clienteDireccionView.php">Registro Dirección Cliente</a>
     <br><br>
+    <a href="../StuBay/view/clienteTelefonoView.php">Registro Teléfono Cliente</a>
+    <br><br>
     <a href="../StuBay/view/articuloView.php">Registro Articulo</a>
     <br><br>
     <a href="../StuBay/view/categoriaView.php">Registro Categorías</a>
