@@ -6,12 +6,14 @@ class ClienteDireccion{
     private $clienteId;
     private $clienteDireccionBarrio;
     private $clienteDireccionCoordenadaGps;
+    private $clienteDireccionActivo;
 
-    function __construct($clienteDireccionId, $clienteId, $clienteDireccionBarrio, $clienteDireccionCoordenadaGps){
+    function __construct($clienteDireccionId, $clienteId, $clienteDireccionBarrio, $clienteDireccionCoordenadaGps, $clienteDireccionActivo){
         $this->clienteDireccionId = $clienteDireccionId;
         $this->clienteId = $clienteId;
         $this->clienteDireccionBarrio = $clienteDireccionBarrio;
         $this->clienteDireccionCoordenadaGps = $clienteDireccionCoordenadaGps;
+        $this->clienteDireccionActivo = $clienteDireccionActivo;
     }
 
     //Getters
@@ -31,6 +33,10 @@ class ClienteDireccion{
         return $this->clienteDireccionCoordenadaGps;
     }
 
+    function getClienteDireccionActivo() {
+        return $this->clienteDireccionActivo;
+    }
+
     //Setters
     function setClienteDireccionId($clienteDireccionId) {
         $this->clienteDireccionId = $clienteDireccionId;
@@ -48,5 +54,8 @@ class ClienteDireccion{
         $this->clienteDireccionCoordenadaGps = $clienteDireccionCoordenadaGps;
     }
 
+    function setClienteDireccionActivo($clienteDireccionActivo) {
+        $this->clienteDireccionActivo = $clienteDireccionActivo;
+    }
     
 }

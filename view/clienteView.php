@@ -7,7 +7,7 @@
     <title>Registro Cliente</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
     <?php
     error_reporting(0);
     include '../business/clienteBusiness.php';
@@ -119,7 +119,7 @@
                     confirmButtonText: 'Eliminar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../business/clienteAction.php?delete1=true&tbclienteid=" + clienteidview;
+                        window.location.href = "../business/clienteAction.php?delete1=true&tbclienteid=" + clienteid;
                     }
                 });
             });

@@ -63,7 +63,7 @@ if (isset($_POST['update'])) {
         header("location: ../view/clienteView.php?error=error");
     }
 } else if (isset($_GET['delete1'])) { //if the user clicked on the delete button
-    $clienteId = $_GET['tbclienteidview'];
+    $clienteId = $_GET['tbclienteid'];
     $clienteBusiness = new ClienteBusiness();
     $result = $clienteBusiness->deleteTBCliente($clienteId);
 
