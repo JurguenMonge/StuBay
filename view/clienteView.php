@@ -65,12 +65,12 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
                 <tr>
-                    <td><input required type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
-                    <td><input required type="email" name="clientecorreo" id="clientecorreo" oninput="validarCampo(this)" /></td>
-                    <td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" /></td>
-                    <td><input required type="password" name="clientepassword" id="clientepassword" /><button type="button" class="showPassword">Mostrar</button></td>
+                    <td><input required type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="email" name="clientecorreoview" id="clientecorreoview" oninput="validarCampo(this)" /></td>
+                    <td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" /></td>
+                    <td><input required type="password" name="clientepasswordview" id="clientepasswordview" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -80,16 +80,16 @@
             $allClientes = $clienteBusiness->getAllTBCliente();
             foreach ($allClientes as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
-                echo '<input type="hidden" name="clienteid" value="' . $current->getClienteId() . '">';
+                echo '<input type="hidden" name="clienteidview" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input required  type="text" name="clientenombre" id="clientenombre" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clienteprimerapellido" id="clienteprimerapellido" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clientesegundoapellido" id="clientesegundoapellido" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="email" name="clientecorreo" id="clientecorreo" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
+                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="email" name="clientecorreoview" id="clientecorreoview" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
 
-                echo '<td><input required type="date" name="clientefechaingreso" id="clientefechaingreso" value="' . $current->getClienteFechaIngreso() . '"/></td>';
-                echo '<td><input type="password" name="clientepassword" id="clientepassword" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
-                echo '<td><input type="hidden" name="clienteactivo" id="clientactivo" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
+                echo '<td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" value="' . $current->getClienteFechaIngreso() . '"/></td>';
+                echo '<td><input type="password" name="clientepasswordview" id="clientepasswordview" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
+                echo '<td><input type="hidden" name="clienteactivoview" id="clientactivoview" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclienteid="' . $current->getClienteId() . '">Eliminar</button></td>';
                 echo '</tr>';
@@ -119,7 +119,7 @@
                     confirmButtonText: 'Eliminar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "../business/clienteAction.php?delete1=true&tbclienteid=" + clienteid;
+                        window.location.href = "../business/clienteAction.php?delete1=true&tbclienteid=" + clienteidview;
                     }
                 });
             });
@@ -143,7 +143,7 @@
         const id = input.id;
         const errorSpan = document.getElementById(id + "-error");
 
-        if (id === "clientecorreo") {
+        if (id === "clientecorreoview") {
             if (!isValidEmail(valor)) {
                 input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
                 errorSpan.textContent = "Correo inválido.";
@@ -151,7 +151,7 @@
                 input.setCustomValidity("");
                 errorSpan.textContent = "";
             }
-        } else if (id === "clientenombre" || id === "clienteprimerapellido" || id === "clientesegundoapellido") {
+        } else if (id === "clientenombreview" || id === "clienteprimerapellidoview" || id === "clientesegundoapellidoview") {
             if (!isValidName(valor)) {
                 input.setCustomValidity("Ingrese un nombre válido (solo letras) y comience con mayúscula.");
                 errorSpan.textContent = "Nombre inválido.";
@@ -174,7 +174,7 @@
     }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const fechaIngresoInput = document.getElementById("clientefechaingreso");
+            const fechaIngresoInput = document.getElementById("clientefechaingresoview");
             const fechaActual = new Date();
             const yyyy = fechaActual.getFullYear();
             const mm = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Sumar 1 porque en JavaScript los meses van de 0 a 11

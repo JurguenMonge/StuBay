@@ -5,23 +5,23 @@ include '../business/clienteBusiness.php';
 if (isset($_POST['update'])) {
 
     if (
-        isset($_POST['clienteid'])
-        && isset($_POST['clientenombre'])
-        && isset($_POST['clienteprimerapellido'])
-        && isset($_POST['clientesegundoapellido'])
-        && isset($_POST['clientecorreo'])
-        && isset($_POST['clientepassword'])
-        && isset($_POST['clientefechaingreso'])
+        isset($_POST['clienteidview'])
+        && isset($_POST['clientenombreview'])
+        && isset($_POST['clienteprimerapellidoview'])
+        && isset($_POST['clientesegundoapellidoview'])
+        && isset($_POST['clientecorreoview'])
+        && isset($_POST['clientepasswordview'])
+        && isset($_POST['clientefechaingresoview'])
     ) {
 
-        $clienteId = $_POST['clienteid'];
-        $clienteNombre = $_POST['clientenombre'];
-        $clientePrimerApellido = $_POST['clienteprimerapellido'];
-        $clienteSegundoApellido = $_POST['clientesegundoapellido'];
-        $clienteCorreo = $_POST['clientecorreo'];
-        $clientePassword = $_POST['clientepassword'];
-        $clienteFechaIngreso = $_POST['clientefechaingreso'];
-        $clienteActivo = isset($_POST['clienteactivo']) ? 1 : 0;
+        $clienteId = $_POST['clienteidview'];
+        $clienteNombre = $_POST['clientenombreview'];
+        $clientePrimerApellido = $_POST['clienteprimerapellidoview'];
+        $clienteSegundoApellido = $_POST['clientesegundoapellidoview'];
+        $clienteCorreo = $_POST['clientecorreoview'];
+        $clientePassword = $_POST['clientepasswordview'];
+        $clienteFechaIngreso = $_POST['clientefechaingresoview'];
+        $clienteActivo = isset($_POST['clienteactivoview']) ? 1 : 0;
 
         if (
             strlen($clienteNombre) > 0 && strlen($clientePrimerApellido) > 0
@@ -63,7 +63,7 @@ if (isset($_POST['update'])) {
         header("location: ../view/clienteView.php?error=error");
     }
 } else if (isset($_GET['delete1'])) { //if the user clicked on the delete button
-    $clienteId = $_GET['tbclienteid'];
+    $clienteId = $_GET['tbclienteidview'];
     $clienteBusiness = new ClienteBusiness();
     $result = $clienteBusiness->deleteTBCliente($clienteId);
 
@@ -77,21 +77,21 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
     if (
-        isset($_POST['clientenombre'])
-        && isset($_POST['clienteprimerapellido'])
-        && isset($_POST['clientesegundoapellido'])
-        && isset($_POST['clientecorreo'])
-        && isset($_POST['clientepassword'])
-        && isset($_POST['clientefechaingreso'])
+        isset($_POST['clientenombreview'])
+        && isset($_POST['clienteprimerapellidoview'])
+        && isset($_POST['clientesegundoapellidoview'])
+        && isset($_POST['clientecorreoview'])
+        && isset($_POST['clientepasswordview'])
+        && isset($_POST['clientefechaingresoview'])
 
     ) { //check if the variables have values
 
-        $clienteNombre = $_POST['clientenombre']; //get the name from the form
-        $clientePrimerApellido = $_POST['clienteprimerapellido']; //get the first last name from the form
-        $clienteSegundoApellido = $_POST['clientesegundoapellido']; //get the second last name from the form
-        $clienteCorreo = $_POST['clientecorreo']; //get the identification from the form
-        $clientePassword = password_hash($_POST['clientepassword'], PASSWORD_DEFAULT); //get the password from the form and encript it
-        $clienteFechaIngreso = $_POST['clientefechaingreso']; //get the email from the form
+        $clienteNombre = $_POST['clientenombreview']; //get the name from the form
+        $clientePrimerApellido = $_POST['clienteprimerapellidoview']; //get the first last name from the form
+        $clienteSegundoApellido = $_POST['clientesegundoapellidoview']; //get the second last name from the form
+        $clienteCorreo = $_POST['clientecorreoview']; //get the identification from the form
+        $clientePassword = password_hash($_POST['clientepasswordview'], PASSWORD_DEFAULT); //get the password from the form and encript it
+        $clienteFechaIngreso = $_POST['clientefechaingresoview']; //get the email from the form
         $clienteActivo = 1; //set the client to 1
 
         if (
