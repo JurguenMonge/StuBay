@@ -11,7 +11,17 @@ class ClienteDireccionData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        
+        $clienteId = $clienteDireccion->getClienteId();
+        $stmt = $conn->prepare("SELECT * FROM tbclientedireccion WHERE tbclienteid = ?");
+        $stmt->bind_param("i", $clienteId);
+        $stmt->execute();
+        $verifyClienteId = $stmt->get_result();//get the mysqli result 
+
+        if (mysqli_num_rows($verifyClienteId) > 0) {
+            $stmt->close(); //cierra el stmt
+            mysqli_close($conn);
+            return 2;
+        }
 
         //get the last id in the database
         $queryGetLastId = "SELECT MAX(tbclientedireccionid) AS tbclientedireccionid FROM tbclientedireccion";

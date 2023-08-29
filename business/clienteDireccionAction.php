@@ -99,16 +99,16 @@ if (isset($_POST['update'])) {
             if ($result == 1) { //if the method insertTBClient was executed succesfully it will return 1
                 header("location: ../view/clienteDireccionView.php?success=insert"); //redirect to the index.php page with a success message
                 session_start();
-                $_SESSION['msj'] = "Cliente registrado correctamente";
+                $_SESSION['msj'] = "Direccion de cliente registrado correctamente";
             } else if ($result == 2) {
                 header("location: ../view/clienteDireccionView.php?error=exist"); //redirect to the index.php page with an error message
                 session_start();
-                $_SESSION['error'] = "El correo ya esta en uso";
+                $_SESSION['error'] = "EL cliente ya tiene una direccion registrada";
                 
             } else {
                 header("location: ../view/clienteDireccionView.php?error=dbError"); //redirect to the index.php page with an error message
                 session_start();
-                $_SESSION['error'] = "Error al registrar el cliente";
+                $_SESSION['error'] = "Error al registrar la direccion del cliente";
             }
         } else {
             header("location: ../view/clienteDireccionView.php?error=emptyField"); //redirect to the index.php page with an error message
