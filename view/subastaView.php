@@ -24,14 +24,14 @@
                 <th>Fecha y Hora final</th>
                 <th>Precio inicial</th>
             </tr>
-            <form method="post" action="../business/subastaAction.php">
+            <form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">
                 <td>
                     <select name="subastaArticuloView" id="subastaArticuloView">
                         <option value="">Seleccionar articulo</option>
                         <?php 
                             if(count($getAllArticulos) > 0){
                                 foreach($getAllArticulos as $articulo){
-                                    echo '<option value="'.$articulo->getArticuloId().'">'.$articulo->getArticuloNombre().'</option>';
+                                    echo '<option value="'.$articulo->getArticuloId().'">'.$articulo->getArticuloMarca().'-'.$articulo->getArticuloModelo().'</option>';
                                 }
                             }else{ 
                                 echo '<option value="">Ningun articulo registrado</option>'; 
@@ -40,10 +40,10 @@
                     </select>
                 </td>
                 <td>
-                    <input required type="date" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView"/>
+                    <input required type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView"/>
                 </td>
                 <td>
-                    <input required type="date" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView"/>
+                    <input required type="datetime-local" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView"/>
                 </td>
                 <td>
                     <input required type="number" name="subastaPrecioInicialView" id="subastaPrecioInicialView"/>
@@ -54,5 +54,16 @@
             </form>
         </table>
     </section>
+        <?php
+            if (isset($_GET['error'])) {
+                if ($_GET['error'] == "emptyField") {
+                    echo '<p style="color: red">Campo(s) vacio(s)</p>';
+                } else if ($_GET['error'] == "dbError") {
+                    echo '<center><p style="color: red">Error al procesar la transacción</p></center>';
+                }
+            } else if (isset($_GET['success'])) {
+                echo '<p style="color: green">Transacción realizada</p>';
+            }
+        ?>
 </body>
 </html>
