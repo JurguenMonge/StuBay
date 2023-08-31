@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 31-08-2023 a las 18:37:21
+-- Servidor: localhost
+-- Tiempo de generación: 31-08-2023 a las 23:58:45
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -99,7 +99,8 @@ CREATE TABLE `tbcliente` (
 
 INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
 (1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$vfvQtoT2RQDnrOz142bqV.vfwd4PAheX/oBZrRA65wBtMvlk2St2i', '2023-08-14', 1),
-(2, 'Jurguen', 'Monge', 'Rojas', 'jur.monge@gmail.com', '$2y$10$T2ij5M5Hf1rif/bCd5OzmuN/3dy7eKLASO1YJHQe1IomPf.V.4AUa', '2023-08-02', 1);
+(2, 'Jurguen', 'Monge', 'Rojas', 'jur.monge@gmail.com', '$2y$10$T2ij5M5Hf1rif/bCd5OzmuN/3dy7eKLASO1YJHQe1IomPf.V.4AUa', '2023-08-02', 1),
+(3, 'Juan', 'Dolmus', 'Corea', 'jb.dolmus@gmail.com', '$2y$10$T5hIiRDHdUZ/Iq8ZbVfrL.fLJLsIJcRRBzeLjy5I9EA8bpPeOUlwC', '2023-08-26', 1);
 
 -- --------------------------------------------------------
 
@@ -142,6 +143,19 @@ CREATE TABLE `tbclientetelefono` (
 
 INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclientetelefononumero`, `tbclientetelefonodescripcion`, `tbclientetelefonoactivo`) VALUES
 (1, '02', '83469905-83147350', 'cel propio-cel amigo', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbpujacliente`
+--
+
+CREATE TABLE `tbpujacliente` (
+  `tbpujaclienteid` int(11) NOT NULL,
+  `tbclienteid` int(11) NOT NULL,
+  `tbarticuloid` int(11) NOT NULL,
+  `tbpujaclienteprecioactual` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
 

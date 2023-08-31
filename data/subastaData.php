@@ -80,6 +80,26 @@
             mysqli_close($conn);
             return $array;
         }
+
+        public function getTBSubastaById($subastaId){
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+    
+            $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaActivo = 1 && tbsubastaid=$subastaId;";
+            $result = mysqli_query($conn, $querySelect);
+    
+            $subasta = null;
+    
+            while ($row = mysqli_fetch_array($result)) {
+                $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio']
+                ,$row['tbsubastaActivo'], $row['tbarticuloId']);
+            }
+    
+            mysqli_close($conn);
+            return $subasta;
+        }
+
+        
     }
 
 ?>

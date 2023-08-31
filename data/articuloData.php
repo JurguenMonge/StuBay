@@ -103,6 +103,25 @@ class ArticuloData extends Data{
         return $nombres;
     }
 
+    public function getAllTBArticuloSubastadp(){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbarticuloactivo = 1;";
+        $result = mysqli_query($conn, $querySelect);
+
+        $array = array();
+
+        while ($row = mysqli_fetch_array($result)) {
+            $currentArticulo = new Articulo($row['tbarticuloid'],$row['tbarticulonombre'],$row['tbarticulomarca'],$row['tbarticulomodelo']
+            ,$row['tbarticuloserie'], $row['tbarticuloactivo'],$row['tbsubcategoriaid']);
+            array_push($array,$currentArticulo);
+        }
+
+        mysqli_close($conn);
+        return $array;
+    }
+
 }
 
 ?>
