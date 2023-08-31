@@ -14,4 +14,8 @@ class SubastaBusiness {
     public function insertarTBSubasta($subasta){
         return $this->subastaData->insertarTBSubasta($subasta);
     }
+
+    public function getAllTBSubasta(){
+        return $this->subastaData->getAllTBSubasta();
+    }
 }

@@ -5,41 +5,48 @@
 
     class SubastaData extends Data{
 
-        public function insertarTBSubasta($subasta) {
+        public function insertarTBSubasta($subasta){
             $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
             $conn->set_charset('utf8');
-        
+    
             $getLastId = "SELECT MAX(tbsubastaid) AS tbsubastaid FROM tbsubasta";
             $idCont = mysqli_query($conn, $getLastId); 
             $nextId = 1;
-        
+    
             if ($row = mysqli_fetch_row($idCont)) { 
                 $nextId = trim($row[0]) + 1;            
             }
-        
-            // Formatear fechas y horas
-            $fechaHoraInicio = date('Y-m-d H:i:s', strtotime($subasta->getSubastaFechaHoraInicio()));
-            $fechaHoraFinal = date('Y-m-d H:i:s', strtotime($subasta->getSubastaFechaHoraFinal()));
-        
-            // insert into database
-            $stmt = $conn->prepare("INSERT INTO tbsubasta 
-                (tbsubastaid, tbsubastaFechaHoraInicio, tbsubastaFechaHoraFinal, tbsubastaPrecio, tbsubastaActivo, tbarticuloId)
-                VALUES (?,?,?,?,?,?)");
-        
-            $precioInicial = $subasta->getSubastaPrecioInicial();
-            echo $subasta->getSubastaPrecioInicial();
-            $activo = $subasta->getSubastaActivo();
-            $articuloId = $subasta->getSubastaArticuloId();
-        
-            echo $stmt->bind_param("isssii", $nextId, $fechaHoraInicio, $fechaHoraFinal, $precioInicial, $activo, $articuloId);
-        
-            $stmt->execute();
-            $stmt->close();
+    
+            $queryInsert = "INSERT INTO tbsubasta VALUES (" . $nextId . ",'" .
+                $subasta->getSubastaFechaHoraInicio() . "','" .
+                $subasta->getSubastaFechaHoraFinal() . "','" .
+                $subasta->getSubastaPrecioInicial() . "','" .
+                $subasta->getSubastaActivo() . "'," .
+                $subasta->getSubastaArticuloId() . ");";
+    
+            $result = mysqli_query($conn, $queryInsert); 
             mysqli_close($conn);
-        
-            return true;
+            return $result;
         }
         
+        public function getAllTBSubasta(){
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+    
+            $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaActivo = 1;";
+            $result = mysqli_query($conn, $querySelect);
+    
+            $array = array();
+    
+            while ($row = mysqli_fetch_array($result)) {
+                $currentSubasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio']
+                ,$row['tbsubastaActivo'], $row['tbarticuloId']);
+                array_push($array,$currentSubasta);
+            }
+    
+            mysqli_close($conn);
+            return $array;
+        }
     }
 
 ?>
