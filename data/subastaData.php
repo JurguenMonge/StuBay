@@ -29,6 +29,39 @@
             return $result;
         }
         
+        public function updateTBSubasta($subasta){
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+    
+            $queryUpdate = "UPDATE tbsubasta SET tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() .
+            "', tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() .
+            "', tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . 
+            "', tbsubastaActivo='" . $subasta->getSubastaActivo() .
+            "', tbarticuloId=" . $subasta->getSubastaArticuloId() .
+            " WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
+    
+            $result = mysqli_query($conn, $queryUpdate); 
+            mysqli_close($conn); 
+            return $result;  
+        }
+    
+        public function deleteTBSubasta($subasta) {
+            $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+            $conn->set_charset('utf8');
+            
+            $queryUpdate = "UPDATE tbsubasta SET tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() .
+            "', tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() .
+            "', tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . 
+            "', tbsubastaActivo='" . $subasta->getSubastaActivo() .
+            "', tbarticuloId=" . $subasta->getSubastaArticuloId() .
+            " WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
+    
+            
+            $result = mysqli_query($conn, $queryUpdate);
+            mysqli_close($conn);
+            return $result;
+        }
+
         public function getAllTBSubasta(){
             $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
             $conn->set_charset('utf8');
