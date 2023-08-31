@@ -58,7 +58,7 @@
                 $obtenerSubastas = $subastaBusiness->getAllTBSubasta();
                 foreach($obtenerSubastas as $actualSubasta){
                     echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
-                    echo '<input type="hidden" name="id" value="' . $actualSubasta->getSubastaId() . '">';
+                    echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
                     echo '<tr>';
                     echo '<td>  <select name="subastaArticuloView" id="subastaArticuloView">';
                             foreach($getAllArticulos as $articulo){
@@ -70,7 +70,7 @@
                             }
                     echo ' </select></td>';
                     echo '<td><input type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView" value="' . $actualSubasta->getSubastaFechaHoraInicio() . '"/></td>';
-                    echo '<td><input type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraFinalView" value="' . $actualSubasta->getSubastaFechaHoraFinal() . '"/></td>';
+                    echo '<td><input type="datetime-local" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView" value="' . $actualSubasta->getSubastaFechaHoraFinal() . '"/></td>';
                     echo '<td><input type="number" name="subastaPrecioInicialView" id="subastaPrecioInicialView" value="' . $actualSubasta->getSubastaPrecioInicial() . '"/></td>';
                     echo '<td><input type="checkbox" name="subastaActivoView" id="subastaActivoView" ' . ($actualSubasta->getSubastaActivo() == 1 ? "checked" : "") . '/></td>';
                     echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';

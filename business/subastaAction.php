@@ -38,4 +38,11 @@ if(isset($_POST['create'])){
     } else {
         header("location: ../index.php?error=error"); 
     }
+}else if($_POST['delete']){
+    if(isset($_POST['subastaIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) && isset($_POST['subastaFechaHoraFinalView']) && 
+    isset($_POST['subastaPrecioInicialView']) && isset($_POST['subastaActivoView'])){
+        $subastaId = $_POST['subastaIdView'];
+        $subastaArticuloId = $_POST['subastaArticuloView'];
+        $subastaFechaHoraInicio = $_POST[''];
+    }
 }
