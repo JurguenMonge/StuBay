@@ -59,7 +59,7 @@ class ClienteTelefonoData extends Data
         WHERE tbclientetelefonoid = ?;");
 
         $updateStmt->bind_param(
-            "isssi",
+            "ssssi",
             $clienteTelefono->getClienteId(),
             $clienteTelefono->getClienteTelefonoNumero(),
             $clienteTelefono->getClienteTelefonoDescripcion(),
