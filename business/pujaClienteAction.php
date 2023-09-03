@@ -8,15 +8,14 @@ if (isset($_POST['update'])) {
 
     if (
         isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-        && isset($_POST['subastaIdView']) && isset($_POST['pujaClientePrecioActualView'])
+        && isset($_POST['pujaClientePrecioActualView'])
     ) {
         $pujaClienteId = $_POST['pujaClienteIdView'];
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $_POST['articuloIdView'];
-        $subastaId = $_POST['subastaIdView'];
         $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
 
-        if (strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($subastaId) > 0 && strlen($pujaClientePrecioActual) > 0) {
+        if (strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClientePrecioActual) > 0) {
             $pujaCliente = new PujaCliente(
                 $pujaClienteId,
                 $clienteId,
@@ -42,16 +41,15 @@ if (isset($_POST['update'])) {
 
     if (
         isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-        && isset($_POST['subastaIdView']) && isset($_POST['pujaClientePrecioActualView'])
+        && isset($_POST['pujaClientePrecioActualView'])
     ) { //check if the variables have values 
         $pujaClienteId = $_POST['pujaClienteIdView']; //get the id from the form
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $_POST['articuloIdView'];
-        $subastaId = $_POST['subastaIdView'];
         $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
         if (
             strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0
-            && strlen($subastaId) > 0 && strlen($pujaClientePrecioActual) > 0
+            && strlen($pujaClientePrecioActual) > 0
         ) { //check if the variables have values 
 
             $pujaCliente = new PujaCliente(
@@ -79,27 +77,27 @@ if (isset($_POST['update'])) {
 
     if (
         isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-        && isset($_POST['subastaIdView']) && isset($_POST['pujaClientePrecioActualView'])
+         && isset($_POST['pujaClientePrecioActualView'])
     ) { //check if the variables have values
+        $cadena = explode("-", $_POST['articuloIdView']);
 
         $clienteId = $_POST['clienteIdView'];
-        $articuloId = $_POST['articuloIdView'];
-        $subastaId = $_POST['subastaIdView'];
+        $articuloId = $cadena[1];
         $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
         if (
             strlen($clienteId) > 0 && strlen($articuloId) > 0
-            && strlen($subastaId) > 0 && strlen($pujaClientePrecioActual) > 0
+            && strlen($pujaClientePrecioActual) > 0
         ) { //check if the variables have values
 
             $pujaCliente = new PujaCliente(
-                $pujaClienteId,
+                0,
                 $clienteId,
                 $articuloId,
                 $pujaClientePrecioActual
             );
 
             $pujaClienteBusiness = new PujaClienteBusiness();
-
+            var_dump($pujaCliente);
             $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
             if ($result == 1) {
                 header("location: ../index.php?success=insert"); //redirect to the index.php page with a success message

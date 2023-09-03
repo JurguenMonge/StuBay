@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-08-2023 a las 23:58:45
+-- Tiempo de generación: 03-09-2023 a las 23:49:57
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -156,6 +156,14 @@ CREATE TABLE `tbpujacliente` (
   `tbarticuloid` int(11) NOT NULL,
   `tbpujaclienteprecioactual` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbpujacliente`
+--
+
+INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclienteprecioactual`) VALUES
+(1, 1, 2, 910),
+(2, 2, 10, 760996);
 
 -- --------------------------------------------------------
 

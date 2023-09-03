@@ -19,11 +19,9 @@ class PujaClienteData extends Data
             $nextId = isset($row[0]) ? intval($row[0]) + 1 : 1;
         }
 
-        
-
         $queryInsert = "INSERT INTO tbpujacliente VALUES (" . $nextId . ",'" .
             $pujaCliente->getClienteId() . "','" .
-            $pujaCliente->getArticuloId() . "','" .
+            $pujaCliente->getArticuloId() . "'," .
             $pujaCliente->getPujaClientePrecioActual() . ");";
 
         $result = mysqli_query($conn, $queryInsert);
@@ -50,10 +48,7 @@ class PujaClienteData extends Data
     { 
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-        $queryUpdate = "UPDATE tbpujacliente SET tbclienteid='" . $pujaCliente->getClienteId() .
-            "', tbarticuloid='" . $pujaCliente->getArticuloId() .
-            "', tbpujaclienteprecioactual=" . $pujaCliente->getPujaClientePrecioActual() .
-            " WHERE tbpujaclienteid=" . $pujaCliente->getPujaClienteId() . ";";
+        $queryUpdate = "DELETE FROM tbpujacliente WHERE tbpujaclienteid=" . $pujaCliente->getPujaClienteId() . ";";
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);
 

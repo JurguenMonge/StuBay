@@ -9,21 +9,22 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
 
     <script>
-       $(document).ready(function(){
-        $('#articuloIdView').change(function(){
-            recargarLista();
-        });
-       })
-       function recargarLista(){
-        $.ajax({
-            type:"POST",
-            url:"../business/subastaAction.php",
-            data:"valor=" + $('#articuloIdView').val(),
-            success:function(r){
-                $('#precioArticulo').html(r);
-            }
-        });
-       }
+        $(document).ready(function() {
+            $('#articuloIdView').change(function() {
+                recargarLista();
+            });
+        })
+
+        function recargarLista() {
+            $.ajax({
+                type: "POST",
+                url: "../business/subastaAction.php",
+                data: "valor=" + $('#articuloIdView').val(),
+                success: function(r) {
+                    $('#precioArticulo').html(r);
+                }
+            });
+        }
     </script>
 
     <?php
@@ -39,6 +40,7 @@
     $getCli = $clienteBusiness->getAllTBCliente();
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
+
     ?>
 </head>
 
@@ -57,9 +59,9 @@
                 <th>Precio a Pujar</th>
                 <th></th>
             </tr>
-            <form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">
+            <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
                 <tr>
-                <td>
+                    <td>
                         <select name="clienteIdView" id="clienteIdView">
                             <option value="">Seleccionar cliente</option>
                             <?php
@@ -77,15 +79,17 @@
                         <select name="articuloIdView" id="articuloIdView">
                             <option value="">Seleccionar artículo</option>
                             <?php
-                            if (count($getCli) > 0 && count($getSub) > 0) {
+                            $currentDate =  time();
+                            echo $currentDate;
+                            if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
-                                    foreach($getArt as $articulo){
-                                        if($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1){
-                                            echo '<option value="' .$subasta->getSubastaId().'-'. $articulo->getArticuloId() .  '">' .$articulo->getArticuloMarca().'-'.$articulo->getArticuloModelo(). '</option>';
+                                    foreach ($getArt as $articulo) {
+                                        $fechaFinalSubasta = strtotime($subasta->getSubastaFechaHoraFinal()); // Convertir la fecha de MySQL a marca de tiempo Unix
+
+                                        if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $fechaFinalSubasta > $currentDate) {
+                                            echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                         }
-                                        
                                     }
-                                    
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -94,7 +98,7 @@
                         </select>
                     </td>
                     <td name="precioArticulo" id="precioArticulo"></td>
-                    <td><input required type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" min=""/></td>
+                    <td><input required type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" min="0" step="0.01" /></td>
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -105,9 +109,21 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
                 echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input type="text" name="clienteIdView" id="clienteIdView" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $current->getClienteId() . '"/></td>';
-                echo '<td><input type="text" name="articuloIdView" id="articuloIdView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' . $current->getNombre() . '"/></td>';
-                echo '<td><input type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" ' . $current->getPujaClientePrecioAtual(). '/></td>';
+                foreach ($getCli as $cliente) {
+                    if ($cliente->getClienteId() == $current->getClienteId()) {
+                        echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                        echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                    }
+                }
+
+                foreach ($getArt as $articulo) {
+                    if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                        echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
+                        echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                    }
+                }
+                echo '<td></td>';
+                echo '<td><input type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" value="' . $current->getPujaClientePrecioActual() . '"/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
                 echo '</tr>';
@@ -135,27 +151,16 @@
     </section>
 
     <script>
-        // Obtén una referencia a los campos de entrada
-        const categoriaSiglaView = document.getElementById('categoriaSiglaView');
-        const categoriaNombreView = document.getElementById('categoriaNombreView');
-        const categoriaDescripcionView = document.getElementById('categoriaDescripcionView');
-
-        // Agrega un evento de escucha para cada campo de entrada
-        categoriaSiglaView.addEventListener('input', validateMaxLength);
-        categoriaNombreView.addEventListener('input', validateMaxLength);
-        categoriaDescripcionView.addEventListener('input', validateMaxLength);
-
-        // Función para validar la longitud máxima del campo
-        function validateMaxLength(event) {
-            const input = event.target;
-            const maxLength = input.getAttribute('maxlength');
-            const currentValue = input.value;
-
-            if (currentValue.length > maxLength) {
-                input.setCustomValidity(`El campo no puede exceder ${maxLength} caracteres.`);
-            } else {
-                input.setCustomValidity('');
+        function validarPrecio() {
+            var precioInicial = parseFloat(document.getElementById("subastaIdView").value);
+            var precioActual = parseFloat(document.getElementById("pujaClientePrecioActualView").value);
+            console.log(precioInicial);
+            // Verifica si el precio actual es mayor que el precio inicial
+            if (precioActual <= precioInicial) {
+                alert("El precio a pujar debe ser mayor que el precio inicial del artículo.");
+                return false;
             }
+            return true; 
         }
     </script>
 
