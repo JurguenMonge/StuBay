@@ -102,9 +102,9 @@ if (isset($_POST['create'])) {
                 $subastaArticuloId
             );
             $subastaBusiness = new SubastaBusiness();
-            $result = $subastaBusiness->deleteTBSubasta($subasta);
+            $result = $subastaBusiness->updateTBSubasta($subasta);
             if ($result == 1) {
-                header("location: ../view/subastaView.php?success=delete");
+                header("location: ../view/subastaView.php?success=updated");
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
             }
