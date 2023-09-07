@@ -13,19 +13,27 @@ if (isset($_POST['create'])) {
         $subastaFechaHoraInicio = $_POST['subastaFechaHoraInicioView'];
         $subastaFechaHoraFinal = $_POST['subastaFechaHoraFinalView'];
         $subastaPrecioInicial = $_POST['subastaPrecioInicialView'];
+        $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
+        $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaActivo = 1;
         $subastaArticuloId = $_POST['subastaArticuloView'];
+        $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); // Elimina el símbolo de colón
+        $precioSinFormato = str_replace(',', '', $precioSinFormato); // Elimina las comas
+        $precioSinFormato = str_replace('.', '', $precioSinFormato); // Elimina los puntos
+        $precioSinFormato = (int)$precioSinFormato; // Convierte a un valor entero
 
         //Validar que contengan datos
         if (
             strlen($subastaFechaHoraInicio) > 0 && strlen($subastaFechaHoraFinal) > 0 && strlen($subastaPrecioInicial) > 0
-            && strlen($subastaArticuloId) > 0
+            && strlen($subastaArticuloId) > 0 
         ) {
             $subasta = new Subasta(
                 0,
                 $subastaFechaHoraInicio,
                 $subastaFechaHoraFinal,
-                $subastaPrecioInicial,
+                $precioSinFormato,
+                $subastaEstadoArticulo,
+                $subastaDiasUsoArticulo,
                 $subastaActivo,
                 $subastaArticuloId
             );
@@ -34,7 +42,7 @@ if (isset($_POST['create'])) {
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=insert");
             } else {
-                header("location: ../index.php?error=dbError");
+                header("location: ../view/subastaView.php?error=dbError");
             }
         } else {
             header("location: ../index.php?error=emptyField");
@@ -52,8 +60,13 @@ if (isset($_POST['create'])) {
         $subastaFechaHoraInicio = $_POST['subastaFechaHoraInicioView'];
         $subastaFechaHoraFinal = $_POST['subastaFechaHoraFinalView'];
         $subastaPrecioInicial = $_POST['subastaPrecioInicialView'];
+        $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
+        $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaActivo = 0;
-
+        $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); 
+        $precioSinFormato = str_replace(',', '', $precioSinFormato); 
+        $precioSinFormato = str_replace('.', '', $precioSinFormato); 
+        $precioSinFormato = (int)$precioSinFormato; 
         if (
             strlen($subastaId) > 0 && strlen($subastaArticuloId) > 0 && strlen($subastaFechaHoraInicio) > 0 && strlen($subastaFechaHoraFinal) > 0
             && strlen($subastaPrecioInicial) > 0
@@ -62,7 +75,9 @@ if (isset($_POST['create'])) {
                 $subastaId,
                 $subastaFechaHoraInicio,
                 $subastaFechaHoraFinal,
-                $subastaPrecioInicial,
+                $precioSinFormato,
+                $subastaEstadoArticulo,
+                $subastaDiasUsoArticulo,
                 $subastaActivo,
                 $subastaArticuloId
             );
@@ -86,7 +101,13 @@ if (isset($_POST['create'])) {
         $subastaArticuloId = $_POST['subastaArticuloView'];
         $subastaFechaHoraInicio = $_POST['subastaFechaHoraInicioView'];
         $subastaFechaHoraFinal = $_POST['subastaFechaHoraFinalView'];
+        $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
+        $subastaDiasUsoArticulo = 0;
         $subastaPrecioInicial = $_POST['subastaPrecioInicialView'];
+        $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); // Elimina el símbolo de colón
+        $precioSinFormato = str_replace(',', '', $precioSinFormato); // Elimina las comas
+        $precioSinFormato = str_replace('.', '', $precioSinFormato); // Elimina los puntos
+        $precioSinFormato = (int)$precioSinFormato; // Convierte a un valor entero
         $subastaActivo = 1;
 
         if (
@@ -97,7 +118,9 @@ if (isset($_POST['create'])) {
                 $subastaId,
                 $subastaFechaHoraInicio,
                 $subastaFechaHoraFinal,
-                $subastaPrecioInicial,
+                $precioSinFormato,
+                $subastaEstadoArticulo,
+                $subastaDiasUsoArticulo,
                 $subastaActivo,
                 $subastaArticuloId
             );

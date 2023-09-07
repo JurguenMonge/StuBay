@@ -5,15 +5,19 @@ class Subasta{
     private $subastaFechaHoraInicio;
     private $subastaFechaHoraFinal;
     private $subastaPrecioInicial;
+    private $subastaEstadoArticulo;
+    private $subastaDiasUsoArticulo;
     private $subastaActivo;
     private $subastaArticuloId;
 
-    function __construct($subastaId, $subastaFechaHoraInicio, $subastaFechaHoraFinal, $subastaPrecioInicial, $subastaActivo, $subastaArticuloId)
+    function __construct($subastaId, $subastaFechaHoraInicio, $subastaFechaHoraFinal, $subastaPrecioInicial, $subastaEstadoArticulo, $subastaDiasUsoArticulo, $subastaActivo, $subastaArticuloId)
     {
         $this->subastaId = $subastaId;
         $this->subastaFechaHoraInicio = $subastaFechaHoraInicio;
         $this->subastaFechaHoraFinal = $subastaFechaHoraFinal;
         $this->subastaPrecioInicial = $subastaPrecioInicial;
+        $this->subastaEstadoArticulo = $subastaEstadoArticulo;
+        $this->subastaDiasUsoArticulo = $subastaDiasUsoArticulo;
         $this->subastaActivo = $subastaActivo;
         $this->subastaArticuloId = $subastaArticuloId;
     }
@@ -86,6 +90,30 @@ class Subasta{
     public function setSubastaActivo($subastaActivo)
     {
         $this->subastaActivo = $subastaActivo;
+
+        return $this;
+    }
+
+    public function getSubastaEstadoArticulo()
+    {
+        return $this->subastaEstadoArticulo;
+    }
+
+    public function setSubastaEstadoArticulo($subastaEstadoArticulo)
+    {
+        $this->subastaEstadoArticulo = $subastaEstadoArticulo;
+
+        return $this;
+    }
+
+    public function getSubastaDiasUsoArticulo()
+    {
+        return $this->subastaDiasUsoArticulo;
+    }
+
+    public function setSubastaDiasUsoArticulo($subastaDiasUsoArticulo)
+    {
+        $this->subastaDiasUsoArticulo = $subastaDiasUsoArticulo;
 
         return $this;
     }

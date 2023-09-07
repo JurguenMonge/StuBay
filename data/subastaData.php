@@ -16,11 +16,13 @@
             if ($row = mysqli_fetch_row($idCont)) { 
                 $nextId = trim($row[0]) + 1;            
             }
-    
+            echo  $subasta->getSubastaDiasUsoArticulo();
             $queryInsert = "INSERT INTO tbsubasta VALUES (" . $nextId . ",'" .
                 $subasta->getSubastaFechaHoraInicio() . "','" .
                 $subasta->getSubastaFechaHoraFinal() . "','" .
                 $subasta->getSubastaPrecioInicial() . "','" .
+                $subasta->getSubastaEstadoArticulo() . "','" .
+                $subasta->getSubastaDiasUsoArticulo(). "','" .
                 $subasta->getSubastaActivo() . "'," .
                 $subasta->getSubastaArticuloId() . ");";
     
@@ -72,8 +74,8 @@
             $array = array();
     
             while ($row = mysqli_fetch_array($result)) {
-                $currentSubasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio']
-                ,$row['tbsubastaActivo'], $row['tbarticuloId']);
+                $currentSubasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo'],
+                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId']);
                 array_push($array,$currentSubasta);
             }
     
@@ -91,8 +93,8 @@
             $subasta = null;
     
             while ($row = mysqli_fetch_array($result)) {
-                $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio']
-                ,$row['tbsubastaActivo'], $row['tbarticuloId']);
+                $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo '],
+                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId']);
             }
     
             mysqli_close($conn);
