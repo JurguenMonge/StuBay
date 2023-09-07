@@ -40,7 +40,7 @@
     $getCli = $clienteBusiness->getAllTBCliente();
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
-
+    date_default_timezone_set('America/Costa_Rica');
     ?>
 </head>
 
@@ -56,7 +56,9 @@
                 <th>Nombre del Cliente</th>
                 <th>Nombre del artículo</th>
                 <th>Precio Inicial</th>
-                <th>Precio a Pujar</th>
+                <th>Fecha</th>
+                <th>Oferta</th>
+                <th>Costo Envío</th>
                 <th></th>
             </tr>
             <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
@@ -79,14 +81,14 @@
                         <select name="articuloIdView" id="articuloIdView">
                             <option value="">Seleccionar artículo</option>
                             <?php
-                            $currentDate =  time();
-                            echo $currentDate;
+                            $currentDate =  date("Y-m-d H:i:s");
+                            var_dump($currentDate);
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
-                                    foreach ($getArt as $articulo) {
-                                        $fechaFinalSubasta = strtotime($subasta->getSubastaFechaHoraFinal()); // Convertir la fecha de MySQL a marca de tiempo Unix
 
-                                        if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $fechaFinalSubasta > $currentDate) {
+                                    foreach ($getArt as $articulo) {
+                                        
+                                        if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
                                             echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                         }
                                     }
@@ -98,7 +100,9 @@
                         </select>
                     </td>
                     <td name="precioArticulo" id="precioArticulo"></td>
-                    <td><input required type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" min="0" step="0.01" /></td>
+                    <td><input required type="text" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly /></td>
+                    <td><input required type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" min="0" step="0.01" /></td>
+                    <td><input required type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" /></td>
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -123,7 +127,9 @@
                     }
                 }
                 echo '<td></td>';
-                echo '<td><input type="number" name="pujaClientePrecioActualView" id="pujaClientePrecioActualView" value="' . $current->getPujaClientePrecioActual() . '"/></td>';
+                echo '<td><input type="text" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
+                echo '<td><input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/></td>';
+                echo '<td><input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" value="' . $current->getPujaClienteEnvio() . '"/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
                 echo '</tr>';
@@ -151,17 +157,35 @@
     </section>
 
     <script>
+
         function validarPrecio() {
             var precioInicial = parseFloat(document.getElementById("subastaIdView").value);
-            var precioActual = parseFloat(document.getElementById("pujaClientePrecioActualView").value);
+            var precioActual = parseFloat(document.getElementById("pujaClienteOfertaView").value);
             console.log(precioInicial);
             // Verifica si el precio actual es mayor que el precio inicial
             if (precioActual <= precioInicial) {
                 alert("El precio a pujar debe ser mayor que el precio inicial del artículo.");
                 return false;
             }
-            return true; 
+            return true;
         }
+
+        /// Función para actualizar la fecha y hora
+        function actualizarFechaHora() {
+            // Obtener la fecha y hora actual en la zona horaria de Costa Rica
+            var fechaActual = new Date().toLocaleString('es-ES', {
+                timeZone: 'America/Costa_Rica'
+            });
+
+            // Actualizar el valor del campo de texto
+            document.getElementById('pujaClienteFechaView').value = fechaActual;
+        }
+
+        // Actualizar la fecha y hora cada segundo
+        setInterval(actualizarFechaHora, 1000);
+
+        // Llamar a la función inicialmente para establecer la hora
+        actualizarFechaHora();
     </script>
 
     <footer>

@@ -64,11 +64,23 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/clienteTelefonoAction.php">
                 <tr>
-                    <td colspan="3">
-                        <input required type="text" name="clientetelefono_datos" id="clientetelefono_datos" pattern="^[0-9,\s-]+$" style="width: 40%;" />
-                    </td>
-                    <td><input required type="submit" value="Crear" name="create" id="create" onclick="separarYEnviarDatos()" />
-                    </td>
+                    <td><select name="clienteidview" id="clienteidview">
+                            <option value="">Seleccionar cliente</option>
+                            <?php
+                            if (count($getCliente) > 0) {
+                                foreach ($getCliente as $cliente) {
+
+                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
+                                    ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">Ningun cliente registrado</option>';
+                            }
+                            ?>
+                        </select></td>
+                    <td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" placeholder="Número" oninput="validateInput(this)"/></td>
+                    <td><input required type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" placeholder="Descripción" oninput="validateName(this)"/></td>
+                    <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
             <?php

@@ -14,10 +14,6 @@ if (isset($_POST['update'])) {
         $clienteTelefonoNumero = $_POST['clientetelefononumeroview'];
         $clienteTelefonoDescripcion = $_POST['clientetelefonodescripcionview'];
         $clienteTelefonoActivo = isset($_POST['clientetelefonoactivoview']) ? 1 : 0;
-        $clienteId = str_pad($clienteId, 2, '0', STR_PAD_LEFT);//agrega ceros a la izquierda del numero de cliente para que sea de 2 digitos siempre 
-        //str_pad_left sirve para agregar ceros a la izquierda de un numero
-        //str sirve para convertir un numero a string
-        //pad sirve para agregar los ceros a la izquierda
         if (
             strlen($clienteId) > 0 
             && strlen($clienteTelefonoNumero) > 0
