@@ -32,7 +32,7 @@ if (isset($_POST['create'])) {
             $subastaBusiness = new SubastaBusiness();
             $result = $subastaBusiness->insertarTBSubasta($subasta);
             if ($result == 1) {
-                header("location: ../index.php?success=insert");
+                header("location: ../view/subastaView.php?success=insert");
             } else {
                 header("location: ../index.php?error=dbError");
             }
