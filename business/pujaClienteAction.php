@@ -7,20 +7,27 @@ include '../business/pujaClienteBusiness.php';
 if (isset($_POST['update'])) {
 
     if (
-        isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-        && isset($_POST['pujaClientePrecioActualView'])
+        isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView']) && isset($_POST['pujaClienteFechaView'])
+        && isset($_POST['pujaClienteOfertaView']) && isset($_POST['pujaClienteEnvioView'])
     ) {
         $pujaClienteId = $_POST['pujaClienteIdView'];
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $_POST['articuloIdView'];
-        $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
+        $pujaClienteFecha = $_POST['pujaClienteFechaView'];
+        $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
+        $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
 
-        if (strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClientePrecioActual) > 0) {
+        if (
+            strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
+            && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
+        ) {
             $pujaCliente = new PujaCliente(
                 $pujaClienteId,
                 $clienteId,
                 $articuloId,
-                $pujaClientePrecioActual
+                $pujaClienteFecha,
+                $pujaClienteOferta,
+                $pujaClienteEnvio
             ); //create a student object
 
             $pujaClienteBusiness = new PujaClienteBusiness();
@@ -40,24 +47,28 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['delete'])) { //if the user clicked on the delete button
 
     if (
-        isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-        && isset($_POST['pujaClientePrecioActualView'])
+        isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView']) && isset($_POST['pujaClienteFechaView'])
+        && isset($_POST['pujaClienteOfertaView']) && isset($_POST['pujaClienteEnvioView'])
     ) { //check if the variables have values 
         $pujaClienteId = $_POST['pujaClienteIdView']; //get the id from the form
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $_POST['articuloIdView'];
-        $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
+        $pujaClienteFecha = $_POST['pujaClienteFechaView'];
+        $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
+        $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
         if (
-            strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0
-            && strlen($pujaClientePrecioActual) > 0
+            strlen($pujaClienteId) > 0 && strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
+            && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
         ) { //check if the variables have values 
 
             $pujaCliente = new PujaCliente(
                 $pujaClienteId,
                 $clienteId,
                 $articuloId,
-                $pujaClientePrecioActual
-            );
+                $pujaClienteFecha,
+                $pujaClienteOferta,
+                $pujaClienteEnvio
+            ); //create a student object
 
             $pujaClienteBusiness = new PujaClienteBusiness();
             $result = $pujaClienteBusiness->eliminarTBPujaCliente($pujaCliente);
@@ -76,24 +87,29 @@ if (isset($_POST['update'])) {
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
     if (
-        isset($_POST['clienteIdView']) && isset($_POST['articuloIdView'])
-         && isset($_POST['pujaClientePrecioActualView'])
+        isset($_POST['clienteIdView']) && isset($_POST['articuloIdView']) && isset($_POST['pujaClienteFechaView'])
+        && isset($_POST['pujaClienteOfertaView']) && isset($_POST['pujaClienteEnvioView'])
     ) { //check if the variables have values
         $cadena = explode("-", $_POST['articuloIdView']);
 
         $clienteId = $_POST['clienteIdView'];
-        $articuloId = $cadena[1];
-        $pujaClientePrecioActual = $_POST['pujaClientePrecioActualView'];
+        $articuloId = $_POST['articuloIdView'];
+        $pujaClienteFecha = $_POST['pujaClienteFechaView'];
+        $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
+        $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
+
         if (
-            strlen($clienteId) > 0 && strlen($articuloId) > 0
-            && strlen($pujaClientePrecioActual) > 0
+            strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
+            && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
         ) { //check if the variables have values
 
             $pujaCliente = new PujaCliente(
                 0,
                 $clienteId,
                 $articuloId,
-                $pujaClientePrecioActual
+                $pujaClienteFecha,
+                $pujaClienteOferta,
+                $pujaClienteEnvio
             );
 
             $pujaClienteBusiness = new PujaClienteBusiness();

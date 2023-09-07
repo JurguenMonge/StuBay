@@ -5,13 +5,17 @@ class PujaCliente{
     private $pujaClienteId;
     private $articuloId;
     private $clienteId;
-    private $pujaClientePrecioActual;
+    private $pujaClienteFecha;
+    private $pujaClienteOferta;
+    private $pujaClienteEnvio;
 
-    function __construct($pujaClienteId, $clienteId, $articuloId, $pujaClientePrecioActual) {
+    function __construct($pujaClienteId, $clienteId, $articuloId, $pujaClienteFecha, $pujaClienteOferta, $pujaClienteEnvio) {
         $this->pujaClienteId = $pujaClienteId;
         $this->articuloId = $articuloId;
         $this->clienteId = $clienteId;
-        $this->pujaClientePrecioActual = $pujaClientePrecioActual;
+        $this->pujaClienteFecha = $pujaClienteFecha;
+        $this->pujaClienteOferta = $pujaClienteOferta;
+        $this->pujaClienteEnvio = $pujaClienteEnvio;
     }
 
     //Getters
@@ -27,9 +31,16 @@ class PujaCliente{
         return $this->articuloId;
     }
 
+    function getPujaClienteFecha(){
+        return $this->pujaClienteFecha;
+    }
 
-    function getPujaClientePrecioActual(){
-        return $this->pujaClientePrecioActual;
+    function getPujaClienteOferta(){
+        return $this->pujaClienteOferta;
+    }
+
+    function getPujaClienteEnvio(){
+        return $this->pujaClienteEnvio;
     }
 
     //Setters
@@ -45,9 +56,16 @@ class PujaCliente{
         $this->articuloId = $articuloId;
     }
 
+    function setPujaClienteFecha($pujaClienteFecha){
+        $this->pujaClienteFecha = $pujaClienteFecha;
+    }
 
-    function setPujaClientePrecioActual($pujaClientePrecioActual){
-        $this->pujaClientePrecioActual = $pujaClientePrecioActual;
+    function setPujaClienteOferta($pujaClienteOferta){
+        $this->pujaClienteOferta = $pujaClienteOferta;
+    }
+
+    function setPujaClienteEnvio($pujaClienteEnvio){
+        $this->pujaClienteEnvio = $pujaClienteEnvio;
     }
 
 }

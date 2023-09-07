@@ -21,8 +21,10 @@ class PujaClienteData extends Data
 
         $queryInsert = "INSERT INTO tbpujacliente VALUES (" . $nextId . ",'" .
             $pujaCliente->getClienteId() . "','" .
-            $pujaCliente->getArticuloId() . "'," .
-            $pujaCliente->getPujaClientePrecioActual() . ");";
+            $pujaCliente->getArticuloId() . "','" .
+            $pujaCliente->getPujaClienteFecha() . "','" .
+            $pujaCliente->getPujaClienteOferta() . "'," .
+            $pujaCliente->getPujaClienteEnvio() . ");";
 
         $result = mysqli_query($conn, $queryInsert);
         mysqli_close($conn);
@@ -35,7 +37,9 @@ class PujaClienteData extends Data
         $conn->set_charset('utf8');
         $queryUpdate = "UPDATE tbpujacliente SET tbclienteid = '" . $pujaCliente->getClienteId() .
             "', tbarticuloid = '" . $pujaCliente->getArticuloId() .
-            "', tbpujaclienteprecioactual = " . $pujaCliente->getPujaClientePrecioActual() .
+            "', tbpujaclientefecha = " . $pujaCliente->getPujaClienteFecha() .
+            "', tbpujaclienteoferta = " . $pujaCliente->getPujaClienteOferta() .
+            "', tbpujaclienteoenvio = " . $pujaCliente->getPujaClienteEnvio() .
             " WHERE tbpujaclienteid = " . $pujaCliente->getPujaClienteId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate);
@@ -68,7 +72,7 @@ class PujaClienteData extends Data
 
         // recorrer el resultado y llenar el array
         while ($row = mysqli_fetch_array($result)) {
-            $currentPujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclienteprecioactual']);
+            $currentPujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclientefecha'], $row['tbpujaclienteoferta'], $row['tbpujaclienteenvio']);
             array_push($array, $currentPujaCliente);
         }
 
@@ -88,7 +92,7 @@ class PujaClienteData extends Data
         $pujaCliente = null;
 
         if ($row = mysqli_fetch_array($result)) {
-            $pujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbsubastaid'], $row['tbpujaclienteprecioactual']);
+            $pujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclientefecha'], $row['tbpujaclienteoferta'], $row['tbpujaclienteenvio']);
         }
 
         mysqli_close($conn); // cerrar la conexión
