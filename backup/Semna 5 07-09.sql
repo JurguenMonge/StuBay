@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-09-2023 a las 22:42:03
+-- Tiempo de generación: 03-09-2023 a las 23:49:57
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -154,18 +154,16 @@ CREATE TABLE `tbpujacliente` (
   `tbpujaclienteid` int(11) NOT NULL,
   `tbclienteid` int(11) NOT NULL,
   `tbarticuloid` int(11) NOT NULL,
-  `tbpujaclientefecha` datetime NOT NULL,
-  `tbpujaclienteoferta` decimal(10,0) NOT NULL,
-  `tbpujaclienteenvio` int(11) NOT NULL
+  `tbpujaclienteprecioactual` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `tbpujacliente`
 --
 
-INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
-(1, 1, 2, '2023-09-04 01:03:00', 910, 3000),
-(2, 2, 10, '2023-08-29 05:34:00', 760996, 5000);
+INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclienteprecioactual`) VALUES
+(1, 1, 2, 910),
+(2, 2, 10, 760996);
 
 -- --------------------------------------------------------
 
@@ -187,7 +185,7 @@ CREATE TABLE `tbsubasta` (
 --
 
 INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastaFechaHoraInicio`, `tbsubastaFechaHoraFinal`, `tbsubastaPrecio`, `tbsubastaActivo`, `tbarticuloId`) VALUES
-(1, '2023-08-09 19:43:56', '2025-08-22 19:43:56', 70000, 1, 2),
+(1, '2023-08-31 19:43:56', '2025-08-22 19:43:56', 70000, 1, 1),
 (2, '2023-08-31 03:55:02', '2023-08-31 03:55:02', 70000, 1, 3),
 (3, '2023-08-30 21:45:00', '2023-09-21 21:45:00', 900, 1, 2),
 (4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, 1, 2),

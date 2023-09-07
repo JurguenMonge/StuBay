@@ -127,7 +127,7 @@
                     }
                 }
                 echo '<td></td>';
-                echo '<td><input type="text" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
+                echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
                 echo '<td><input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/></td>';
                 echo '<td><input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" value="' . $current->getPujaClienteEnvio() . '"/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';

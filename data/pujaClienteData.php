@@ -37,9 +37,9 @@ class PujaClienteData extends Data
         $conn->set_charset('utf8');
         $queryUpdate = "UPDATE tbpujacliente SET tbclienteid = '" . $pujaCliente->getClienteId() .
             "', tbarticuloid = '" . $pujaCliente->getArticuloId() .
-            "', tbpujaclientefecha = " . $pujaCliente->getPujaClienteFecha() .
-            "', tbpujaclienteoferta = " . $pujaCliente->getPujaClienteOferta() .
-            "', tbpujaclienteoenvio = " . $pujaCliente->getPujaClienteEnvio() .
+            "', tbpujaclientefecha = '" . $pujaCliente->getPujaClienteFecha() .
+            "', tbpujaclienteoferta = '" . $pujaCliente->getPujaClienteOferta() .
+            "', tbpujaclienteenvio = " . $pujaCliente->getPujaClienteEnvio() .
             " WHERE tbpujaclienteid = " . $pujaCliente->getPujaClienteId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate);
