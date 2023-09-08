@@ -29,6 +29,8 @@
     <a href="../StuBay/view/subastaView.php">Registrar Subasta</a>
     <br><br>
     <a href="../StuBay/view/pujaClienteView.php">Registrar Puja</a>
+    <br><br>
+    <a href="../StuBay/view/costoEnvioView.php">Registrar Costo envio</a>
 </body>
 
 </html>

@@ -4,27 +4,21 @@ class CostoEnvio{
     private $costoEnvioId;
     private $costoPorKM;
     private $tbclienteid;
+    private $costoEnvioEstado;
 
-    function __construct($costoEnvioId, $costoPorKM, $tbclienteid)
+    function __construct($costoEnvioId, $costoPorKM, $tbclienteid, $costoEnvioEstado)
     {
         $this->costoEnvioId = $costoEnvioId;
         $this->costoPorKM = $costoPorKM;
         $this->tbclienteid = $tbclienteid;
+        $this->costoEnvioEstado = $costoEnvioEstado;
     }
 
-    /**
-     * Get the value of costoEnvioId
-     */ 
     public function getCostoEnvioId()
     {
         return $this->costoEnvioId;
     }
 
-    /**
-     * Set the value of costoEnvioId
-     *
-     * @return  self
-     */ 
     public function setCostoEnvioId($costoEnvioId)
     {
         $this->costoEnvioId = $costoEnvioId;
@@ -32,19 +26,11 @@ class CostoEnvio{
         return $this;
     }
 
-    /**
-     * Get the value of costoPorKM
-     */ 
     public function getCostoPorKM()
     {
         return $this->costoPorKM;
     }
 
-    /**
-     * Set the value of costoPorKM
-     *
-     * @return  self
-     */ 
     public function setCostoPorKM($costoPorKM)
     {
         $this->costoPorKM = $costoPorKM;
@@ -52,22 +38,26 @@ class CostoEnvio{
         return $this;
     }
 
-    /**
-     * Get the value of tbclienteid
-     */ 
     public function getTbclienteid()
     {
         return $this->tbclienteid;
     }
 
-    /**
-     * Set the value of tbclienteid
-     *
-     * @return  self
-     */ 
     public function setTbclienteid($tbclienteid)
     {
         $this->tbclienteid = $tbclienteid;
+
+        return $this;
+    }
+
+    public function getCostoEnvioEstado()
+    {
+        return $this->costoEnvioEstado;
+    }
+
+    public function setCostoEnvioEstado($costoEnvioEstado)
+    {
+        $this->costoEnvioEstado = $costoEnvioEstado;
 
         return $this;
     }

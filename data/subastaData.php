@@ -16,7 +16,7 @@
             if ($row = mysqli_fetch_row($idCont)) { 
                 $nextId = trim($row[0]) + 1;            
             }
-            echo  $subasta->getSubastaDiasUsoArticulo();
+
             $queryInsert = "INSERT INTO tbsubasta VALUES (" . $nextId . ",'" .
                 $subasta->getSubastaFechaHoraInicio() . "','" .
                 $subasta->getSubastaFechaHoraFinal() . "','" .
