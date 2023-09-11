@@ -25,4 +25,8 @@ class ClienteDireccionBusiness{
     public function getAllTBClienteDireccion(){
         return $this->clienteDireccionData->getAllTBClienteDireccion();
     }
+
+    public function getTBClienteDireccionByIdCliente($idCliente){
+        return $this->clienteDireccionData->getTBClienteDireccionByIdCliente($idCliente);
+    }
 }

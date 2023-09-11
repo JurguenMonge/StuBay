@@ -26,4 +26,8 @@ class CostoEnvioBusiness{
         return $this->costoEnvioData->getAllTBCostoEnvio();
     }
 
+    public function getTBCostoEnvioByIdCliente($idCliente){
+        return $this->costoEnvioData->getTBCostoEnvioByCliente($idCliente);
+    }
+
 }

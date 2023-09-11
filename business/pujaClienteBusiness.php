@@ -31,4 +31,29 @@ class PujaClienteBusiness
     {
         return $this->pujaClienteData->getAllTBPujaCliente();
     }
+
+    public function calcularDistanciaClienteVendedor($latCliente, $lonCliente, $latVendedor, $lonVendedor) {
+        // Radio de la Tierra en kilómetros
+        $radioTierra = 6371;
+    
+        // Convierte las coordenadas de grados a radianes
+        $latCliente = deg2rad($latCliente);
+        $lonCliente = deg2rad($lonCliente);
+        $latVendedor = deg2rad($latVendedor);
+        $lonVendedor = deg2rad($lonVendedor);
+    
+        // Diferencia de latitud y longitud
+        $dLat = $latVendedor - $latCliente;
+        $dLon = $lonVendedor - $lonCliente;
+    
+        // Fórmula de Haversine
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos($latCliente) * cos($latVendedor) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        
+        // Calcula la distancia
+        $distancia = $radioTierra * $c;
+    
+        return $distancia;
+    }
+
 }

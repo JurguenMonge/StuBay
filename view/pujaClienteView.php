@@ -10,21 +10,43 @@
 
     <script>
         $(document).ready(function() {
-            $('#articuloIdView').change(function() {
-                recargarLista();
-            });
-        })
+            // Inicialmente, deshabilita la selección del artículo y las etiquetas HTML
+            $('#articuloIdView').prop('disabled', true);
 
-        function recargarLista() {
-            $.ajax({
-                type: "POST",
-                url: "../business/subastaAction.php",
-                data: "valor=" + $('#articuloIdView').val(),
-                success: function(r) {
-                    $('#precioArticulo').html(r);
+            // Escucha el evento change del campo de selección del cliente
+            $('#clienteIdView').change(function() {
+                // Verifica si se ha seleccionado un cliente válido
+                if ($(this).val() !== '') {
+                    // Habilita la selección del artículo
+                    $('#articuloIdView').prop('disabled', false);
+                } else {
+                    // Si no se ha seleccionado un cliente válido, deshabilita la selección del artículo
+                    $('#articuloIdView').prop('disabled', true);
                 }
             });
-        }
+
+            // Escucha el evento change del campo de selección del artículo
+            $('#articuloIdView').change(function() {
+                //var valor = "valor=" + $(this).val();
+                //var valor2 = "valor2=" + $('#clienteIdView').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "../business/subastaAction.php",
+                    data: {
+                        "valor": $(this).val(),
+                        "valor2": $('#clienteIdView').val()
+                    },
+                    success: function(r) {
+                        
+                        var data = JSON.parse(r);
+
+                        $('#subastaIdView').val(data.precioInicial);
+                        $('#pujaClienteEnvioView').val(data.costoEnvio);
+                    }
+                });
+            });
+        });
     </script>
 
     <style>
@@ -55,6 +77,11 @@
         }
 
         #pujaClienteEnvioView {
+            padding-left: 25px;
+            /* Añade un espacio a la izquierda del campo para el símbolo */
+        }
+
+        #subastaIdView {
             padding-left: 25px;
             /* Añade un espacio a la izquierda del campo para el símbolo */
         }
@@ -91,9 +118,10 @@
                 <th>Nombre del Cliente</th>
                 <th>Nombre del artículo</th>
                 <th>Precio Inicial</th>
+                <th>Costo Envío</th>
                 <th>Fecha</th>
                 <th>Oferta</th>
-                <th>Costo Envío</th>
+
                 <th></th>
             </tr>
 
@@ -135,8 +163,20 @@
                             ?>
                         </select>
                     </td>
-                    <td name="precioArticulo" id="precioArticulo"></td>
 
+
+                    <td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input required type="text" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input required type="text" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly />
+                        </div>
+                    </td>
                     <td><input required type="text" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly /></td>
 
                     <td>
@@ -146,7 +186,6 @@
                         </div>
                     </td>
 
-                    <td><input required type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" /></td>
 
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
@@ -172,6 +211,12 @@
                     }
                 }
                 echo '<td></td>';
+                echo '<td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                        </div">
+                    </td>';
                 echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
                 echo '<td>
                         <div class="input-container">
@@ -179,12 +224,7 @@
                             <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/>
                         </div">
                     </td>';
-                echo '<td>
-                        <div class="input-container">
-                            <span class="currency-symbol">₡</span>
-                            <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" value="' . $current->getPujaClienteEnvio() . '"/>
-                        </div">
-                    </td>';
+
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
                 echo '</tr>';

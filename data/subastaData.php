@@ -93,7 +93,7 @@
             $subasta = null;
     
             while ($row = mysqli_fetch_array($result)) {
-                $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo '],
+                $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo'],
                 $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId']);
             }
     

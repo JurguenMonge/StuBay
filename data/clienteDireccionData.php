@@ -15,7 +15,7 @@ class ClienteDireccionData extends Data
         $stmt = $conn->prepare("SELECT * FROM tbclientedireccion WHERE tbclienteid = ?");
         $stmt->bind_param("i", $clienteId);
         $stmt->execute();
-        $verifyClienteId = $stmt->get_result();//get the mysqli result 
+        $verifyClienteId = $stmt->get_result(); //get the mysqli result 
 
         if (mysqli_num_rows($verifyClienteId) > 0) {
             $stmt->close(); //cierra el stmt
@@ -87,7 +87,8 @@ class ClienteDireccionData extends Data
         return $result;
     }
 
-    public function deleteTBClienteDireccion($clienteDireccionId){
+    public function deleteTBClienteDireccion($clienteDireccionId)
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -101,7 +102,8 @@ class ClienteDireccionData extends Data
         return $result; // devolver el resultado
     }
 
-    public function getAllTBClienteDireccion(){
+    public function getAllTBClienteDireccion()
+    {
         // Conexión a la base de datos
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
@@ -112,39 +114,65 @@ class ClienteDireccionData extends Data
         // Preparar la consulta
         $stmt = mysqli_prepare($conn, $querySelect);
 
-        if($stmt){
+        if ($stmt) {
             // Ejecutar la consulta y obtener el resultado
             mysqli_stmt_execute($stmt);
 
             // Vincular las columnas del resultado con variables
             mysqli_stmt_bind_result(
-                $stmt, 
-                $clienteDireccionId, 
-                $clienteId, 
-                $clienteDireccionBarrio, 
-                $clienteDireccionCoordenadaGps, 
+                $stmt,
+                $clienteDireccionId,
+                $clienteId,
+                $clienteDireccionBarrio,
+                $clienteDireccionCoordenadaGps,
                 $clienteDireccionActivo
             );
 
             $array = array(); // Definir un array para guardar los datos del resultado
 
             // Recorrer el resultado fila por fila y guardar los datos en el array
-            while(mysqli_stmt_fetch($stmt)){
+            while (mysqli_stmt_fetch($stmt)) {
                 $currentClienteDireccion = new ClienteDireccion(
-                    $clienteDireccionId, 
-                    $clienteId, 
-                    $clienteDireccionBarrio, 
-                    $clienteDireccionCoordenadaGps, 
+                    $clienteDireccionId,
+                    $clienteId,
+                    $clienteDireccionBarrio,
+                    $clienteDireccionCoordenadaGps,
                     $clienteDireccionActivo
                 );
-                array_push($array, $currentClienteDireccion);// Agregar el objeto al array de objetos 
+                array_push($array, $currentClienteDireccion); // Agregar el objeto al array de objetos 
             }
-        }else{
-            $array = array();// Definir un array vacío en caso de que no se pueda ejecutar la consulta
+        } else {
+            $array = array(); // Definir un array vacío en caso de que no se pueda ejecutar la consulta
         }
 
         mysqli_stmt_close($stmt); // Cerrar la consulta
 
         return $array; // Devolver el array
+    }
+
+    public function getTBClienteDireccionByIdCliente($idCliente)
+    {
+        // Conexión a la base de datos
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
+
+        // Consulta a la base de datos
+        $querySelect = "SELECT * FROM tbclientedireccion WHERE tbclientedireccionactivo = 1 AND tbclienteid = $idCliente;";
+
+        $result = mysqli_query($conn, $querySelect);
+
+        $clienteDireccion = NULL;
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            // Obtener la primera fila de resultados
+            $row = mysqli_fetch_assoc($result);
+
+            // Crear un objeto CostoEnvio con los datos obtenidos
+            $clienteDireccion = new ClienteDireccion($row['tbclientedireccionid'], $row['tbclienteid'], $row['tbclientedireccionbarrio'], $row['tbclientedireccioncoordenadagps'], $row['tbclientedireccionactivo']);
+        }
+
+        mysqli_close($conn);
+
+        return $clienteDireccion; // Devolver la dirección del cliente
     }
 }

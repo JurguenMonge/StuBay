@@ -10,7 +10,8 @@ if (isset($_POST['update'])) {
         isset($_POST['pujaClienteIdView']) && isset($_POST['clienteIdView']) && isset($_POST['articuloIdView']) && isset($_POST['pujaClienteFechaView'])
         && isset($_POST['pujaClienteOfertaView']) && isset($_POST['pujaClienteEnvioView'])
     ) {
-        $pujaClienteId = $_POST['pujaClienteIdView'];
+        $cadena =
+            $pujaClienteId = $_POST['pujaClienteIdView'];
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $_POST['articuloIdView'];
         $pujaClienteFecha = $_POST['pujaClienteFechaView'];
@@ -93,8 +94,10 @@ if (isset($_POST['update'])) {
         $cadena = explode("-", $_POST['articuloIdView']);
 
         $clienteId = $_POST['clienteIdView'];
-        $articuloId = $_POST['articuloIdView'];
-        $pujaClienteFecha = $_POST['pujaClienteFechaView'];
+        $articuloId = $cadena[1];
+        // Formatear la fecha en el formato correcto 'YYYY-MM-DD HH:MM:SS'
+        $pujaClienteFecha = date('Y-m-d H:i:s', strtotime($_POST['pujaClienteFechaView']));
+
         $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
         $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
 
@@ -113,7 +116,7 @@ if (isset($_POST['update'])) {
             );
 
             $pujaClienteBusiness = new PujaClienteBusiness();
-            var_dump($pujaCliente);
+
             $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
             if ($result == 1) {
                 header("location: ../index.php?success=insert"); //redirect to the index.php page with a success message
