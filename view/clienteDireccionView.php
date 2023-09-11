@@ -83,7 +83,7 @@
                             ?>
                         </select>
                     <td><input required type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s]+" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s\-\,]+" oninput="validarCampo(this)" /></td>
                     <td></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
@@ -108,7 +108,7 @@
                 }
                 echo '</select></td>';
                 echo '<td><input required  type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" value="' . $current->getClienteDireccionBarrio() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required  type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s]+" value="' . $current->getClienteDireccionCoordenadaGps() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required  type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s\-\,]+" value="' . $current->getClienteDireccionCoordenadaGps() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input type="checkbox" name="clientedireccionactivoview" id="clientedireccionactivoview" ' . ($current->getClienteDireccionActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclientedireccionid="' . $current->getClienteDireccionId() . '">Eliminar</button></td>';
@@ -149,7 +149,7 @@
     <script>
         function validateInput(input) {
             // Utiliza una expresión regular para validar que solo se permitan letras, números y espacios.
-            const pattern = /^[A-Za-z0-9\s]+$/;
+            const pattern = /^[A-Za-z0-9\s/]+$/;
             if (!pattern.test(input.value)) {
                 input.setCustomValidity("Solo se permiten letras, números y espacios.");
             } else {
@@ -162,8 +162,8 @@
             const nameValue = input.value;
 
             // Comprueba si el campo está vacío o contiene caracteres no permitidos
-            if (nameValue === '' || !/^[A-Za-z0-9\s]+$/.test(nameValue)) {
-                input.setCustomValidity("Ingrese un valor válido (solo letras, números y espacios).");
+            if (nameValue === '' || !/^[A-Za-z0-9\s\-\,]+$/.test(nameValue)) {
+                input.setCustomValidity("Ingrese un valor válido (solo letras, números, espacios, guiones y comas).");
             } else {
                 input.setCustomValidity(""); // Restablece el mensaje de validación
             }

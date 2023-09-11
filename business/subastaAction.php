@@ -25,7 +25,7 @@ if (isset($_POST['create'])) {
         //Validar que contengan datos
         if (
             strlen($subastaFechaHoraInicio) > 0 && strlen($subastaFechaHoraFinal) > 0 && strlen($subastaPrecioInicial) > 0
-            && strlen($subastaArticuloId) > 0 
+            && strlen($subastaArticuloId) > 0
         ) {
             $subasta = new Subasta(
                 0,
@@ -63,10 +63,10 @@ if (isset($_POST['create'])) {
         $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
         $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaActivo = 0;
-        $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); 
-        $precioSinFormato = str_replace(',', '', $precioSinFormato); 
-        $precioSinFormato = str_replace('.', '', $precioSinFormato); 
-        $precioSinFormato = (int)$precioSinFormato; 
+        $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial);
+        $precioSinFormato = str_replace(',', '', $precioSinFormato);
+        $precioSinFormato = str_replace('.', '', $precioSinFormato);
+        $precioSinFormato = (int)$precioSinFormato;
         if (
             strlen($subastaId) > 0 && strlen($subastaArticuloId) > 0 && strlen($subastaFechaHoraInicio) > 0 && strlen($subastaFechaHoraFinal) > 0
             && strlen($subastaPrecioInicial) > 0
@@ -138,7 +138,8 @@ if (isset($_POST['create'])) {
     $subastaId = $cadena[0];
     $business = new SubastaBusiness();
     $subasta = $business->getTBSubastaById($subastaId);
-    $cadena = '<input required value="'.$subasta->getSubastaPrecioInicial().'" type="text" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly/>';
+    $precioInicialFormateado = '₡' . number_format($subasta->getSubastaPrecioInicial() , 2, '.', ',');
+    $cadena = '<input required value="' . $precioInicialFormateado . '" type="text" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly/>';
 
     echo $cadena;
 }

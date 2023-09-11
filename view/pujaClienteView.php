@@ -27,6 +27,39 @@
         }
     </script>
 
+    <style>
+        .input-container {
+            position: relative;
+            width: 200px;
+            /* Puedes ajustar el ancho según tus necesidades */
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 5px;
+            /* Ajusta la posición horizontal del símbolo */
+            top: 40%;
+            /* Centra verticalmente el símbolo */
+            transform: translateY(-50%);
+            font-size: 18px;
+            /* Ajusta el tamaño del símbolo según tus necesidades */
+            color: #333;
+            /* Ajusta el color según tus necesidades */
+            pointer-events: none;
+            /* Evita que el usuario interactúe con el símbolo */
+        }
+
+        #pujaClienteOfertaView {
+            padding-left: 25px;
+            /* Añade un espacio a la izquierda del campo para el símbolo */
+        }
+
+        #pujaClienteEnvioView {
+            padding-left: 25px;
+            /* Añade un espacio a la izquierda del campo para el símbolo */
+        }
+    </style>
+
     <?php
     error_reporting(0);
     include '../business/pujaClienteBusiness.php';
@@ -41,6 +74,8 @@
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
     date_default_timezone_set('America/Costa_Rica');
+    $precioOferta = 1000;
+    $precioOfertaFormateado = '₡' . number_format($precioInicial, 2, '.', ',');
     ?>
 </head>
 
@@ -61,6 +96,7 @@
                 <th>Costo Envío</th>
                 <th></th>
             </tr>
+
             <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
                 <tr>
                     <td>
@@ -87,7 +123,7 @@
                                 foreach ($getSub as $subasta) {
 
                                     foreach ($getArt as $articulo) {
-                                        
+
                                         if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
                                             echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                         }
@@ -100,9 +136,18 @@
                         </select>
                     </td>
                     <td name="precioArticulo" id="precioArticulo"></td>
+
                     <td><input required type="text" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly /></td>
-                    <td><input required type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" min="0" step="0.01" /></td>
+
+                    <td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input required type="text" name="pujaClienteOfertaView" id="pujaClienteOfertaView" min="0" step="0.01" />
+                        </div>
+                    </td>
+
                     <td><input required type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" /></td>
+
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -128,8 +173,18 @@
                 }
                 echo '<td></td>';
                 echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
-                echo '<td><input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/></td>';
-                echo '<td><input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" value="' . $current->getPujaClienteEnvio() . '"/></td>';
+                echo '<td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/>
+                        </div">
+                    </td>';
+                echo '<td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" value="' . $current->getPujaClienteEnvio() . '"/>
+                        </div">
+                    </td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
                 echo '</tr>';
@@ -157,9 +212,9 @@
     </section>
 
     <script>
-
         function validarPrecio() {
-            var precioInicial = parseFloat(document.getElementById("subastaIdView").value);
+            var precioInicial = parseFloat(document.getElementById("subastaIdView").value.replace("₡", "").replace(",", ""));
+
             var precioActual = parseFloat(document.getElementById("pujaClienteOfertaView").value);
             console.log(precioInicial);
             // Verifica si el precio actual es mayor que el precio inicial

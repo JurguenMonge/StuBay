@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 11-09-2023 a las 17:50:13
+-- Servidor: localhost
+-- Tiempo de generación: 11-09-2023 a las 19:36:39
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -121,7 +121,9 @@ CREATE TABLE `tbclientedireccion` (
 --
 
 INSERT INTO `tbclientedireccion` (`tbclientedireccionid`, `tbclienteid`, `tbclientedireccionbarrio`, `tbclientedireccioncoordenadagps`, `tbclientedireccionactivo`) VALUES
-(1, 1, 'Rio frio', 'Google Maps', 1);
+(1, 1, 'Rio frio', '40,-73', 1),
+(2, 2, 'Guapiles', '41,-80', 1),
+(3, 3, 'Puerto Viejo', '35,-65', 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +166,8 @@ CREATE TABLE `tbcostoenvio` (
 INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `tbcostoenvioestado`) VALUES
 (1, 2500, 1, 1),
 (2, 5000, 1, 0),
-(3, 6000, 3, 1);
+(3, 6000, 3, 1),
+(4, 5000, 2, 1);
 
 -- --------------------------------------------------------
 
