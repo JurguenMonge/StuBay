@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 07-09-2023 a las 22:42:03
+-- Servidor: localhost:3306
+-- Tiempo de generación: 11-09-2023 a las 17:50:13
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -143,6 +143,28 @@ CREATE TABLE `tbclientetelefono` (
 
 INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclientetelefononumero`, `tbclientetelefonodescripcion`, `tbclientetelefonoactivo`) VALUES
 (1, '02', '83469905-83147350', 'cel propio-cel amigo', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbcostoenvio`
+--
+
+CREATE TABLE `tbcostoenvio` (
+  `tbcostoenvioid` int(11) NOT NULL,
+  `tbcostoenviokm` int(11) NOT NULL,
+  `tbclienteid` int(11) NOT NULL,
+  `tbcostoenvioestado` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tbcostoenvio`
+--
+
+INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `tbcostoenvioestado`) VALUES
+(1, 2500, 1, 1),
+(2, 5000, 1, 0),
+(3, 6000, 3, 1);
 
 -- --------------------------------------------------------
 
