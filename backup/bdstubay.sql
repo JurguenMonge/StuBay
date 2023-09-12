@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-09-2023 a las 19:36:39
+-- Tiempo de generación: 12-09-2023 a las 03:03:10
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -167,7 +167,9 @@ INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `
 (1, 2500, 1, 1),
 (2, 5000, 1, 0),
 (3, 6000, 3, 1),
-(4, 5000, 2, 1);
+(4, 5000, 2, 1),
+(5, 1000, 1, 1),
+(6, 1000, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -203,20 +205,26 @@ CREATE TABLE `tbsubasta` (
   `tbsubastaFechaHoraInicio` datetime NOT NULL,
   `tbsubastaFechaHoraFinal` datetime NOT NULL,
   `tbsubastaPrecio` int(11) NOT NULL,
+  `tbsubastaestadoarticulo` varchar(50) NOT NULL,
+  `tbsubastaarticulodiasuso` int(11) NOT NULL,
   `tbsubastaActivo` tinyint(4) NOT NULL,
-  `tbarticuloId` int(11) NOT NULL
+  `tbarticuloId` int(11) NOT NULL,
+  `tbclienteid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `tbsubasta`
 --
 
-INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastaFechaHoraInicio`, `tbsubastaFechaHoraFinal`, `tbsubastaPrecio`, `tbsubastaActivo`, `tbarticuloId`) VALUES
-(1, '2023-08-09 19:43:56', '2025-08-22 19:43:56', 70000, 1, 2),
-(2, '2023-08-31 03:55:02', '2023-08-31 03:55:02', 70000, 1, 3),
-(3, '2023-08-30 21:45:00', '2023-09-21 21:45:00', 900, 1, 2),
-(4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, 1, 2),
-(5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, 1, 10);
+INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastaFechaHoraInicio`, `tbsubastaFechaHoraFinal`, `tbsubastaPrecio`, `tbsubastaestadoarticulo`, `tbsubastaarticulodiasuso`, `tbsubastaActivo`, `tbarticuloId`, `tbclienteid`) VALUES
+(1, '2023-08-09 19:43:56', '2025-08-22 19:43:56', 70000, '', 0, 1, 2, 0),
+(2, '2023-08-31 03:55:02', '2023-08-31 03:55:02', 70000, '', 0, 1, 3, 0),
+(3, '2023-08-30 21:45:00', '2023-09-21 21:45:00', 900, '', 0, 1, 2, 0),
+(4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, '', 0, 1, 2, 0),
+(5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, '', 0, 1, 10, 0),
+(6, '2023-09-11 18:49:00', '2023-09-13 18:49:00', 100000, 'Nuevo', 19, 1, 8, 1),
+(7, '2023-09-11 18:53:00', '2023-09-20 18:53:00', 100000, 'Usado', 10, 0, 2, 2),
+(8, '2023-09-12 18:53:00', '2023-09-13 18:53:00', 100000, 'Usado', 15, 1, 7, 1);
 
 -- --------------------------------------------------------
 

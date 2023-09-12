@@ -24,6 +24,7 @@ if (isset($_POST['create'])) {
         $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaActivo = 1;
         $subastaArticuloId = $_POST['subastaArticuloView'];
+        $subastaClienteId = $_POST['vendedorIdView'];
         $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); // Elimina el símbolo de colón
         $precioSinFormato = str_replace(',', '', $precioSinFormato); // Elimina las comas
         $precioSinFormato = str_replace('.', '', $precioSinFormato); // Elimina los puntos
@@ -42,7 +43,8 @@ if (isset($_POST['create'])) {
                 $subastaEstadoArticulo,
                 $subastaDiasUsoArticulo,
                 $subastaActivo,
-                $subastaArticuloId
+                $subastaArticuloId,
+                $subastaClienteId
             );
             $subastaBusiness = new SubastaBusiness();
             $result = $subastaBusiness->insertarTBSubasta($subasta);
@@ -57,7 +59,7 @@ if (isset($_POST['create'])) {
     } else {
         header("location: ../index.php?error=error");
     }
-} else if (isset($_POST['update'])) {
+} else if (isset($_POST['delete'])) {
 
     if (
         isset($_POST['subastaIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) && isset($_POST['subastaFechaHoraFinalView']) &&
@@ -71,6 +73,7 @@ if (isset($_POST['create'])) {
         $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
         $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaActivo = 0;
+        $subastaClienteId = $_POST['vendedorIdView'];
         $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial);
         $precioSinFormato = str_replace(',', '', $precioSinFormato);
         $precioSinFormato = str_replace('.', '', $precioSinFormato);
@@ -87,12 +90,13 @@ if (isset($_POST['create'])) {
                 $subastaEstadoArticulo,
                 $subastaDiasUsoArticulo,
                 $subastaActivo,
-                $subastaArticuloId
+                $subastaArticuloId,
+                $subastaClienteId
             );
             $subastaBusiness = new SubastaBusiness();
             $result = $subastaBusiness->deleteTBSubasta($subasta);
             if ($result == 1) {
-                header("location: ../view/subastaView.php?success=updated");
+                header("location: ../view/subastaView.php?success=delete");
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
             }
@@ -111,8 +115,9 @@ if (isset($_POST['create'])) {
         $subastaFechaHoraInicio = $_POST['subastaFechaHoraInicioView'];
         $subastaFechaHoraFinal = $_POST['subastaFechaHoraFinalView'];
         $subastaEstadoArticulo = $_POST['subastaEstadoArticuloView'];
-        $subastaDiasUsoArticulo = 0;
+        $subastaDiasUsoArticulo = isset($_POST['mesesDeUso']) ? (int)$_POST['mesesDeUso'] : 0;
         $subastaPrecioInicial = $_POST['subastaPrecioInicialView'];
+        $subastaClienteId = $_POST['vendedorIdView'];
         $precioSinFormato = str_replace('₡', '', $subastaPrecioInicial); // Elimina el símbolo de colón
         $precioSinFormato = str_replace(',', '', $precioSinFormato); // Elimina las comas
         $precioSinFormato = str_replace('.', '', $precioSinFormato); // Elimina los puntos
@@ -131,7 +136,8 @@ if (isset($_POST['create'])) {
                 $subastaEstadoArticulo,
                 $subastaDiasUsoArticulo,
                 $subastaActivo,
-                $subastaArticuloId
+                $subastaArticuloId,
+                $subastaClienteId
             );
             $subastaBusiness = new SubastaBusiness();
             $result = $subastaBusiness->updateTBSubasta($subasta);

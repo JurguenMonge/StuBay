@@ -23,8 +23,9 @@
                 $subasta->getSubastaPrecioInicial() . "','" .
                 $subasta->getSubastaEstadoArticulo() . "','" .
                 $subasta->getSubastaDiasUsoArticulo(). "','" .
-                $subasta->getSubastaActivo() . "'," .
-                $subasta->getSubastaArticuloId() . ");";
+                $subasta->getSubastaActivo() . "','" .
+                $subasta->getSubastaArticuloId() . "'," .
+                $subasta->getSubastaVendedorId() . ");";
     
             $result = mysqli_query($conn, $queryInsert); 
             mysqli_close($conn);
@@ -35,12 +36,16 @@
             $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
             $conn->set_charset('utf8');
     
-            $queryUpdate = "UPDATE tbsubasta SET tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() .
-            "', tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() .
-            "', tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . 
-            "', tbsubastaActivo='" . $subasta->getSubastaActivo() .
-            "', tbarticuloId=" . $subasta->getSubastaArticuloId() .
-            " WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
+            $queryUpdate = "UPDATE tbsubasta SET 
+            tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() . "',
+            tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() . "',
+            tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . "',
+            tbsubastaestadoarticulo='" . $subasta->getSubastaEstadoArticulo() . "',
+            tbsubastaarticulodiasuso='" . $subasta->getSubastaDiasUsoArticulo() . "',
+            tbsubastaActivo='" . $subasta->getSubastaActivo() . "',
+            tbarticuloId=" . $subasta->getSubastaArticuloId() . ",
+            tbclienteid=" . $subasta->getSubastaVendedorId() . "
+            WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
     
             $result = mysqli_query($conn, $queryUpdate); 
             mysqli_close($conn); 
@@ -51,12 +56,17 @@
             $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
             $conn->set_charset('utf8');
             
-            $queryUpdate = "UPDATE tbsubasta SET tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() .
-            "', tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() .
-            "', tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . 
-            "', tbsubastaActivo='" . $subasta->getSubastaActivo() .
-            "', tbarticuloId=" . $subasta->getSubastaArticuloId() .
-            " WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
+            $queryUpdate = "UPDATE tbsubasta SET 
+            tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() . "',
+            tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() . "',
+            tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . "',
+            tbsubastaestadoarticulo='" . $subasta->getSubastaEstadoArticulo() . "',
+            tbsubastaarticulodiasuso='" . $subasta->getSubastaDiasUsoArticulo() . "',
+            tbsubastaActivo='" . $subasta->getSubastaActivo() . "',
+            tbarticuloId=" . $subasta->getSubastaArticuloId() . ",
+            tbclienteid=" . $subasta->getSubastaVendedorId() . "
+            WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
+
     
             
             $result = mysqli_query($conn, $queryUpdate);
@@ -75,7 +85,7 @@
     
             while ($row = mysqli_fetch_array($result)) {
                 $currentSubasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo'],
-                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId']);
+                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId'], $row['tbclienteid']);
                 array_push($array,$currentSubasta);
             }
     
@@ -94,7 +104,7 @@
     
             while ($row = mysqli_fetch_array($result)) {
                 $subasta = new Subasta($row['tbsubastaid'],$row['tbsubastaFechaHoraInicio'],$row['tbsubastaFechaHoraFinal'],$row['tbsubastaPrecio'],$row['tbsubastaestadoarticulo'],
-                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId']);
+                $row['tbsubastaarticulodiasuso'],$row['tbsubastaActivo'], $row['tbarticuloId'],$row['tbclienteid']);
             }
     
             mysqli_close($conn);
