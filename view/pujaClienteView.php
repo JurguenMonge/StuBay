@@ -259,7 +259,7 @@
             console.log(precioInicial);
             // Verifica si el precio actual es mayor que el precio inicial
             if (precioActual <= precioInicial) {
-                alert("El precio a pujar debe ser mayor que el precio inicial del artículo.");
+                alert("La oferta debe ser mayor que el precio inicial del artículo.");
                 return false;
             }
             return true;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-09-2023 a las 03:03:10
+-- Tiempo de generación: 12-09-2023 a las 06:58:05
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -164,12 +164,12 @@ CREATE TABLE `tbcostoenvio` (
 --
 
 INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `tbcostoenvioestado`) VALUES
-(1, 2500, 1, 1),
+(1, 2, 1, 1),
 (2, 5000, 1, 0),
-(3, 6000, 3, 1),
-(4, 5000, 2, 1),
-(5, 1000, 1, 1),
-(6, 1000, 3, 1);
+(3, 6, 3, 1),
+(4, 5, 2, 1),
+(5, 1, 1, 1),
+(6, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,7 @@ CREATE TABLE `tbpujacliente` (
   `tbarticuloid` int(11) NOT NULL,
   `tbpujaclientefecha` datetime NOT NULL,
   `tbpujaclienteoferta` decimal(10,0) NOT NULL,
-  `tbpujaclienteenvio` int(11) NOT NULL
+  `tbpujaclienteenvio` decimal(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
@@ -191,8 +191,9 @@ CREATE TABLE `tbpujacliente` (
 --
 
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
-(1, 1, 2, '2023-09-04 01:03:00', 910, 3000),
-(2, 2, 10, '2023-08-29 05:34:00', 760996, 5000);
+(1, 1, 2, '2023-09-04 01:03:00', 910, 3000.00),
+(2, 2, 10, '2023-08-29 05:34:00', 760996, 5000.00),
+(3, 3, 8, '2023-11-09 22:56:23', 110001, 21261.21);
 
 -- --------------------------------------------------------
 
@@ -217,11 +218,11 @@ CREATE TABLE `tbsubasta` (
 --
 
 INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastaFechaHoraInicio`, `tbsubastaFechaHoraFinal`, `tbsubastaPrecio`, `tbsubastaestadoarticulo`, `tbsubastaarticulodiasuso`, `tbsubastaActivo`, `tbarticuloId`, `tbclienteid`) VALUES
-(1, '2023-08-09 19:43:56', '2025-08-22 19:43:56', 70000, '', 0, 1, 2, 0),
-(2, '2023-08-31 03:55:02', '2023-08-31 03:55:02', 70000, '', 0, 1, 3, 0),
-(3, '2023-08-30 21:45:00', '2023-09-21 21:45:00', 900, '', 0, 1, 2, 0),
-(4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, '', 0, 1, 2, 0),
-(5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, '', 0, 1, 10, 0),
+(1, '2023-08-09 19:43:56', '2025-08-22 19:43:56', 70000, '', 0, 1, 2, 1),
+(2, '2023-08-31 03:55:02', '2023-08-31 03:55:02', 70000, '', 0, 1, 3, 2),
+(3, '2023-08-30 21:45:00', '2023-09-21 21:45:00', 900, '', 0, 1, 2, 3),
+(4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, '', 0, 1, 2, 2),
+(5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, '', 0, 1, 10, 1),
 (6, '2023-09-11 18:49:00', '2023-09-13 18:49:00', 100000, 'Nuevo', 19, 1, 8, 1),
 (7, '2023-09-11 18:53:00', '2023-09-20 18:53:00', 100000, 'Usado', 10, 0, 2, 2),
 (8, '2023-09-12 18:53:00', '2023-09-13 18:53:00', 100000, 'Usado', 15, 1, 7, 1);

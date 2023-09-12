@@ -161,9 +161,9 @@ if (isset($_POST['create'])) {
     $subasta = $businessSubasta->getTBSubastaById($subastaId);
 
     $direccionCliente = $businessClienteDireccion->getTBClienteDireccionByIdCliente($_POST['valor2']);
-    $direccionVendedor = $businessClienteDireccion->getTBClienteDireccionByIdCliente(3);
-    $costoEnvioVendedor = $costoEnvioBusiness->getTBCostoEnvioByIdCliente(3);
-
+    $direccionVendedor = $businessClienteDireccion->getTBClienteDireccionByIdCliente($subasta->getSubastaVendedorId());
+    $costoEnvioVendedor = $costoEnvioBusiness->getTBCostoEnvioByIdCliente($subasta->getSubastaVendedorId());
+    
     $coordenasCliente = explode(",", $direccionCliente->getClienteDireccionCoordenadaGps());
     $coordenasVendedor = explode(",", $direccionVendedor->getClienteDireccionCoordenadaGps());
 
@@ -176,11 +176,6 @@ if (isset($_POST['create'])) {
     $distanciaClienteVendedor = $pujaClienteBusiness->calcularDistanciaClienteVendedor($latCliente, $lonCliente, $latVendedor, $lonVendedor);
 
     $costoEnvio = $distanciaClienteVendedor * $costoEnvioVendedor->getCostoPorKM();
-
-    //$cadena = '<td><input required value="' . $precioInicialFormateado . '" type="text" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly/></td>';
-    //$cadena .= '<td><input required value="'.$costoEnvio.'" type="text" name="pujaClienteEnvioView" id="pujaClienteEnvioView"readonly /></td>';
-
-
 
     $response = array("precioInicial" => $subasta->getSubastaPrecioInicial(), "costoEnvio" => $costoEnvio);
     echo json_encode($response);
