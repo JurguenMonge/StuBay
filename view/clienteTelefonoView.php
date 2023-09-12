@@ -78,8 +78,8 @@
                             }
                             ?>
                         </select></td>
-                    <td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" placeholder="Número" oninput="validateInput(this)"/></td>
-                    <td><input required type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" placeholder="Descripción" oninput="validateName(this)"/></td>
+                    <td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" placeholder="Número" /></td>
+                    <td><input required type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" placeholder="Descripción" /></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -140,47 +140,6 @@
             });
         });
     </script>
-
-    <script>
-        function separarYEnviarDatos() {
-            // Obtén el valor del campo de entrada
-            const datosInput = document.getElementById("clientetelefono_datos");
-            const datosValue = datosInput.value;
-
-            // Divide los datos por comas (",")
-            const datosDivididos = datosValue.split(",");
-
-            // Asegúrate de que el clienteid tenga al menos 2 caracteres
-            const clienteid = datosDivididos[0].trim();
-            const clienteidFormatted = clienteid.length === 1 ? "0" + clienteid : clienteid;
-
-            // Asigna los datos divididos a campos ocultos en el formulario
-            const clienteidInput = document.createElement("input");
-            clienteidInput.type = "hidden";
-            clienteidInput.name = "clienteidview";
-            clienteidInput.value = clienteidFormatted;
-
-            const telefononumeroviewInput = document.createElement("input");
-            telefononumeroviewInput.type = "hidden";
-            telefononumeroviewInput.name = "clientetelefononumeroview";
-            telefononumeroviewInput.value = datosDivididos[1].trim();
-
-            const telefonodescripcionInput = document.createElement("input");
-            telefonodescripcionInput.type = "hidden";
-            telefonodescripcionInput.name = "clientetelefonodescripcionview";
-            telefonodescripcionInput.value = datosDivididos[2].trim();
-
-            // Agrega los campos ocultos al formulario
-            const form = document.querySelector("form");
-            form.appendChild(clienteidInput);
-            form.appendChild(telefononumeroviewInput);
-            form.appendChild(telefonodescripcionInput);
-
-            // Envía el formulario
-            form.submit();
-        }
-    </script>
-
 
     <script>
         function confirmarActualizacion() {
