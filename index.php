@@ -22,7 +22,7 @@
     <form class="login-form" method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php"  >
         <div class="col-12">
             <input type="text" id="clientecorreoview" name="clientecorreoview" placeholder="Ingrese  correo" required="">
-            <div class="invalid-feedback">Por favor ingresar su cedula
+            <div class="invalid-feedback">Por favor ingresar su password
                 correctamente!</div>
         </div>
         <input type="password" id="clientepasswordview" name="clientepasswordview" placeholder="Contraseña" required="">
