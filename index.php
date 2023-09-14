@@ -27,7 +27,7 @@
         </div>
         <input type="password" id="clientepasswordview" name="clientepasswordview" placeholder="Contraseña" required="">
         <div class="send-button">
-            <input type="submit" id="login" name="login" value="Ingresar">
+            <input type="submit" id="login" name="login" value="Iniciar Sesion">
         </div>
         
     </form>
