@@ -19,7 +19,7 @@
         <h1>StuBay</h1>
     </header>
 
-    <form  method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php"  >
+    <form class="login-form" method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php"  >
         <div class="col-12">
             <input type="text" id="clientecorreoview" name="clientecorreoview" placeholder="Ingrese  correo" required="">
             <div class="invalid-feedback">Por favor ingresar su cedula
