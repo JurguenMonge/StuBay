@@ -29,7 +29,7 @@
         <div class="send-button">
             <input type="submit" id="login" name="login" value="Ingresar">
         </div>
-        <a href="reactivateAccount.php">Reactivar cuenta</a>
+        
     </form>
 </body>
 
