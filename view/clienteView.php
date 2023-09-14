@@ -11,17 +11,22 @@
     <?php
     error_reporting(0);
     include '../business/clienteBusiness.php';
-    //include_once("../Session/session.php");
+    include_once("../session/startsession.php");
+    session_start();
+    if (isset($_SESSION['nombre'])) {
 
-    session_start(); //Inicia una nueva sesión o reanuda la existente
-
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
     ?>
 </head>
 
 <body>
     <header>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Cliente</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
     <?php
@@ -139,39 +144,39 @@
     </script>
     <script>
         function validarCampo(input) {
-        const valor = input.value;
-        const id = input.id;
-        const errorSpan = document.getElementById(id + "-error");
+            const valor = input.value;
+            const id = input.id;
+            const errorSpan = document.getElementById(id + "-error");
 
-        if (id === "clientecorreoview") {
-            if (!isValidEmail(valor)) {
-                input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
-                errorSpan.textContent = "Correo inválido.";
-            } else {
-                input.setCustomValidity("");
-                errorSpan.textContent = "";
+            if (id === "clientecorreoview") {
+                if (!isValidEmail(valor)) {
+                    input.setCustomValidity("Ingrese una dirección de correo electrónico válida.");
+                    errorSpan.textContent = "Correo inválido.";
+                } else {
+                    input.setCustomValidity("");
+                    errorSpan.textContent = "";
+                }
+            } else if (id === "clientenombreview" || id === "clienteprimerapellidoview" || id === "clientesegundoapellidoview") {
+                if (!isValidName(valor)) {
+                    input.setCustomValidity("Ingrese un nombre válido (solo letras) y comience con mayúscula.");
+                    errorSpan.textContent = "Nombre inválido.";
+                } else {
+                    input.setCustomValidity("");
+                    errorSpan.textContent = "";
+                }
             }
-        } else if (id === "clientenombreview" || id === "clienteprimerapellidoview" || id === "clientesegundoapellidoview") {
-            if (!isValidName(valor)) {
-                input.setCustomValidity("Ingrese un nombre válido (solo letras) y comience con mayúscula.");
-                errorSpan.textContent = "Nombre inválido.";
-            } else {
-                input.setCustomValidity("");
-                errorSpan.textContent = "";
-            }
+
         }
-        
-    }
 
-    function isValidEmail(email) {
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailPattern.test(email);
-    }
+        function isValidEmail(email) {
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailPattern.test(email);
+        }
 
-    function isValidName(name) {
-        const namePattern = /^[A-Z][a-z]+$/;
-        return namePattern.test(name);
-    }
+        function isValidName(name) {
+            const namePattern = /^[A-Z][a-z]+$/;
+            return namePattern.test(name);
+        }
 
         document.addEventListener("DOMContentLoaded", function() {
             const fechaIngresoInput = document.getElementById("clientefechaingresoview");
@@ -207,7 +212,7 @@
             }
         }
 
-        function validateName(input) {//del update
+        function validateName(input) { //del update
             const nameValue = input.value;
 
             // Comprueba si el campo está vacío o no comienza con mayúscula

@@ -257,33 +257,49 @@ class ClienteData extends Data
     }
 
 
-    public function getTBClienteById($clienteId)
+    public function clienteLogin($clienteCorreo, $password)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-        // obtener el client con el id especificado de la base de datos y guardarlos en un objeto client
-        $querySelect = "SELECT * FROM tbcliente WHERE tbclienteid = " . $clienteId . ";";
+        // obtener el cliente con el correo y contraseña especificados de la base de datos y guardarlos en un objeto cliente
+        $querySelect = "SELECT * FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');";
+        $result = mysqli_query($conn, $querySelect); //execute the query and get the result
+        mysqli_close($conn); //close the connection
 
-        $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
+        $sesion = 0; //variable para saber si el usuario esta activo o no
 
-        $cliente = null; // declarar el objeto client
+        while ($row = mysqli_fetch_array($result)) { //iterar todas las filas del resultado mientras haya usuarios en la base de datos
+            $passcliente = $row['tbclientepassword']; //obtener la contraseña del usuario en la base de datos
 
-        // si se obtuvo un resultado, llenar el objeto client
-        if ($row = mysqli_fetch_array($result)) {
-            $client = new Cliente(
-                $row['tbclienteid'],
-                $row['tbclientenombre'],
-                $row['tbclienteprimerapellido'],
-                $row['tbclientesegundoapellido'],
-                $row['tbclientecorreo'],
-                $row['tbclientepassword'],
-                $row['tbclientefechaingreso'],
-                $row['tbclienteactivo']
-            );
+            if (password_verify($password, $passcliente)) { // verificar si la contraseña ingresada es igual a la contraseña de la base de datos
+                session_Start();
+                $_SESSION['nombre'] = $row['tbclientenombre']; //crear una sesion con el nombre del usuario
+                $_SESSION['id'] = $row['tbclienteprimerapellido']; // Almacenar el nombre de usuario en otra variable de sesión
+                $_SESSION["idCliente"] = $row['tbclienteid'];// Almacenar el id de usuario en otra variable de sesión
+                $sesion = 1;
+            } else {
+                $sesion = 0;
+            }
+            return $sesion;
+        }
+    }
+
+
+    public function clienteById($clienteCorreo)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+
+        $querySelect = "SELECT tbclienteid FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');";
+        $result = mysqli_query($conn, $querySelect);
+        mysqli_close($conn);
+
+        while ($row = mysqli_fetch_array($result)) {
+
+            return $row['tbclienteid'];
         }
 
-        mysqli_close($conn); // cerrar la conexión
-        return $client; // devolver el objeto client
+        return null; // Si no se encuentra coincidencia, se retorna null
     }
 }

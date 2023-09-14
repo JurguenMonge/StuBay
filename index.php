@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <title>StuBay</title>
+    <?php
+    error_reporting(0);
+    include '../business/clienteBusiness.php';
+    include_once("../Session/startsession.php");
+    ?>
 </head>
 
 <body>
@@ -14,23 +19,18 @@
         <h1>StuBay</h1>
     </header>
 
-    <a href="../StuBay/view/clienteView.php">Registro Cliente</a>
-    <br><br>
-    <a href="../StuBay/view/clienteDireccionView.php">Registro Dirección Cliente</a>
-    <br><br>
-    <a href="../StuBay/view/clienteTelefonoView.php">Registro Teléfono Cliente</a>
-    <br><br>
-    <a href="../StuBay/view/articuloView.php">Registro Articulo</a>
-    <br><br>
-    <a href="../StuBay/view/categoriaView.php">Registro Categorías</a>
-    <br><br>
-    <a href="../StuBay/view/subCategoriaView.php">Registro Subcategorías</a>
-    <br><br>
-    <a href="../StuBay/view/subastaView.php">Registrar Subasta</a>
-    <br><br>
-    <a href="../StuBay/view/pujaClienteView.php">Registrar Puja</a>
-    <br><br>
-    <a href="../StuBay/view/costoEnvioView.php">Registrar Costo envio</a>
+    <form  method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php"  >
+        <div class="col-12">
+            <input type="text" id="clientecorreoview" name="clientecorreoview" placeholder="Ingrese  correo" required="">
+            <div class="invalid-feedback">Por favor ingresar su cedula
+                correctamente!</div>
+        </div>
+        <input type="password" id="clientepasswordview" name="clientepasswordview" placeholder="Contraseña" required="">
+        <div class="send-button">
+            <input type="submit" id="login" name="login" value="Ingresar">
+        </div>
+        <a href="reactivateAccount.php">Reactivar cuenta</a>
+    </form>
 </body>
 
 </html>

@@ -138,59 +138,35 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/clienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-} /*else if (isset($_POST['delete'])) { //if the user clicked on the delete button
+}else if (isset($_POST['login'])) { //if the user clicked on the login button
 
-    if (
-        isset($_POST['clienteid']) 
-        && isset($_POST['clientenombre'])
-        && isset($_POST['clienteprimerapellido']) 
-        && isset($_POST['clientesegundoapellido'])
-        && isset($_POST['clientecorreo']) 
-        && isset($_POST['clientepassword'])
-        && isset($_POST['clientefechaingreso'])
-    ) { //check if the variables have values 
-        $clienteId = $_POST['clienteid']; //get the user_id from the form
-        $clienteNombre = $_POST['clientenombre']; //get the name from the form
-        $clientePrimerApellido = $_POST['clienteprimerapellido']; //get the first last name from the form
-        $clienteSegundoApellido = $_POST['clientesegundoapellido']; //get the second last name from the form
-        $clienteCorreo = $_POST['clientecorreo']; //get the identification from the form
-        $clientePassword = $_POST['clientepassword']; //get the birth date from the form
-        $clienteFechaIngreso = $_POST['clientefechaingreso']; //get the email from the form
-        $clienteActivo = 0; //set the client to 0
+    if (isset($_POST['clientecorreoview']) && isset($_POST['clientepasswordview'])) { //check if the variables have values
 
-        if (
-            strlen($clienteId) > 0 
-            && strlen($clienteNombre) > 0
-            && strlen($clientePrimerApellido) > 0 
-            && strlen($clienteSegundoApellido) > 0
-            && strlen($clienteCorreo) > 0 
-            && strlen($clientePassword) > 0
-            && strlen($clienteFechaIngreso) > 0
-        ) { //check if the variables have values 
-            $cliente = new Cliente(
-                $clienteId,
-                $clienteNombre,
-                $clientePrimerApellido,
-                $clienteSegundoApellido,
-                $clienteCorreo,
-                $clientePassword,
-                $clienteFechaIngreso,
-                $clienteActivo
-            ); //create a new client instance
+        $passwordEncripted = $_POST['clientepasswordview']; //get the password from the form and encript it
+        $clienteCorreo = $_POST['clientecorreoview']; //get the clienteCorreo from the form
 
-            $clienteBusiness = new ClienteBusiness(); //create a new instance of clientBusiness
+        if (strlen($clienteCorreo) > 0 && strlen($passwordEncripted) > 0) { //check if the variables have values
 
-            $result = $clienteBusiness->deleteTBCliente($cliente); //call the method deleteTBUser from userBusiness 
+            $clienteBusiness = new ClienteBusiness(); //create a new instance of clienteBusiness 
 
-            if ($result == 1) { //if the method deleteTBUser was executed succesfully it will return 1
-                header("location: ../view/clienteView.php?success=delete"); //redirect to the index.php page with a success message
+            $result = $clienteBusiness->clienteLogin($clienteCorreo, $passwordEncripted); //call the method clienteLogin from userBusiness 
+            if ($result == 1) { //if the method returns 1 then the user was found in the database 
+                $id = $clienteBusiness->clienteById($clienteCorreo);
+                if ($id != null) {
+                    $_SESSION["clientecorreoview"] = $clienteCorreo; //set the session variable to the tbclientecorreo that was entered in the form 
+                    $_SESSION["idCliente"] = $id;
+                    header("location: ../view/inicioView.php?success=login"); //redirect the user to the clienteview.php
+
+                } else {
+                    header("location: ../index.php?error=login");
+                }
             } else {
-                header("location: ../view/clienteView.php?error=dbError"); //redirect to the index.php page with an error message
+                header("location: ../index.php?error=login"); //if the method returns 0 then the user was not found in the database
             }
         } else {
-            header("location: ../view/clienteView.php?error=emptyField"); //redirect to the index.php page with an error message
+            header("location: ../index.php?error=emptyField"); //if the variables don't have values then redirect the user to the index.php
         }
     } else {
-        header("location: ../view/clienteView.php?error=error"); //redirect to the index.php page with an error message
+        header("location: ../index.php?error=error"); //if the variables are not set then redirect the user to the index.php
     }
-}*/
+}

@@ -10,13 +10,24 @@
     <?php
     error_reporting(0);
     include '../business/categoriaBusiness.php';
+
+    include_once("../session/startsession.php");
+    session_start();
+    if (isset($_SESSION['nombre'])) {
+
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
+
     ?>
 </head>
 
 <body>
     <header>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Categorías</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
     <section id="form">
@@ -30,7 +41,7 @@
             <form method="post" enctype="multipart/form-data" action="../business/categoriaAction.php">
                 <tr>
                     <td><input required type="text" name="categoriaSiglaView" id="categoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4" /></td>
-                    <td><input required type="text" name="categoriaNombreView" id="categoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30"/></td>
+                    <td><input required type="text" name="categoriaNombreView" id="categoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" /></td>
                     <td><input required type="text" name="categoriaDescripcionView" id="categoriaDescripcionView" maxlength="1000" /></td>
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>

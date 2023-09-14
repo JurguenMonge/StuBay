@@ -27,8 +27,12 @@ class ClienteBusiness{
         return $this->clienteData->getAllTBCliente();
     }
 
-    // public function getClienteById($id){
-    //     return $this->clienteData->getClienteById($id);
-    // }
+    public function clienteById($clienteCorreo){
+        return $this->clienteData->clienteById($clienteCorreo);
+    }
+
+    public function clienteLogin($clienteCorreo, $clientePassword){
+        return $this->clienteData->clienteLogin($clienteCorreo, $clientePassword);
+    }
     
 }

@@ -31,14 +31,12 @@
                 }
             });
         }
-
     </script>
 
     <style>
         .subcategoria-list {
             padding-left: 159px;
         }
-
     </style>
     <?php
     error_reporting(E_ALL);
@@ -49,13 +47,22 @@
     $categoriaBusiness = new CategoriaBusiness();
     $getCat = $categoriaBusiness->getAllTBCategoria();
     $categoriaIdSelected;
+    include_once("../session/startsession.php");
+    //session_start();
+    if (isset($_SESSION['nombre'])) {
+
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
     ?>
 </head>
 
 <body>
     <header>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Subcategorías</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
     <section id="form">
@@ -122,7 +129,7 @@
             <th>Sigla</th>
             <th>Nombre</th>
             <th>Descripción</th>
-            
+
         </thead>
         <?php
 
