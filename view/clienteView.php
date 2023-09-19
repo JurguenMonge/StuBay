@@ -11,14 +11,7 @@
     <?php
     error_reporting(0);
     include '../business/clienteBusiness.php';
-    include_once("../session/startsession.php");
     session_start();
-    if (isset($_SESSION['nombre'])) {
-
-        $clienteNombre = $_SESSION['nombre'];
-    } else {
-        echo "No has iniciado sesión";
-    }
     ?>
 </head>
 
@@ -26,7 +19,7 @@
     <header>
         <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Cliente</h1>
-        <h2><a href="inicioView.php">Home</a></h2>
+        <h2><a href="../index.php">Home</a></h2>
     </header>
 
     <?php

@@ -10,14 +10,6 @@
         include '../business/articuloBusiness.php';
         include '../business/categoriaBusiness.php';
         include '../business/subCategoriaBusiness.php';
-        include_once("../session/startsession.php");
-        //session_start();
-        if (isset($_SESSION['nombre'])) {
-
-            $clienteNombre = $_SESSION['nombre'];
-        } else {
-            echo "No has iniciado sesión";
-        }
         $subcategoriaBusiness = new SubCategoriaBusiness();
         $articuloCategoriaBusiness = new CategoriaBusiness();
         $getCat = $articuloCategoriaBusiness->getAllTBCategoria();
@@ -79,7 +71,7 @@
         <header>
             <h1>Registro Articulo</h1>
             <h1><?php echo "$clienteNombre!" ?></h1>
-            <h2><a href="inicioView.php">Home</a></h2>
+            <h2><a href="../index.php">Home</a></h2>
         </header>
 
         <section id="form">
