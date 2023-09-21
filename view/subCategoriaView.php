@@ -13,33 +13,43 @@
 
     include '../business/subCategoriaBusiness.php';
     include '../business/categoriaBusiness.php';
+    $subCategoriaBusiness = new SubCategoriaBusiness();
+    $getSubCat = $subCategoriaBusiness->getAllTBSubCategoria();
     $categoriaBusiness = new CategoriaBusiness();
     $getCat = $categoriaBusiness->getAllTBCategoria();
     $categoriaIdSelected;
     session_start();
     ?>
 
-    <style>/*
-        #tablaSubcategorias {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        #tablaSubcategorias th,
-        #tablaSubcategorias td {
+    <style>
+        /* Estilo para las cajas de subcategoría en el mapa conceptual */
+        .subcategoriaBox {
             border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
-
-        #tablaSubcategorias th {
             background-color: #f2f2f2;
-            font-weight: bold;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            position: relative;
         }
 
-        #tablaSubcategorias tr:hover {
-            background-color: #e0e0e0;
+        /* Estilo para las líneas que conectan las cajas */
+        .linea {
+            border: 1px solid #ccc;
+            width: 0;
+            height: 40px;
+            display: inline-block;
+            vertical-align: middle;
+            position: absolute;
+            top: 50%;
+        }
+
+        /* Estilo para las cajas de categoría */
+        .categoriaBox {
+            border: 1px solid #ccc;
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
         }
 
         /* Oculta los campos de categoría, sigla y activo */
@@ -84,7 +94,8 @@
                             type: "text",
                             value: item.nombre,
                             readonly: false, // Hacerlo de solo lectura inicialmente
-                            name: "subcategoriaNombreView" // Agregar el nombre del campo
+                            name: "subcategoriaNombreView", // Agregar el nombre del campo
+                            maxLength: 30
                         });
                         fila.append($("<td>").append(inputNombre));
 
@@ -93,7 +104,8 @@
                             type: "text",
                             value: item.descripcion,
                             readonly: false, // Hacerlo de solo lectura inicialmente
-                            name: "subcategoriaDescripcionView" // Agregar el nombre del campo
+                            name: "subcategoriaDescripcionView", // Agregar el nombre del campo
+                            maxLength: 1000
                         });
                         fila.append($("<td>").append(inputDescripcion));
 
@@ -127,10 +139,10 @@
                                     window.location.href = "../business/subCategoriaAction.php?update=true&subcategoriaIdView=" + subCategoriaId +
                                         "&categoriaId=" + item.categoriaId +
                                         "&subcategoriaSiglaView=" + item.sigla +
-                                        "&subcategoriaNombreView=" + item.nombre +
-                                        "&subcategoriaDescripcionView=" + item.descripcion +
+                                        "&subcategoriaNombreView=" + inputNombre.val() +
+                                        "&subcategoriaDescripcionView=" + inputDescripcion.val() +
                                         "&subcategoriaActivoView=" + item.activo;
-                                        
+                                    console.log(inputNombre.val());
                                 }
                             });
                             return false;
@@ -233,6 +245,40 @@
         <h2><a href="../index.php">Home</a></h2>
     </header>
 
+    <!-- Agrega un botón para mostrar/ocultar el mapa conceptual -->
+    <button id="toggleMap">Mostrar Mapa Conceptual</button>
+
+    <!-- Contenedor del mapa conceptual (inicialmente oculto) -->
+    <div id="mapaConceptual" style="display: none;">
+        <!-- Categoría raíz -->
+        <div class="categoriaBox">
+            <span>Categoría Raíz</span>
+        </div>
+
+        <!-- Subcategorías y conexiones -->
+        <?php
+        if (count($getCat) > 0) {
+            foreach ($getCat as $categoria) {
+                echo '<div class="subcategoriaBox">';
+                echo '<span>' . $categoria->getNombre() . '</span>';
+                if (count($getSubCat) > 0) {
+                    foreach ($getSubCat as $subcategoria) {
+                        if ($categoria->getId() == $subcategoria->getCategoriaId()) {
+                            echo '<div class="linea"></div>';
+                            echo '<span>' . $subcategoria->getNombre() . '</span>';
+                        }
+                    }
+                } else {
+                    echo '<span>Ninguna subcategoría registrada en esta categoría</span>';
+                }
+                echo '</div>';
+            }
+        } else {
+            echo '<span>Ninguna categoría registrada</span>';
+        }
+        ?>
+    </div>
+
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
     ?>
@@ -305,62 +351,24 @@
     <br><br>
 
 
-    <?php
-
-
-    $subCategoriaBusiness = new SubCategoriaBusiness();
-    $allSubCategorias = $subCategoriaBusiness->getAllTBSubCategoria();
-    /*
-        foreach ($allSubCategorias as $current) {
-
-            echo '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
-            echo '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
-            echo '<tr>';
-            echo '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
-            echo '<td></td>';
-            echo '<td><input type="text" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4"  value="' . $current->getSigla() . '"/></td>';
-            echo '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" value="' . $current->getNombre() . '"/></td>';
-            echo '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
-            echo '<input type="hidden" name="subcategoriaActivoView" id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/>';
-            echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-            echo '<td><button type="button" class="btn btn-danger delete_categoria" tbsubcategoriaid="' . $current->getId() . '">Eliminar</button></td>';
-            echo '</tr>';
-            echo '</form>';
-        }*/
-    ?>
     </table>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        /*
-        $(document).ready(function() {
-            $(".delete_subcategoria").on("click", function() {
-                var subCategoriaId = $(this).attr("tbsubcategoriaid");
-
-                Swal.fire({
-                    title: '¿Desea eliminar la subcategoría?',
-                    text: "No se podrá revertir el cambio",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: "Cancelar",
-                    confirmButtonText: 'Eliminar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "../business/subCategoriaAction.php?delete=true&tbsubcategoriaid=" + subCategoriaId;
-                    }
-                });
-            });
-        });*/
+        document.getElementById('toggleMap').addEventListener('click', function() {
+            var mapaConceptual = document.getElementById('mapaConceptual');
+            if (mapaConceptual.style.display === 'none') {
+                mapaConceptual.style.display = 'block';
+            } else {
+                mapaConceptual.style.display = 'none';
+            }
+        });
 
         // Obtén una referencia a los campos de entrada
-        //const subcategoriaSiglaView = document.getElementById('subcategoriaSiglaView');
         const subcategoriaNombreView = document.getElementById('subcategoriaNombreView');
         const subcategoriaDescripcionView = document.getElementById('subcategoriaDescripcionView');
 
         // Agrega un evento de escucha para cada campo de entrada
-        //subcategoriaSiglaView.addEventListener('input', validateMaxLength);
         subcategoriaNombreView.addEventListener('input', validateMaxLength);
         subcategoriaDescripcionView.addEventListener('input', validateMaxLength);
 

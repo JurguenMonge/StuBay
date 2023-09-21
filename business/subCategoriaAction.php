@@ -89,7 +89,7 @@ if (isset($_GET['update'])) {
 
             $subCategoria = new SubCategoria(
                 0,
-                '',
+                $categoria,
                 $subcategoriaNombre,
                 $categoria,
                 $subcategoriaDescripcion,

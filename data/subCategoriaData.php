@@ -37,7 +37,7 @@ class SubCategoriaData extends Data
         }
 
         $queryInsert = "INSERT INTO tbsubcategoria VALUES (" . $nextId . ",'" .
-            $subCategoria->getSigla() . "','" .
+            $subCategoria->getSigla(). $nextId . "','" .
             $subCategoria->getNombre() . "','" .
             $subCategoria->getDescripcion() . "','" .
             $subCategoria->getActivo() . "'," .
