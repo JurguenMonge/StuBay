@@ -22,9 +22,9 @@ class CategoriaBusiness
         return $this->categoriaData->actualizarTBCategoria($categoria);
     }
 
-    public function eliminarTBCategoria($categoria)
+    public function eliminarTBCategoria($categoriaId)
     {
-        return $this->categoriaData->eliminarTBCategoria($categoria);
+        return $this->categoriaData->eliminarTBCategoria($categoriaId);
     }
 
     public function getAllTBCategoria()

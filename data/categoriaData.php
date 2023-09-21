@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include_once 'data.php';
 include '../domain/categoria.php';
 
@@ -19,20 +20,9 @@ class CategoriaData extends Data
             $nextId = isset($row[0]) ? intval($row[0]) + 1 : 1;
         }
 
-        $categoriaSigla = $categoria->getSigla();
-        $stmt = $conn->prepare("SELECT * FROM tbcategoria WHERE tbcategoriasigla = ?"); 
-        $stmt->bind_param("s", $categoriaSigla); //to pass the parameter to the stmt and that "s" is to say that it is a string
-        $stmt->execute(); //execute the statement
-        $verificarSigla = $stmt->get_result(); //get the result of the statement 
-
-        if (mysqli_num_rows($verificarSigla) > 0) {
-            $stmt->close(); //cierra el stmt
-            mysqli_close($conn);
-            return 0;
-        }
 
         $queryInsert = "INSERT INTO tbcategoria VALUES (" . $nextId . ",'" .
-            $categoria->getSigla() . "','" .
+            $nextId.'' . "','" .
             $categoria->getNombre() . "','" .
             $categoria->getDescripcion() . "'," .
             $categoria->getActivo() . ");";
@@ -58,19 +48,17 @@ class CategoriaData extends Data
         return $result;
     }
 
-    public function eliminarTBCategoria($categoria)
+    public function eliminarTBCategoria($categoriaid)
     { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $conn->set_charset('utf8');
-        $queryUpdate = "UPDATE tbcategoria SET tbcategoriasigla='" . $categoria->getSigla() .
-            "', tbcategorianombre='" . $categoria->getNombre() .
-            "', tbcategoriadescripcion='" . $categoria->getDescripcion() .
-            "', tbcategoriaactivo=" . $categoria->getActivo() .
-            " WHERE tbcategoriaid=" . $categoria->getId() . ";";
-        $result = mysqli_query($conn, $queryUpdate);
-        mysqli_close($conn);
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-        return $result;
+        // actualizar el valor de active a 0
+        $queryUpdate = "UPDATE tbcategoria SET tbcategoriaactivo = 0 WHERE tbcategoriaid = " . $categoriaid . ";";
+
+        $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
+        mysqli_close($conn); // cerrar la conexión
+        return $result; 
     }
 
     public function getAllTBCategorias()

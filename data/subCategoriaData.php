@@ -66,20 +66,17 @@ class SubCategoriaData extends Data
         return $result;
     }
 
-    public function eliminarTBSubCategoria($subCategoria)
+    public function eliminarTBSubCategoria($subCategoriaId)
     { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $conn->set_charset('utf8');
-        $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriasigla='" . $subCategoria->getSigla() .
-            "', tbsubcategorianombre='" . $subCategoria->getNombre() .
-            "', tbsubcategoriadescripcion = '" . $subCategoria->getDescripcion() . 
-            "', tbsubcategoriaactivo = '" . $subCategoria->getActivo() .
-            "', tbcategoriaid = " . $subCategoria->getCategoriaId() .
-            " WHERE tbsubcategoriaid=" . $subCategoria->getId() . ";";
-        $result = mysqli_query($conn, $queryUpdate);
-        mysqli_close($conn);
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-        return $result;
+        // actualizar el valor de active a 0
+        $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriaactivo = 0 WHERE tbsubcategoriaid = " . $subCategoriaId . ";";
+
+        $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
+        mysqli_close($conn); // cerrar la conexión
+        return $result; 
     }
 
     public function getAllTBSubCategorias()

@@ -27,9 +27,9 @@ class SubCategoriaBusiness
         return $this->subCategoriaData->actualizarTBSubCategoria($subCategoria);
     }
 
-    public function eliminarTBSubCategoria($subCategoria)
+    public function eliminarTBSubCategoria($subCategoriaId)
     {
-        return $this->subCategoriaData->eliminarTBSubCategoria($subCategoria);
+        return $this->subCategoriaData->eliminarTBSubCategoria($subCategoriaId);
     }
 
     public function getTBSubCategoriaById($id){
