@@ -19,7 +19,6 @@
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Subasta</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>
@@ -140,7 +139,6 @@
                 if ($actualSubasta->getSubastaEstadoArticulo() == 'Usado') {
                     echo '<td><input type="number" name="mesesDeUso" id="mesesDeUso" value="' . $actualSubasta->getSubastaDiasUsoArticulo() . '"/></td>';
                 }
-                echo '<td><input type="checkbox" name="subastaActivoView" id="subastaActivoView" ' . ($actualSubasta->getSubastaActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';
                 echo '</tr>';

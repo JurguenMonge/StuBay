@@ -55,22 +55,22 @@ if(isset($_POST['update'])){
         $articuloSubCategoriaId = $_POST['subcategorias'];
 
         //Validar variables
-        if(strlen($articuloNombre) > 0 && strlen($articuloMarca) > 0 && strlen($articuloModelo) > 0 && strlen($articuloSerie) > 0)
+        if(strlen($articuloNombre) > 0 && strlen($articuloSubCategoriaId)>0)
         {
             $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId);
             $articuloBusiness = new ArticuloBusiness();
             $result = $articuloBusiness->insertarTBArticulo($articulo);
 
             if ($result == 1) { 
-                header("location: ../index.php?success=insert"); 
+                header("location: ../view/articuloView.php?success=insert"); 
             } else {
-                header("location: ../index.php?error=dbError"); 
+                header("location: ../view/articuloView.php?error=dbError"); 
             }
         } else {
-            header("location: ../index.php?error=emptyField"); 
+            header("location: ../view/articuloView.php?error=emptyField"); 
         }
     }  else {
-        header("location: ../index.php?error=error"); 
+        header("location: ../view/articuloView.php?error=error"); 
     }
 }else if(isset($_POST['delete'])){
     

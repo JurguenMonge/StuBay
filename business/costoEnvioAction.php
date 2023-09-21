@@ -30,7 +30,7 @@ if(isset($_POST['create'])){
     }
 }else if(isset($_POST['update'])){
 
-    if(isset($_POST['id']) && isset($_POST['clienteIdView']) && isset($_POST['costoEnvioKMView']) && isset($_POST['costoEnvioEstadoView'])){
+    if(isset($_POST['id']) && isset($_POST['clienteIdView']) && isset($_POST['costoEnvioKMView'])){
 
         $costoEnvioId = $_POST['id'];
         $costoPorKM = $_POST['costoEnvioKMView'];
@@ -39,10 +39,9 @@ if(isset($_POST['create'])){
         $precioSinFormato = str_replace(',', '', $precioSinFormato); 
         $precioSinFormato = str_replace('.', '', $precioSinFormato); 
         $precioSinFormato = (int)$precioSinFormato; 
-        $costoEnvioEstado = isset($_POST['costoEnvioEstadoView']) ? 1 : 0;
 
         if (strlen($precioSinFormato)>0 && strlen($tbclienteid)>0) {
-            $costoEnvio = new CostoEnvio($costoEnvioId,$precioSinFormato,$tbclienteid,$costoEnvioEstado); 
+            $costoEnvio = new CostoEnvio($costoEnvioId,$precioSinFormato,$tbclienteid,1); 
             $costoEnvioBusiness = new CostoEnvioBusiness();
             $result = $costoEnvioBusiness->updateTBCostoEnvio($costoEnvio);
 
@@ -57,7 +56,7 @@ if(isset($_POST['create'])){
         }
     }
 }else if(isset($_POST['delete'])){
-    if(isset($_POST['id']) && isset($_POST['clienteIdView']) && isset($_POST['costoEnvioKMView']) && isset($_POST['costoEnvioEstadoView'])){
+    if(isset($_POST['id']) && isset($_POST['clienteIdView']) && isset($_POST['costoEnvioKMView'])){
 
         $costoEnvioId = $_POST['id'];
         $costoPorKM = $_POST['costoEnvioKMView'];

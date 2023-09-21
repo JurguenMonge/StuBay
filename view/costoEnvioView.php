@@ -18,7 +18,6 @@
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Costo Envio</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>
@@ -51,7 +50,7 @@
                         </select>
                     </td>
                     <td>
-                        <input required type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="<?php echo $precioInicial; ?>" />
+                        <input required type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="<?php echo $precioInicialFormateado; ?>" />
                     </td>
                     <td>
                         <input type="submit" value="Crear" name="create" id="create" />
@@ -60,6 +59,10 @@
             </form>
             <?php
             foreach ($getAllCostoEnvio as $current) {
+                $precioInicial = $current->getCostoPorKM();
+                $precioSinSimboloComas = str_replace(['₡', ','], '', $precioInicial);
+                $precioComoFloat = (float)($precioSinSimboloComas / 100);
+                $precioFormateado = '₡' . number_format($precioComoFloat, 2, ',', '.');
                 echo '<form method="post" enctype="multipart/form-data" action="../business/costoEnvioAction.php">';
                 echo '<input type="hidden" name="id" value="' . $current->getCostoEnvioId() . '">';
                 echo '<tr>';
@@ -72,8 +75,7 @@
                     }
                 }
                 echo ' </select></td>';
-                echo '<td><input type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="' . $current->getCostoPorKM() . '"/></td>';
-                echo '<td><input type="checkbox" name="costoEnvioEstadoView" id="costoEnvioEstadoView" ' . ($current->getCostoEnvioEstado() == 1 ? "checked" : "") . '/></td>';
+                echo '<td><input type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="' . $precioFormateado . '"/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';
                 echo '</tr>';

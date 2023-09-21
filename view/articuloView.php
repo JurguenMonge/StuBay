@@ -70,7 +70,6 @@
     <body>
         <header>
             <h1>Registro Articulo</h1>
-            <h1><?php echo "$clienteNombre!" ?></h1>
             <h2><a href="../index.php">Home</a></h2>
         </header>
 
@@ -83,7 +82,6 @@
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Serie</th>
-                    <th>Activo</th>
                 </tr>
                 <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                     <tr>
@@ -109,9 +107,9 @@
 
                             </select>
                         </td>
-                        <td><input required type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" />
-                        <td><input required type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
-                        <td><input required type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
+                        <td><input  type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" />
+                        <td><input  type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
+                        <td><input  type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                         <td><input type="submit" value="Crear" name="create" id="create" /></td>
                     </tr>
                 </form>
@@ -124,7 +122,18 @@
                     echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
                     echo '<tr>';
                     echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
-                    echo '<td></td>';
+                    echo '<td>  <select name="subcategoria" id="subcategoria">';
+                    foreach ($getCat as $categoria) {
+                        if ($current->getArticuloSubCategoriaId() == $subcategoria->getId()) {
+                            $subSigla = $subcategoria->getSigla();
+                            $parte1 = substr($subSigla, 0, 2);
+                            $parte2 = substr($subSigla, 2, 2);
+                            echo "<option selected value='" . $parte2 . "'>" . $subcategoria->getNombre() . "</option>";
+                        } else {
+                            echo "<option value='" . $parte2 . "'>" . $subcategoria->getNombre() . "</option>";
+                        }
+                    }
+                    echo ' </select></td>';
                     echo '<td>  <select name="subcategoria" id="subcategoria">';
                     foreach ($getSubCat as $subcategoria) {
                         if ($current->getArticuloSubCategoriaId() == $subcategoria->getId()) {
@@ -141,7 +150,6 @@
                     echo '<td><input type="text" name="marca" id="marca" value="' . $current->getArticuloMarca() . '"/></td>';
                     echo '<td><input type="text" name="modelo" id="modelo" value="' . $current->getArticuloModelo() . '"/></td>';
                     echo '<td><input type="text" name="serie" id="serie" value="' . $current->getArticuloSerie() . '"/></td>';
-                    echo '<td><input type="checkbox" name="activo" id="activo" ' . ($current->getArticuloActivo() == 1 ? "checked" : "") . '/></td>';
                     echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                     echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';
                     echo '</tr>';
