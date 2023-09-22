@@ -71,8 +71,14 @@ if (isset($_POST['update'])) {
         header("Location: ../view/clienteView.php?success=delete1"); // redirect to the userview.php page with a success message
         session_start();
         $_SESSION['msj'] = "Cliente eliminado correctamente";
+    } else if ($result == 2) {
+        header("location: ../view/clienteView.php?error=delete1"); // redirect to the userview.php page with an error message
+        session_start();
+        $_SESSION['error'] = "Tiene subastas activas";
     } else {
-        header("Location: ../view/clienteView.php?error=dbError"); // redirect to the userview.php page with an error message
+        header("location: ../view/clienteView.php?error=dbError"); // redirect to the userview.php page with a success message
+        session_start();
+        $_SESSION['error'] = "Error al eliminar el cliente";
     }
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
