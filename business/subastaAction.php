@@ -47,17 +47,17 @@ if (isset($_POST['create'])) {
                 $subastaClienteId
             );
             $subastaBusiness = new SubastaBusiness();
-            $result = $subastaBusiness->insertarTBSubasta($subasta);
+            $result = $subastaBusiness->insertarTBSubasta($subasta);    
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=insert");
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
             }
         } else {
-            header("location: ../index.php?error=emptyField");
+            header("location: ../view/subastaView.php?error=emptyField");
         }
     } else {
-        header("location: ../index.php?error=error");
+        header("location: ../view/subastaView.php?error=error");
     }
 } else if (isset($_POST['delete'])) {
 
