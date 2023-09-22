@@ -153,5 +153,6 @@ class SubastaData extends Data
         // echo 'clienteId: '.$count.'<br>';
         // exit();
         return ($count > 0);//return true if the user exists, false otherwise
+        
     }
 }

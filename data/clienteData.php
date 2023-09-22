@@ -132,14 +132,17 @@ class ClienteData extends Data
     }
 
     public function deleteTBCliente($clienteId)
-    { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
+    { //este metodo actualiza el estado del cliente para no perder el registro del mismo, solo de desactiva.
+        
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8'); //set the charset to utf8 to support spanish characters
 
         $subastaBusiness = new SubastaBusiness();
         $subasta = $subastaBusiness->checkSubasta($clienteId);
-         echo 'subasta: '.$subasta.'<br>';
-         exit();
+        // var_dump($subasta);
+        // exit();
+        // echo 'subasta: '.$subasta.'<br>';
+        // exit();
         if ($subasta == 1) {
             mysqli_close($conn); //close the connection
             return 2; //return 2 if the user has an active subasta
