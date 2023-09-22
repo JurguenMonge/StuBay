@@ -144,24 +144,4 @@ if (isset($_GET['update'])) {
     //var_dump($datosArray);
     $response = json_encode($datosArray);
     echo $response;
-/*
-    $acumuladorCadenas = "";
-    foreach ($subcategorias as $current) {
-        $cadena = '<form class="subcategoria" id="subcategoria-' . $current->getCategoriaId() . '" method="post" enctype="multipart/form-data" action="../business/subCategoriaAction.php">';
-        $cadena .= '<input type="hidden" name="subcategoriaIdView" value="' . $current->getId() . '">';
-        $cadena .= '<tr>';
-        $cadena .= '<input type="hidden" name="categoriaId" value="' . $current->getCategoriaId() . '">';
-        $cadena .= '<td></td>';
-        $cadena .= '<input type="hidden" name="subcategoriaSiglaView" id="subcategoriaSiglaView" pattern="\d+" title="Ingresa solo números" maxlength="4"  value="' . $current->getSigla() . '"/>';
-        $cadena .= '<td><input type="text" name="subcategoriaNombreView" id="subcategoriaNombreView" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes"  maxlength="30" value="' . $current->getNombre() . '"/></td>';
-        $cadena .= '<td><input type="text" name="subcategoriaDescripcionView" id="subcategoriaDescripcionView" readonly maxlength="1000" value="' . $current->getDescripcion() . '"/></td>';
-        $cadena .= '<input type="hidden" name="subcategoriaActivoView" readonly id="subcategoriaActivoView" ' . ($current->getActivo() == 1 ? "checked" : "") . '/>';
-        $cadena .= '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-        $cadena .= '<td><button type="button" class="btn btn-danger delete_subcategoria" tbsubcategoriaid="' . $current->getId() . '">Eliminar</button></td>';
-        $cadena .= '</tr>';
-        $cadena .= '</form>';
-        $acumuladorCadenas .= $cadena; // Agregamos la cadena generada al acumulador
-    }
-
-    echo $acumuladorCadenas; // Imprimimos todas las cadenas generadas*/
 }
