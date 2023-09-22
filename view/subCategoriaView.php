@@ -22,34 +22,74 @@
     ?>
 
     <style>
-        /* Estilo para las cajas de subcategoría en el mapa conceptual */
-        .subcategoriaBox {
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        /* Estilo para las cajas de categoría en el mapa conceptual */
+        .categoriaNode {
             border: 1px solid #ccc;
             background-color: #f2f2f2;
             padding: 10px;
             margin: 10px;
             display: inline-block;
-            position: relative;
+        }
+
+        /* Estilo para las cajas de subcategoría en el mapa conceptual */
+        .subcategoriaNode {
+            border: 1px solid #ccc;
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
         }
 
         /* Estilo para las líneas que conectan las cajas */
         .linea {
-            border: 1px solid #ccc;
-            width: 0;
-            height: 40px;
+            border-left: 1px solid #ccc;
+            height: 100%;
             display: inline-block;
+            margin-left: 10px;
+            margin-right: 10px;
             vertical-align: middle;
-            position: absolute;
-            top: 50%;
         }
 
-        /* Estilo para las cajas de categoría */
-        .categoriaBox {
-            border: 1px solid #ccc;
-            background-color: #f2f2f2;
-            padding: 10px;
-            margin: 10px;
+        /* Estilo para el contenedor de subcategorías */
+        .subcategoriaContainer {
             display: inline-block;
+            vertical-align: top;
         }
 
         /* Oculta los campos de categoría, sigla y activo */
@@ -93,8 +133,8 @@
                         var inputNombre = $("<input>").attr({
                             type: "text",
                             value: item.nombre,
-                            readonly: false, // Hacerlo de solo lectura inicialmente
-                            name: "subcategoriaNombreView", // Agregar el nombre del campo
+                            readonly: false, 
+                            name: "subcategoriaNombreView",
                             maxLength: 30
                         });
                         fila.append($("<td>").append(inputNombre));
@@ -103,8 +143,8 @@
                         var inputDescripcion = $("<input>").attr({
                             type: "text",
                             value: item.descripcion,
-                            readonly: false, // Hacerlo de solo lectura inicialmente
-                            name: "subcategoriaDescripcionView", // Agregar el nombre del campo
+                            readonly: false, 
+                            name: "subcategoriaDescripcionView",
                             maxLength: 1000
                         });
                         fila.append($("<td>").append(inputDescripcion));
@@ -113,7 +153,7 @@
                         var inputActivo = $("<input>").attr({
                             type: "hidden",
                             value: item.activo,
-                            name: "subcategoriaActivoView" // Agregar el nombre del campo
+                            name: "subcategoriaActivoView"
                         });
                         fila.append($("<td>").append(inputActivo));
 
@@ -149,7 +189,6 @@
                         });
                         fila.append($("<td>").append(botonEditar));
 
-                        // Agrega un botón de "Eliminar" a la fila
                         var botonEliminar = $("<button>").text("Eliminar");
                         botonEliminar.attr("tbsubcategoriaid", item.subcategoriaId);
                         botonEliminar.click(function() {
@@ -184,51 +223,6 @@
             });
         }
 
-        /*
-        $(document).ready(function() {
-            $("#obtenerDatos").click(function() {
-                $.ajax({
-                    url: 'ejemplo.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        // Limpiar la tabla antes de agregar nuevos datos
-                        $("#cuerpoTabla").empty();
-
-                        // Recorrer la lista de datos y construir la tabla
-                        $.each(data, function(index, item) {
-                            var fila = "<tr><td>" + item.nombre + "</td><td>" + item.edad + "</td></tr>";
-                            $("#cuerpoTabla").append(fila);
-                        });
-                    },
-                    error: function() {
-                        alert('Error al obtener los datos');
-                    }
-                });
-            });
-        });
-        
-        $(document).ready(function() {
-            $('#categoria').change(function() {
-                recargarLista();
-            });
-        });
-
-        function recargarLista() {
-            $.ajax({
-                type: "POST",
-                url: "../business/subCategoriaAction.php",
-                data: "numCategoria=" + $('#categoria').val(),
-                success: function(response) {
-                    // Inserta la respuesta generada por el bucle PHP en la tabla
-                    $("#tablaSubcategorias").empty(); // Limpia la tabla antes de añadir nuevos datos
-                    $("#tablaSubcategorias").html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error en la solicitud:", error);
-                }
-            });
-        }*/
     </script>
 
     <style>
@@ -245,39 +239,47 @@
         <h2><a href="../index.php">Home</a></h2>
     </header>
 
-    <!-- Agrega un botón para mostrar/ocultar el mapa conceptual -->
-    <button id="toggleMap">Mostrar Mapa Conceptual</button>
+    <!-- Botón para mostrar el modal -->
+    <button id="openMapModal">Mostrar Organigrama</button>
 
-    <!-- Contenedor del mapa conceptual (inicialmente oculto) -->
-    <div id="mapaConceptual" style="display: none;">
-        <!-- Categoría raíz -->
-        <div class="categoriaBox">
-            <span>Categoría Raíz</span>
-        </div>
 
-        <!-- Subcategorías y conexiones -->
-        <?php
-        if (count($getCat) > 0) {
-            foreach ($getCat as $categoria) {
-                echo '<div class="subcategoriaBox">';
-                echo '<span>' . $categoria->getNombre() . '</span>';
-                if (count($getSubCat) > 0) {
-                    foreach ($getSubCat as $subcategoria) {
-                        if ($categoria->getId() == $subcategoria->getCategoriaId()) {
-                            echo '<div class="linea"></div>';
-                            echo '<span>' . $subcategoria->getNombre() . '</span>';
+    <!-- Modal para el mapa conceptual -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div id="mapaConceptual">
+                
+                <!-- Subcategorías y conexiones -->
+                <?php
+                if (count($getCat) > 0) {
+                    foreach ($getCat as $categoria) {
+                        echo '<div class="categoriaNode">';
+                        echo '<span>' . $categoria->getNombre() . '</span>';
+                        if (count($getSubCat) > 0) {
+                            foreach ($getSubCat as $subcategoria) {
+                                if ($categoria->getId() == $subcategoria->getCategoriaId()) {
+                                    echo '<div class="linea"></div>';
+                                    echo '<div class="subcategoriaContainer">';
+                                    echo '<div class="subcategoriaNode">' . $subcategoria->getNombre() . '</div>';
+                                    echo '</div>';
+                                }
+                            }
+                        } else {
+                            echo '<span>Ninguna subcategoría registrada en esta categoría</span>';
                         }
+                        echo '</div>';
                     }
                 } else {
-                    echo '<span>Ninguna subcategoría registrada en esta categoría</span>';
+                    echo '<span>Ninguna categoría registrada</span>';
                 }
-                echo '</div>';
-            }
-        } else {
-            echo '<span>Ninguna categoría registrada</span>';
-        }
-        ?>
+                ?>
+
+            </div>
+        </div>
     </div>
+
+
+
 
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
@@ -355,12 +357,25 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('toggleMap').addEventListener('click', function() {
-            var mapaConceptual = document.getElementById('mapaConceptual');
-            if (mapaConceptual.style.display === 'none') {
-                mapaConceptual.style.display = 'block';
-            } else {
-                mapaConceptual.style.display = 'none';
+        // Obtén una referencia al modal y al botón de cierre
+        var mapModal = document.getElementById('mapModal');
+        var openMapModalBtn = document.getElementById('openMapModal');
+        var closeModalBtn = document.getElementById('closeModal');
+
+        // Asigna un manejador de eventos al botón "Mostrar Mapa Conceptual"
+        openMapModalBtn.addEventListener('click', function() {
+            mapModal.style.display = 'block';
+        });
+
+        // Asigna un manejador de eventos al botón de cierre del modal
+        closeModalBtn.addEventListener('click', function() {
+            mapModal.style.display = 'none';
+        });
+
+        // Cierra el modal si el usuario hace clic fuera de él
+        window.addEventListener('click', function(event) {
+            if (event.target === mapModal) {
+                mapModal.style.display = 'none';
             }
         });
 

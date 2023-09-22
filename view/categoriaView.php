@@ -10,9 +10,88 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     include '../business/categoriaBusiness.php';
+    include '../business/subCategoriaBusiness.php';
+    $subCategoriaBusiness = new SubCategoriaBusiness();
+    $getSubCat = $subCategoriaBusiness->getAllTBSubCategoria();
+    $categoriaBusiness = new CategoriaBusiness();
+    $getCat = $categoriaBusiness->getAllTBCategoria();
+
     session_start();
 
     ?>
+
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        /* Estilo para las cajas de categoría en el mapa conceptual */
+        .categoriaNode {
+            border: 1px solid #ccc;
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        /* Estilo para las cajas de subcategoría en el mapa conceptual */
+        .subcategoriaNode {
+            border: 1px solid #ccc;
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        /* Estilo para las líneas que conectan las cajas */
+        .linea {
+            border-left: 1px solid #ccc;
+            height: 100%;
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Estilo para el contenedor de subcategorías */
+        .subcategoriaContainer {
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -20,6 +99,45 @@
         <h1>Registro Categorías</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>
+
+    <!-- Botón para mostrar el modal -->
+    <button id="openMapModal">Mostrar Organigrama</button>
+
+
+    <!-- Modal para el mapa conceptual -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div id="mapaConceptual">
+
+                <!-- Subcategorías y conexiones -->
+                <?php
+                if (count($getCat) > 0) {
+                    foreach ($getCat as $categoria) {
+                        echo '<div class="categoriaNode">';
+                        echo '<span>' . $categoria->getNombre() . '</span>';
+                        if (count($getSubCat) > 0) {
+                            foreach ($getSubCat as $subcategoria) {
+                                if ($categoria->getId() == $subcategoria->getCategoriaId()) {
+                                    echo '<div class="linea"></div>';
+                                    echo '<div class="subcategoriaContainer">';
+                                    echo '<div class="subcategoriaNode">' . $subcategoria->getNombre() . '</div>';
+                                    echo '</div>';
+                                }
+                            }
+                        } else {
+                            echo '<span>Ninguna subcategoría registrada en esta categoría</span>';
+                        }
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<span>Ninguna categoría registrada</span>';
+                }
+                ?>
+
+            </div>
+        </div>
+    </div>
 
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
@@ -80,12 +198,34 @@
             }
             ?>
 
-            
+
         </table>
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Obtén una referencia al modal y al botón de cierre
+        var mapModal = document.getElementById('mapModal');
+        var openMapModalBtn = document.getElementById('openMapModal');
+        var closeModalBtn = document.getElementById('closeModal');
+
+        // Asigna un manejador de eventos al botón "Mostrar Mapa Conceptual"
+        openMapModalBtn.addEventListener('click', function() {
+            mapModal.style.display = 'block';
+        });
+
+        // Asigna un manejador de eventos al botón de cierre del modal
+        closeModalBtn.addEventListener('click', function() {
+            mapModal.style.display = 'none';
+        });
+
+        // Cierra el modal si el usuario hace clic fuera de él
+        window.addEventListener('click', function(event) {
+            if (event.target === mapModal) {
+                mapModal.style.display = 'none';
+            }
+        });
+
         $(document).ready(function() {
             $(".delete_categoria").on("click", function() {
                 var categoriaId = $(this).attr("tbcategoriaid");
@@ -107,12 +247,10 @@
             });
         });
         // Obtén una referencia a los campos de entrada
-        //const categoriaSiglaView = document.getElementById('categoriaSiglaView');
         const categoriaNombreView = document.getElementById('categoriaNombreView');
         const categoriaDescripcionView = document.getElementById('categoriaDescripcionView');
 
         // Agrega un evento de escucha para cada campo de entrada
-        //categoriaSiglaView.addEventListener('input', validateMaxLength);
         categoriaNombreView.addEventListener('input', validateMaxLength);
         categoriaDescripcionView.addEventListener('input', validateMaxLength);
 
