@@ -63,12 +63,13 @@
             <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
                 <tr>
                     <td><input required type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^(?:[A-Za-z]+|([A-Za-z]+\.?))$" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^(?:[A-Za-z]+|([A-Za-z]+\.?))$" oninput="validarCampo(this)" /></td>
                     <td><input required type="email" name="clientecorreoview" id="clientecorreoview" oninput="validarCampo(this)" /></td>
                     <td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" /></td>
                     <td><input required type="password" name="clientepasswordview" id="clientepasswordview" /><button type="button" class="showPassword">Mostrar</button></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
+
                 </tr>
             </form>
             <?php
@@ -79,9 +80,9 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clienteidview" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="email" name="clientecorreoview" id="clientecorreoview" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
 
                 echo '<td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" value="' . $current->getClienteFechaIngreso() . '"/></td>';
@@ -150,14 +151,21 @@
                 }
             } else if (id === "clientenombreview" || id === "clienteprimerapellidoview" || id === "clientesegundoapellidoview") {
                 if (!isValidName(valor)) {
-                    input.setCustomValidity("Ingrese un nombre válido (solo letras) y comience con mayúscula.");
+                    input.setCustomValidity("Ingrese un nombre válido (solo letras y el uso opcional de puntos).");
                     errorSpan.textContent = "Nombre inválido.";
                 } else {
                     input.setCustomValidity("");
                     errorSpan.textContent = "";
                 }
+            } else if (id === "clienteprimerapellidoview" || id === "clientesegundoapellidoview") {
+                if (!isValidApellido(valor)) {
+                    input.setCustomValidity("Ingrese un apellido válido (solo letras) y comience con mayúscula o sea una abreviatura válida.");
+                    errorSpan.textContent = "Apellido inválido.";
+                } else {
+                    input.setCustomValidity("");
+                    errorSpan.textContent = "";
+                }
             }
-
         }
 
         function isValidEmail(email) {
@@ -170,28 +178,54 @@
             return namePattern.test(name);
         }
 
+        function isValidApellido(apellido) {
+            const apellidoPattern = /^(?:[A-Z][a-z]+|[A-Z]\.)$/;
+            return apellidoPattern.test(apellido);
+        }
+        // Espera a que el documento HTML esté completamente cargado antes de ejecutar el código
         document.addEventListener("DOMContentLoaded", function() {
+
+            // Obtiene el elemento de entrada de fecha por su ID
             const fechaIngresoInput = document.getElementById("clientefechaingresoview");
+
+            // Obtiene la fecha actual
             const fechaActual = new Date();
+
+            // Formatea la fecha actual para que coincida con el formato de entrada de fecha
             const yyyy = fechaActual.getFullYear();
-            const mm = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Sumar 1 porque en JavaScript los meses van de 0 a 11
+
+            /// Obtiene el mes actual y asegura que tenga 2 dígitos
+            const mm = String(fechaActual.getMonth() + 1).padStart(2, '0');
+
+            // Obtiene el día actual y asegura que tenga 2 dígitos
             const dd = String(fechaActual.getDate()).padStart(2, '0');
 
+            // Formatea la fecha actual en el formato "YYYY-MM-DD"
             const fechaFormatted = `${yyyy}-${mm}-${dd}`;
+
+            // Establece el valor mínimo de la fecha de ingreso (hoy)
+            // Establece el valor del campo de fecha con la fecha actual formateada
             fechaIngresoInput.value = fechaFormatted;
+
+            // Agrega un evento de cambio al campo de fecha de ingreso
+            fechaIngresoInput.addEventListener("change", function() {
+
+                // Obtiene la fecha ingresada por el usuario
+                const fechaIngreso = new Date(fechaIngresoInput.value);
+
+                // Compara la fecha de ingreso con la fecha actual
+                if (fechaIngreso > fechaActual) {
+                    // Si la fecha ingresada es posterior a la fecha actual,
+                    // establece un mensaje de validación personalizado
+                    fechaIngresoInput.setCustomValidity("La fecha de ingreso no puede ser mayor a la fecha actual.");
+                } else {
+                    // Si la fecha es válida, elimina cualquier mensaje de validación personalizado
+                    fechaIngresoInput.setCustomValidity("");
+                }
+            });
         });
     </script>
 
-
-    <script>
-        function confirmarActualizacion() {
-            // Muestra una alerta de confirmación y captura la respuesta del usuario.
-            var confirmacion = confirm("¿Desea confirmar la actualización de este cliente?");
-
-            // Retorna true si el usuario acepta, lo que enviará el formulario.
-            return confirmacion;
-        }
-    </script>
     <script>
         function validateEmail(input) { //del update
             const email = input.value;
@@ -204,18 +238,20 @@
             }
         }
 
-        function validateName(input) { //del update
-            const nameValue = input.value;
-
-            // Comprueba si el campo está vacío o no comienza con mayúscula
-            if (nameValue === '' || !/^[A-Z][a-z]+$/.test(nameValue)) {
-                input.setCustomValidity("Ingrese un nombre válido (solo letras y la primera letra en mayúscula).");
-            } else {
-                input.setCustomValidity(""); // Restablece el mensaje de validación
-            }
+        function isValidName(name) {
+            const namePattern = /^[A-Za-z]+\s*\.*$/;
+            return namePattern.test(name);
         }
     </script>
+    <script>
+        function confirmarActualizacion() {
+            // Muestra una alerta de confirmación y captura la respuesta del usuario.
+            var confirmacion = confirm("¿Desea confirmar la actualización de este cliente?");
 
+            // Retorna true si el usuario acepta, lo que enviará el formulario.
+            return confirmacion;
+        }
+    </script>
 
     <footer>
     </footer>
