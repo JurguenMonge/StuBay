@@ -21,7 +21,6 @@
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Cliente Direccion</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>

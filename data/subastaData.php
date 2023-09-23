@@ -141,7 +141,7 @@ class SubastaData extends Data
         
         $clienteId = mysqli_real_escape_string($conn, $clienteId);//avoid sql injection
 
-        $query = "SELECT COUNT(*) FROM tbsubasta WHERE tbclienteid = ? AND tbsubastaActivo = 1;";//query to check if the user exists in the database 
+        $query = "SELECT COUNT(*) FROM tbsubasta WHERE tbclienteid = ? AND tbsubastaactivo = 1;";//query to check if the user exists in the database 
 
         $stmt = mysqli_prepare($conn, $query);//prepare the query to avoid sql injection attacks 
         mysqli_stmt_bind_param($stmt, 'i', $clienteId);//bind the parameters to the query 
