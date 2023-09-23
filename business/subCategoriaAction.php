@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 
 
 include '../business/subCategoriaBusiness.php';
+include '../business/articuloBusiness.php';
 
 if (isset($_GET['update'])) {
 
@@ -33,7 +34,7 @@ if (isset($_GET['update'])) {
             );
 
             $subCategoriaBusiness = new SubCategoriaBusiness();
-            
+
             $result = $subCategoriaBusiness->actualizarTBSubCategoria($subCategoria);
             if ($result == 1) {
                 header("location: ../view/subCategoriaView.php?success=updated");
@@ -53,17 +54,29 @@ if (isset($_GET['update'])) {
 } else if (isset($_GET['delete'])) { //if the user clicked on the delete button
 
     $subcategoriaId = $_GET['tbsubcategoriaid'];
-    $subCategoriaBusiness = new SubCategoriaBusiness();
-    $result = $subCategoriaBusiness->eliminarTBSubCategoria($subcategoriaId);
 
-    if ($result == 1) {
-        header("location: ../view/subCategoriaView.php?success=delete"); //redirect to the index.php page with a success message
-        session_start();
-        $_SESSION['msj'] = "Subcategoría eliminada correctamente";
+    $articuloBusiness = new ArticuloBusiness();
+    $articulos = $articuloBusiness->getArticulosBySubcategoriaId($subcategoriaId);
+
+    if ($articulos == NULL) {
+
+
+        $subCategoriaBusiness = new SubCategoriaBusiness();
+        $result = $subCategoriaBusiness->eliminarTBSubCategoria($subcategoriaId);
+
+        if ($result == 1) {
+            header("location: ../view/subCategoriaView.php?success=delete"); //redirect to the index.php page with a success message
+            session_start();
+            $_SESSION['msj'] = "Subcategoría eliminada correctamente";
+        } else {
+            header("location: ../view/subCategoriaView.php?error=dbError"); //redirect to the index.php page with an error message
+            session_start();
+            $_SESSION['error'] = "Error al eliminar la subcategoría";
+        }
     } else {
-        header("location: ../view/subCategoriaView.php?error=dbError"); //redirect to the index.php page with an error message
+        header("location: ../view/subCategoriaView.php?error=error"); //redirect to the index.php page with an error message
         session_start();
-        $_SESSION['error'] = "Error al eliminar la subcategoría";
+        $_SESSION['error'] = "No puedes eliminar esta subcategoría porque posee artículos relacionados";
     }
 } else if (isset($_POST['create'])) { //if the user clicked on the create button
 
@@ -127,7 +140,6 @@ if (isset($_GET['update'])) {
         $cadena .= '<option value="' . $parte2 . '">' . $sub->getSigla() . ' - ' . $sub->getNombre();
     }
     echo $cadena .= "</option>";
-    
 } else if (isset($_POST['numCategoria'])) {
     $cadena = explode("-", $_POST['numCategoria']);
     $categoriaId = $cadena[0];
@@ -135,10 +147,12 @@ if (isset($_GET['update'])) {
     $subcategorias = $subCategoriaBusiness->getSubcategoriasByCategoriaId($categoriaId);
 
     $datosArray = array();
-    
+
     foreach ($subcategorias as $current) {
-        $arrayActual = array("subcategoriaId"=> $current->getId(), "categoriaId" => $current->getCategoriaId(), "sigla" => $current->getSigla(),
-                             "nombre" => $current->getNombre(), "descripcion" => $current->getDescripcion(), "activo" => $current->getActivo());
+        $arrayActual = array(
+            "subcategoriaId" => $current->getId(), "categoriaId" => $current->getCategoriaId(), "sigla" => $current->getSigla(),
+            "nombre" => $current->getNombre(), "descripcion" => $current->getDescripcion(), "activo" => $current->getActivo()
+        );
         $datosArray[] = $arrayActual;
     }
     //var_dump($datosArray);
