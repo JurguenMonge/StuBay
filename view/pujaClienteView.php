@@ -87,11 +87,13 @@
     </style>
 
     <?php
-    error_reporting(0);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     include '../business/pujaClienteBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/articuloBusiness.php';
-    include '../business/subastaBusiness.php';
+    //include '../business/subastaBusiness.php';
     $clienteBusiness = new ClienteBusiness();
     $articuloBusiness = new ArticuloBusiness();
     $subastaBusiness = new SubastaBusiness();
@@ -101,7 +103,7 @@
     $getSub = $subastaBusiness->getAllTBSubasta();
     date_default_timezone_set('America/Costa_Rica');
     $precioOferta = 1000;
-    $precioOfertaFormateado = '₡' . number_format($precioInicial, 2, '.', ',');
+    //$precioOfertaFormateado = '₡' . number_format($precioInicial, 2, '.', ',');
     ?>
 </head>
 
@@ -145,7 +147,7 @@
                             <option value="">Seleccionar artículo</option>
                             <?php
                             $currentDate =  date("Y-m-d H:i:s");
-                            var_dump($currentDate);
+                            //var_dump($currentDate);
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
 

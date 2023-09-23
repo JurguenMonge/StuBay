@@ -120,19 +120,13 @@ class Subasta{
         return $this;
     }
 
-    /**
-     * Get the value of subastaVendedorId
-     */ 
+    
     public function getSubastaVendedorId()
     {
         return $this->subastaVendedorId;
     }
 
-    /**
-     * Set the value of subastaVendedorId
-     *
-     * @return  self
-     */ 
+    
     public function setSubastaVendedorId($subastaVendedorId)
     {
         $this->subastaVendedorId = $subastaVendedorId;
