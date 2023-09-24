@@ -76,7 +76,10 @@
                             }
                             ?>
                         </select></td>
-                    <td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" placeholder="Número" /></td>
+                        <td>
+    <input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="+506 Número" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
+</td>
+
                     <td><input required type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" placeholder="Descripción" /></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
@@ -149,6 +152,23 @@
         }
     </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const numeroInput = document.getElementById("clientetelefononumeroview");
+
+        numeroInput.addEventListener("input", function() {
+            // Elimina cualquier carácter que no sea un número
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            // Limita la longitud máxima a 8 dígitos
+            if (this.value.length > 8) {
+                this.value = this.value.slice(0, 8);
+            }
+
+            
+        });
+    });
+</script>
 
 
     <footer>
