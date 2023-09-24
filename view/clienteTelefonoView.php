@@ -20,7 +20,7 @@
 
 <body>
     <header>
-    
+
         <h1>Registro Teléfono Cliente</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>
@@ -76,9 +76,9 @@
                             }
                             ?>
                         </select></td>
-                        <td>
-    <input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="+506 Número" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
-</td>
+                    <td>
+                        <input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="Número" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
+                    </td>
 
                     <td><input required type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" placeholder="Descripción" /></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
@@ -103,7 +103,7 @@
                     }
                 }
                 echo '</select></td>';
-                echo '<td><input required  type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" pattern="^[0-9,\s-]+$" value="' . $current->getClienteTelefonoNumero() . '" oninput="validateInput(this)"/></td>';
+                echo '<td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="Número" oninput="this.value = this.value.replace(/[^0-9]/g, \'\').slice(0, 8);" value="' . $current->getClienteTelefonoNumero() . '" /></td>';
                 echo '<td><input required  type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" value="' . $current->getClienteTelefonoDescripcion() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input type="checkbox" name="clientetelefonoactivoview" id="clientetelefonoactivoview" ' . ($current->getClienteTelefonoActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
@@ -152,23 +152,23 @@
         }
     </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const numeroInput = document.getElementById("clientetelefononumeroview");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const numeroInput = document.getElementById("clientetelefononumeroview");
 
-        numeroInput.addEventListener("input", function() {
-            // Elimina cualquier carácter que no sea un número
-            this.value = this.value.replace(/[^0-9]/g, '');
+            numeroInput.addEventListener("input", function() {
+                // Elimina cualquier carácter que no sea un número
+                this.value = this.value.replace(/[^0-9]/g, '');
 
-            // Limita la longitud máxima a 8 dígitos
-            if (this.value.length > 8) {
-                this.value = this.value.slice(0, 8);
-            }
+                // Limita la longitud máxima a 8 dígitos
+                if (this.value.length > 8) {
+                    this.value = this.value.slice(0, 8);
+                }
 
-            
+
+            });
         });
-    });
-</script>
+    </script>
 
 
     <footer>
