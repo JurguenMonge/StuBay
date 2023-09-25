@@ -80,9 +80,9 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clienteidview" value="' . $current->getClienteId() . '">';
                 echo '<tr>';
-                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="^[A-Za-z]+\s*\.*$" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="[a-zA-Z.]*" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="[a-zA-Z.]*" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
+                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="[a-zA-Z.]*" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="email" name="clientecorreoview" id="clientecorreoview" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
 
                 echo '<td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" value="' . $current->getClienteFechaIngreso() . '"/></td>';
