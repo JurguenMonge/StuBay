@@ -36,8 +36,12 @@ if (isset($_POST['update'])) {
             $result = $pujaClienteBusiness->actualizarTBPujaCliente($pujaCliente);
             if ($result == 1) {
                 header("location: ../view/pujaClienteView.php?success=updated");
+                session_start();
+                $_SESSION['msj'] = "Puja actualizada correctamente";
             } else {
                 header("location: ../view/pujaClienteView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al actualizar la puja";
             }
         } else {
             header("location: ../view/pujaClienteView.php?error=emptyField");
@@ -76,6 +80,8 @@ if (isset($_POST['update'])) {
 
             if ($result == 1) {
                 header("location: ../view/pujaClienteView.php?success=delete"); //redirect to the index.php page with a success message
+                session_start();
+            $_SESSION['msj'] = "Puja eliminada correctamente";
             } else {
                 header("location: ../view/pujaClienteView.php?error=dbError"); //redirect to the index.php page with an error message
             }
@@ -119,14 +125,18 @@ if (isset($_POST['update'])) {
 
             $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
             if ($result == 1) {
-                header("location: ../index.php?success=insert"); //redirect to the index.php page with a success message
+                header("location: ../view/pujaClienteView.php?success=insert"); //redirect to the index.php page with a success message
+                session_start();
+                $_SESSION['msj'] = "Puja registrada correctamente";
             } else {
-                header("location: ../index.php?error=dbError"); //redirect to the index.php page with an error message
+                header("location: ../view/pujaClienteView.php?error=dbError"); //redirect to the index.php page with an error message
+                session_start();
+                $_SESSION['error'] = "Error al registrar la puja";
             }
         } else {
-            header("location: ../index.php?error=emptyField"); //redirect to the index.php page with an error message
+            header("location: ../view/pujaClienteView.php?error=emptyField"); //redirect to the index.php page with an error message
         }
     } else {
-        header("location: ../index.php?error=error"); //redirect to the index.php page with an error message
+        header("location: ../view/pujaClienteView.php?error=error"); //redirect to the index.php page with an error message
     }
 }

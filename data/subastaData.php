@@ -112,7 +112,7 @@ class SubastaData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaActivo = 1 && tbsubastaid=$subastaId;";
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 && tbsubastaid=$subastaId;";
         $result = mysqli_query($conn, $querySelect);
 
         $subasta = null;
@@ -120,13 +120,13 @@ class SubastaData extends Data
         while ($row = mysqli_fetch_array($result)) {
             $subasta = new Subasta(
                 $row['tbsubastaid'],
-                $row['tbsubastaFechaHoraInicio'],
-                $row['tbsubastaFechaHoraFinal'],
-                $row['tbsubastaPrecio'],
+                $row['tbsubastafechahorainicio'],
+                $row['tbsubastafechahorafinal'],
+                $row['tbsubastaprecio'],
                 $row['tbsubastaestadoarticulo'],
                 $row['tbsubastaarticulodiasuso'],
-                $row['tbsubastaActivo'],
-                $row['tbarticuloId'],
+                $row['tbsubastaactivo'],
+                $row['tbarticuloid'],
                 $row['tbclienteid']
             );
         }

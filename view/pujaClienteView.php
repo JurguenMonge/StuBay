@@ -49,10 +49,89 @@
     </script>
 
     <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilo para el botón de cerrar */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+
         .input-container {
             position: relative;
             width: 200px;
             /* Puedes ajustar el ancho según tus necesidades */
+        }
+
+        /* Estilos para el modal */
+        #subastasActivasModal {
+            display: none;
+            /* El modal está oculto por defecto */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Estilos para el contenido del modal */
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Estilos para el botón de cerrar */
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
         }
 
         .currency-symbol {
@@ -113,7 +192,40 @@
         <h2><a href="../index.php">Home</a></h2>
     </header>
 
+    <?php
+    if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<?php echo $_SESSION['msj']; ?>',
+                showConfirmButton: false,
+                timer: 2500
+            })
+        </script>
+    <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
+    } ?>
+
+    <?php
+    if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<?php echo $_SESSION['error']; ?>',
+                showConfirmButton: false,
+                timer: 2500
+            })
+        </script>
+    <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+    } ?>
+
+    <button type="button" id="verSubastasActivasBtn">Ver Subastas Activas</button>
+    <br><br>
+    <button type="button" id="verHistorialBtn">Ver Historial de Pujas</button>
+
     <section id="form">
+        <br>
         <table>
             <tr>
                 <th>Nombre del Cliente</th>
@@ -191,68 +303,167 @@
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
-            <?php
-            $pujaClienteBusiness = new PujaClienteBusiness();
-            $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
-            foreach ($allPujasCliente as $current) {
-                echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
-                echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
-                echo '<tr>';
-                foreach ($getCli as $cliente) {
-                    if ($cliente->getClienteId() == $current->getClienteId()) {
-                        echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
-                        echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
-                    }
-                }
 
-                foreach ($getArt as $articulo) {
-                    if ($articulo->getArticuloId() == $current->getArticuloId()) {
-                        echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
-                        echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
-                    }
-                }
-                echo '<td></td>';
-                echo '<td>
+
+        </table>
+    </section>
+
+    <!-- Modal para Subastas Activas -->
+    <div id="subastasActivasModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="cerrarSubastasActivasModal">&times;</span>
+            <h2>Pujas Activas</h2>
+            <table id="tablaSubastasActivas">
+                <?php
+                $pujaClienteBusiness = new PujaClienteBusiness();
+                $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
+                $fechaHoy = date("Y-m-d H:i:s");
+
+                foreach ($allPujasCliente as $current) {
+                    if ($current->getPujaClienteFecha() >= $fechaHoy) {
+                        echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
+                        echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
+                        echo '<tr>';
+                        foreach ($getCli as $cliente) {
+                            if ($cliente->getClienteId() == $current->getClienteId()) {
+                                echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                            }
+                        }
+
+                        foreach ($getArt as $articulo) {
+                            if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                                echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
+                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                            }
+                        }
+
+                        echo '<td>
                         <div class="input-container">
                             <span class="currency-symbol">₡</span>
                             <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
                         </div">
                     </td>';
-                echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" value="' . $current->getPujaClienteFecha() . '"/></td>';
-                echo '<td>
+                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                        echo '<td>
                         <div class="input-container">
                             <span class="currency-symbol">₡</span>
-                            <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" value="' . $current->getPujaClienteOferta() . '"/>
+                            <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
                         </div">
                     </td>';
 
-                echo '<td><input type="submit" value="Actualizar" name="update" id="update" /></td>';
-                echo '<td><input type="submit" value="Eliminar" name="delete" id="delete" /></td>';
-                echo '</tr>';
-                echo '</form>';
-            }
-            ?>
+                        echo '</tr>';
+                        echo '</form>';
+                    }
+                }
+                ?>
+            </table>
+        </div>
+    </div>
 
-            <tr>
-                <td></td>
-                <td>
+
+
+    <div id="historialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="cerrarModal">&times;</span>
+            <h2>Historial de Pujas</h2>
+            <table class="tbHistorico">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Artículo</th>
+                        <th>Costo del Envío</th>
+                        <th>Fecha</th>
+                        <th>Oferta</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <?php
-                    if (isset($_GET['error'])) {
-                        if ($_GET['error'] == "emptyField") {
-                            echo '<p style="color: red">Campo(s) vacio(s)</p>';
-                        } else if ($_GET['error'] == "dbError") {
-                            echo '<center><p style="color: red">Error al procesar la transacción</p></center>';
+                    $pujaClienteBusiness = new PujaClienteBusiness();
+                    $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
+                    foreach ($allPujasCliente as $current) {
+                        echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
+                        echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
+                        echo '<tr>';
+                        foreach ($getCli as $cliente) {
+                            if ($cliente->getClienteId() == $current->getClienteId()) {
+                                echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                            }
                         }
-                    } else if (isset($_GET['success'])) {
-                        echo '<p style="color: green">Transacción realizada</p>';
+
+                        foreach ($getArt as $articulo) {
+                            if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                                echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
+                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                            }
+                        }
+
+                        echo '<td>
+                            <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                            </div">
+                        </td>';
+                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                        echo '<td>
+                            <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+                            </div">
+                        </td>';
+
+                        echo '</tr>';
+                        echo '</form>';
                     }
                     ?>
-                </td>
-            </tr>
-        </table>
-    </section>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
+        // JavaScript para mostrar el modal de pujas activas
+        var verSubastasActivasBtn = document.getElementById("verSubastasActivasBtn");
+        var subastasActivasModal = document.getElementById("subastasActivasModal"); // Cambiado el ID
+        var cerrarSubastasActivasModal = document.getElementById("cerrarSubastasActivasModal"); // Cambiado el ID
+
+        verSubastasActivasBtn.addEventListener("click", function() {
+            subastasActivasModal.style.display = "block"; // Cambiado el ID
+        });
+
+        cerrarSubastasActivasModal.addEventListener("click", function() {
+            subastasActivasModal.style.display = "none"; // Cambiado el ID
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target == subastasActivasModal) {
+                subastasActivasModal.style.display = "none"; // Cambiado el ID
+            }
+        });
+
+        // JavaScript para mostrar el modal del historial de pujas
+        var verHistorialBtn = document.getElementById("verHistorialBtn");
+        var historialModal = document.getElementById("historialModal");
+        var cerrarModal = document.getElementById("cerrarModal");
+
+        verHistorialBtn.addEventListener("click", function() {
+            historialModal.style.display = "block";
+        });
+
+        cerrarModal.addEventListener("click", function() {
+            historialModal.style.display = "none";
+        });
+
+        // Cierra el modal si el usuario hace clic fuera de él
+        window.addEventListener("click", function(event) {
+            if (event.target == historialModal) {
+                historialModal.style.display = "none";
+            }
+        });
+
+
+
         function validarPrecio() {
             var precioInicial = parseFloat(document.getElementById("subastaIdView").value.replace("₡", "").replace(",", ""));
 
