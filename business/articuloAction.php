@@ -4,8 +4,7 @@ include '../business/articuloBusiness.php';
 
 if(isset($_POST['update'])){
 
-    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['subcategoria']) && isset($_POST['marca'])
-    && isset($_POST['modelo']) && isset($_POST['serie'])) {
+    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['subcategorias'])) {
        
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
@@ -13,11 +12,9 @@ if(isset($_POST['update'])){
         $modelo = $_POST['modelo'];
         $serie = $_POST['serie'];
         $activo = 1;
-        $subcategoria = $_POST['subcategoria'];
+        $subcategoria = $_POST['subcategorias'];
 
-        if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0 && strlen($marca) > 0 &&
-            strlen($modelo) > 0 && strlen($serie) > 0
-        ){
+        if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0){
             $articulo = new Articulo(
                 $id,
                 $nombre,
@@ -44,7 +41,8 @@ if(isset($_POST['update'])){
     }
 } else if(isset($_POST['create'])){
     //Validaciones
-    if(isset($_POST['articulonombreview']) && isset($_POST['articulomarcaview']) && isset($_POST['articulomodeloview']) && isset($_POST['articuloserieview']) && isset($_POST['subcategorias'])){
+    if(isset($_POST['articulonombreview']) && isset($_POST['articulomarcaview']) && isset($_POST['articulomodeloview'])
+    && isset($_POST['articuloserieview']) && isset($_POST['subcategorias'])){
         
         //Obtener los datos del formulario
         $articuloNombre = $_POST['articulonombreview'];
@@ -53,18 +51,17 @@ if(isset($_POST['update'])){
         $articuloSerie = $_POST['articuloserieview'];
         $articuloActivo = 1;
         $articuloSubCategoriaId = $_POST['subcategorias'];
-
         //Validar variables
-        if(strlen($articuloNombre) > 0 && strlen($articuloSubCategoriaId)>0)
+        if(strlen( $articuloNombre ) > 0 && strlen($articuloSubCategoriaId) > 0)
         {
-            $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId);
+            $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId);       
             $articuloBusiness = new ArticuloBusiness();
             $result = $articuloBusiness->insertarTBArticulo($articulo);
 
             if ($result == 1) { 
                 header("location: ../view/articuloView.php?success=insert"); 
             } else {
-                header("location: ../view/articuloView.php?error=dbError"); 
+                header("location: ../view/articuloView.php?error=dbError");
             }
         } else {
             header("location: ../view/articuloView.php?error=emptyField"); 
@@ -73,22 +70,17 @@ if(isset($_POST['update'])){
         header("location: ../view/articuloView.php?error=error"); 
     }
 }else if(isset($_POST['delete'])){
-    
-
-    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['subcategoria']) && isset($_POST['marca'])
-    && isset($_POST['modelo']) && isset($_POST['serie'])) {
+    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['subcategorias'])) {
        
-        $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $marca = $_POST['marca'];
-        $modelo = $_POST['modelo'];
-        $serie = $_POST['serie'];
-        $activo = 0;
-        $subcategoria = $_POST['subcategoria'];
+         $id = $_POST['id'];
+         $nombre = $_POST['nombre'];
+         $marca = $_POST['marca'];
+         $modelo = $_POST['modelo'];
+         $serie = $_POST['serie'];
+         $activo = 0;
+         $subcategoria = $_POST['subcategorias'];
         
-        if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0 && strlen($marca) > 0 &&
-            strlen($modelo) > 0 && strlen($serie) > 0
-        ){
+        if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0){
             $articulo = new Articulo(
                 $id,
                 $nombre,

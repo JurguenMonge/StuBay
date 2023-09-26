@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-09-2023 a las 00:16:23
+-- Tiempo de generación: 26-09-2023 a las 02:25:07
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -30,28 +30,27 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbarticulo` (
   `tbarticuloid` int(11) NOT NULL,
   `tbarticulonombre` varchar(255) NOT NULL,
-  `tbsubcategoriaid` varchar(4) NOT NULL,
   `tbarticulomarca` varchar(255) NOT NULL,
   `tbarticulomodelo` varchar(255) NOT NULL,
   `tbarticuloserie` varchar(255) NOT NULL,
-  `tbarticuloactivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `tbarticuloactivo` tinyint(4) NOT NULL,
+  `tbsubcategoriaid` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tbarticulo`
 --
 
-INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbsubcategoriaid`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`) VALUES
-(1, 'celular', '4', 'Iphone', 'Galaxy', '122', 0),
-(2, 'Computadora', '4', 'MSI', 'SX10', 'Pro', 1),
-(3, 'Martillo', '1', 'Hammer', 'Ultimate', 'Pro', 0),
-(4, 'Casa', '4', 'asdasd', 'asdad', 'fa', 1),
-(5, 'Computadora', '5', 'SX11', 'PRO23', '1', 3),
-(6, 'ASDASD', '7', 'QWE', 'QWE', '1', 3),
-(7, 'Computadora', '3', 'MSI', 'SXC12', '23RR', 1),
-(8, 'Computadora', '8', 'SD', 'QWQ', 'RF', 1),
-(9, 'Celular', '10', 'iphone', '11', 'pro', 1),
-(10, 'Parlante', '3', 'REDRAGON', '123', '33', 1);
+INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`, `tbsubcategoriaid`) VALUES
+(1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
+(1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
+(1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
+(1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
+(2, 'Parlantes', 'Redragon', 'as23', '', 0, '13'),
+(3, 'Computadora', 'MSI', '', '', 0, ''),
+(4, 'Monitor', 'MSI', 'G523', '', 1, '14'),
+(5, 'Microfono', 'HyperX', 'Solocast', '', 1, '14'),
+(6, 'Teclado', 'HyperX', 'Galaxy', '', 1, '21');
 
 -- --------------------------------------------------------
 
@@ -72,7 +71,7 @@ CREATE TABLE `tbcategoria` (
 --
 
 INSERT INTO `tbcategoria` (`tbcategoriaid`, `tbcategoriasigla`, `tbcategorianombre`, `tbcategoriadescripcion`, `tbcategoriaactivo`) VALUES
-(1, '1', 'Tecnologico', 'Variados', 1),
+(1, '1', 'Tecnologico', 'Variado', 1),
 (2, '2', 'Muebles', 'Para computadoras', 1),
 (3, '3', 'Ferretería', 'Variado', 1),
 (4, '4', 'fdsfs', 'fs', 0),

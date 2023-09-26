@@ -124,30 +124,25 @@
                     echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
                     echo '<td>  <select name="categoria" id="categoria">';
                     foreach ($getSubCat as $subcategoria) {
-                        if($current->getArticuloSubCategoriaId() == $subcategoria->getId()){
-                            $subSigla = $subcategoria->getSigla();
-                            $parte1 = substr($subSigla, 0, 2);
-                            $parte2 = substr($subSigla, 2, 2);
+                        if($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()){
+                            $categoriaId = $subcategoria->getCategoriaId();
                             foreach($getCat as $categoria){
-                                if($categoria->getSigla() ==  $parte1){
-                                    echo "<option selected value='" . $parte1 . "'>" . $categoria->getNombre() . "</option>";
+                                if($categoria->getId() ==  $categoriaId){
+                                    echo "<option selected value='" . $categoria->getId() . "'>" . $categoria->getNombre() . "</option>";
                                 }else{
-                                    echo "<option value='" . $parte1 . "'>" . $categoria->getNombre() . "</option>";
+                                    echo "<option value='" . $categoria->getId() . "'>" . $categoria->getNombre() . "</option>";
                                 }
                             }
                         }
                         
                     }
                     echo ' </select></td>';
-                    echo '<td>  <select name="subcategoria" id="subcategoria">';
+                    echo '<td>  <select name="subcategorias" id="subcategorias">';
                     foreach ($getSubCat as $subcategoria) {
-                        if ($current->getArticuloSubCategoriaId() == $subcategoria->getId()) {
-                            $subSigla = $subcategoria->getSigla();
-                            $parte1 = substr($subSigla, 0, 2);
-                            $parte2 = substr($subSigla, 2, 2);
-                            echo "<option selected value='" . $parte2 . "'>" . $subcategoria->getNombre() . "</option>";
+                        if ($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()) {
+                            echo "<option selected value='" . $subcategoria->getSigla(). "'>" . $subcategoria->getSigla(). '-'. $subcategoria->getNombre() . "</option>";
                         } else {
-                            echo "<option value='" . $parte2 . "'>" . $subcategoria->getNombre() . "</option>";
+                            echo "<option value='" . $subcategoria->getSigla() . "'>" . $subcategoria->getSigla() . '-'. $subcategoria->getNombre() . "</option>";
                         }
                     }
                     echo ' </select></td>';

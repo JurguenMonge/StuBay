@@ -20,13 +20,13 @@ class ArticuloData extends Data{
 
         $queryInsert = "INSERT INTO tbarticulo VALUES (" . $nextId . ",'" .
             $articulo->getArticuloNombre() . "','" .
-            $articulo->getArticuloSubCategoriaId() . "','" .
             $articulo->getArticuloMarca() . "','" .
             $articulo->getArticuloModelo() . "','" .
-            $articulo->getArticuloSerie() . "'," .
-            $articulo->getArticuloActivo() . ");";
+            $articulo->getArticuloSerie(). "','" .
+            $articulo->getArticuloActivo() . "','" .
+            $articulo->getArticuloSubCategoriaId() . "' );";
 
-
+            
         $result = mysqli_query($conn, $queryInsert); 
         mysqli_close($conn);
         return $result;
@@ -36,12 +36,12 @@ class ArticuloData extends Data{
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
-        "', tbsubcategoriaid='" . $articulo->getArticuloSubCategoriaId() .
+        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .       
         "', tbarticulomarca='" . $articulo->getArticuloMarca() . 
         "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
         "', tbarticuloserie='" . $articulo->getArticuloSerie() .
-        "', tbarticuloactivo=" . $articulo->getArticuloActivo() .
+        "', tbarticuloactivo='" . $articulo->getArticuloActivo() .
+        "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
         " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
 
         $result = mysqli_query($conn, $queryUpdate); 
@@ -53,12 +53,12 @@ class ArticuloData extends Data{
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
         
-        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
-        "', tbsubcategoriaid='" . $articulo->getArticuloSubCategoriaId() .
+        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .       
         "', tbarticulomarca='" . $articulo->getArticuloMarca() . 
         "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
         "', tbarticuloserie='" . $articulo->getArticuloSerie() .
-        "', tbarticuloactivo=" . $articulo->getArticuloActivo() .
+        "', tbarticuloactivo='" . $articulo->getArticuloActivo() .
+        "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
         " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
 
         
