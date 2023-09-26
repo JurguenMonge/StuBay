@@ -5,8 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Registro articulo</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
         <?php
         error_reporting(0);
+        session_start();
         include '../business/articuloBusiness.php';
         include '../business/categoriaBusiness.php';
         include '../business/subCategoriaBusiness.php';
@@ -72,6 +75,35 @@
             <h1>Registro Articulo</h1>
             <h2><a href="../index.php">Home</a></h2>
         </header>
+
+        <?php
+            if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<?php echo $_SESSION['msj']; ?>',
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
+                </script>
+            <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
+            } ?>
+
+            <?php
+            if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+            ?>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: '<?php echo $_SESSION['error']; ?>',
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
+                </script>
+            <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+            } 
+        ?>
 
         <section id="form">
             <table>
@@ -156,22 +188,6 @@
                     echo '</form>';
                 }
                 ?>
-                <tr>
-                    <td></td>
-                    <td>
-                        <?php
-                        if (isset($_GET['error'])) {
-                            if ($_GET['error'] == "emptyField") {
-                                echo '<p style="color: red">Campo(s) vacio(s)</p>';
-                            } else if ($_GET['error'] == "dbError") {
-                                echo '<center><p style="color: red">Error al procesar la transacción</p></center>';
-                            }
-                        } else if (isset($_GET['success'])) {
-                            echo '<p style="color: green">Transacción realizada</p>';
-                        }
-                        ?>
-                    </td>
-                </tr>
             </table>
         </section>
     </body>

@@ -30,8 +30,12 @@ if(isset($_POST['update'])){
 
             if($result == 1){
                 header("location: ../view/articuloView.php?success=updated");
+                session_start();
+                $_SESSION['msj'] = "Articulo actualizado correctamente";
             } else {        
                 header("location: ../view/articuloView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al actualizar el articulo";
             }
         }else{
             header("location: ../view/articuloView.php?error=emptyField");
@@ -60,8 +64,12 @@ if(isset($_POST['update'])){
 
             if ($result == 1) { 
                 header("location: ../view/articuloView.php?success=insert"); 
+                session_start();
+                $_SESSION['msj'] = "Articulo insertado correctamente";
             } else {
                 header("location: ../view/articuloView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al insertar el articulo";
             }
         } else {
             header("location: ../view/articuloView.php?error=emptyField"); 
@@ -96,8 +104,12 @@ if(isset($_POST['update'])){
 
             if($result == 1){
                 header("location: ../view/articuloView.php?success=delete");
+                session_start();
+                $_SESSION['msj'] = "Articulo eliminado correctamente";
             } else {        
                 header("location: ../view/articuloView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al eliminar el articulo";
             }
         }else{
             header("location: ../view/articuloView.php?error=emptyField");
