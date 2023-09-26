@@ -65,11 +65,11 @@ if(isset($_POST['update'])){
             if ($result == 1) { 
                 header("location: ../view/articuloView.php?success=insert"); 
                 session_start();
-                $_SESSION['msj'] = "Articulo insertado correctamente";
+                $_SESSION['msj'] = "Articulo registrado correctamente";
             } else {
                 header("location: ../view/articuloView.php?error=dbError");
                 session_start();
-                $_SESSION['error'] = "Error al insertar el articulo";
+                $_SESSION['error'] = "Error al registrar el articulo";
             }
         } else {
             header("location: ../view/articuloView.php?error=emptyField"); 

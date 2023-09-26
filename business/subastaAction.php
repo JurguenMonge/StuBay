@@ -50,8 +50,12 @@ if (isset($_POST['create'])) {
             $result = $subastaBusiness->insertarTBSubasta($subasta);    
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=insert");
+                session_start();
+                $_SESSION['msj'] = "Subasta registrada correctamente";
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al registrar la subasta";
             }
         } else {
             header("location: ../view/subastaView.php?error=emptyField");
@@ -62,8 +66,8 @@ if (isset($_POST['create'])) {
 } else if (isset($_POST['delete'])) {
 
     if (
-        isset($_POST['subastaIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) && isset($_POST['subastaFechaHoraFinalView']) &&
-        isset($_POST['subastaPrecioInicialView']) && isset($_POST['subastaActivoView'])
+        isset($_POST['subastaIdView']) && isset($_POST['vendedorIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) &&
+        isset($_POST['subastaFechaHoraFinalView']) && isset($_POST['subastaPrecioInicialView'])
     ) {
         $subastaId = $_POST['subastaIdView'];
         $subastaArticuloId = $_POST['subastaArticuloView'];
@@ -97,8 +101,12 @@ if (isset($_POST['create'])) {
             $result = $subastaBusiness->deleteTBSubasta($subasta);
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=delete");
+                session_start();
+                $_SESSION['msj'] = "Subasta eliminada correctamente";
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al eliminar la subasta";
             }
         } else {
             header("location: ../view/subastaView.php?error=emptyField");
@@ -107,8 +115,8 @@ if (isset($_POST['create'])) {
 } else if (isset($_POST['update'])) {
 
     if (
-        isset($_POST['subastaIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) && isset($_POST['subastaFechaHoraFinalView']) &&
-        isset($_POST['subastaPrecioInicialView']) && isset($_POST['subastaActivoView'])
+        isset($_POST['subastaIdView']) && isset($_POST['vendedorIdView']) && isset($_POST['subastaArticuloView']) && isset($_POST['subastaFechaHoraInicioView']) &&
+        isset($_POST['subastaFechaHoraFinalView']) && isset($_POST['subastaPrecioInicialView'])
     ) {
         $subastaId = $_POST['subastaIdView'];
         $subastaArticuloId = $_POST['subastaArticuloView'];
@@ -143,8 +151,12 @@ if (isset($_POST['create'])) {
             $result = $subastaBusiness->updateTBSubasta($subasta);
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=updated");
+                session_start();
+                $_SESSION['msj'] = "Subasta actualizada correctamente";
             } else {
                 header("location: ../view/subastaView.php?error=dbError");
+                session_start();
+                $_SESSION['error'] = "Error al actualizar la subasta";
             }
         }
     }

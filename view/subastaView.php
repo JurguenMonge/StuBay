@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Subasta</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
     <?php
     error_reporting(E_ALL);
+    session_start();
     ini_set('display_errors', 1);
     include '../business/articuloBusiness.php';
     include '../business/subastaBusiness.php';
@@ -23,6 +26,34 @@
         <h1>Registro Subasta</h1>
         <h2><a href="../index.php">Home</a></h2>
     </header>
+    <?php
+        if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
+        ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['msj']; ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            </script>
+        <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
+        } ?>
+
+        <?php
+        if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+        ?>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['error']; ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            </script>
+        <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+        } 
+    ?>
     <section>
         <table>
             <tr>
@@ -109,7 +140,7 @@
                 echo '<tr>';
                 echo '<td>  <select name="vendedorIdView" id="vendedorIdView">';
                 foreach ($getAllClientes as $cliente) {
-                    if ($actualSubasta->getSubastaArticuloId() == $cliente->getClienteId()) {
+                    if ($actualSubasta->getSubastaVendedorId() == $cliente->getClienteId()) {
                         echo "<option selected value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
                     } else {
                         echo "<option value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";

@@ -40,13 +40,13 @@ class SubastaData extends Data
         $conn->set_charset('utf8');
 
         $queryUpdate = "UPDATE tbsubasta SET 
-            tbsubastaFechaHoraInicio='" . $subasta->getSubastaFechaHoraInicio() . "',
-            tbsubastaFechaHoraFinal='" . $subasta->getSubastaFechaHoraFinal() . "',
-            tbsubastaPrecio='" . $subasta->getSubastaPrecioInicial() . "',
+            tbsubastafechahorainicio='" . $subasta->getSubastaFechaHoraInicio() . "',
+            tbsubastafechahorafinal='" . $subasta->getSubastaFechaHoraFinal() . "',
+            tbsubastaprecio='" . $subasta->getSubastaPrecioInicial() . "',
             tbsubastaestadoarticulo='" . $subasta->getSubastaEstadoArticulo() . "',
             tbsubastaarticulodiasuso='" . $subasta->getSubastaDiasUsoArticulo() . "',
-            tbsubastaActivo='" . $subasta->getSubastaActivo() . "',
-            tbarticuloId=" . $subasta->getSubastaArticuloId() . ",
+            tbsubastaactivo='" . $subasta->getSubastaActivo() . "',
+            tbarticuloid=" . $subasta->getSubastaArticuloId() . ",
             tbclienteid=" . $subasta->getSubastaVendedorId() . "
             WHERE tbsubastaid=" . $subasta->getSubastaId() . ";";
 
