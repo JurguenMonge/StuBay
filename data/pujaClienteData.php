@@ -85,17 +85,18 @@ class PujaClienteData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-        $querySelect = "SELECT * FROM tbpujacliente WHERE tbpujaclienteid = " . $id . ";";
+        $querySelect = "SELECT * FROM tbpujacliente WHERE tbclienteid = " . $id . ";";
 
         $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
 
-        $pujaCliente = null;
+        $array = array(); 
 
-        if ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $pujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclientefecha'], $row['tbpujaclienteoferta'], $row['tbpujaclienteenvio']);
+            array_push($array, $pujaCliente);
         }
 
         mysqli_close($conn); // cerrar la conexión
-        return $pujaCliente;
+        return $array;
     }
 }

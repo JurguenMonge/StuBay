@@ -139,4 +139,43 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/pujaClienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-}
+}else if (isset($_POST['valor'])) {
+    $clienteId = $_POST['valor'];
+    include '../business/clienteBusiness.php';
+    include '../business/articuloBusiness.php';
+    $pujaClienteBusiness = new PujaClienteBusiness();
+    $allPujasCliente = $pujaClienteBusiness->getTBPujaClienteById($clienteId);
+    $clienteBusiness = new ClienteBusiness();
+    $articuloBusiness = new ArticuloBusiness();
+    $getCli = $clienteBusiness->getAllTBCliente();
+    $getArt = $articuloBusiness->getAllTBArticulo();
+
+    echo '<table border="1">
+            <tr>
+                <th>Cliente</th>
+                <th>Artículo</th>
+                <th>Puja Envío</th>
+                <th>Puja Fecha</th>
+                <th>Puja Oferta</th>
+            </tr>';
+
+        foreach ($allPujasCliente as $current) {
+        echo '<tr>';
+        foreach ($getCli as $cliente) {
+            if ($cliente->getClienteId() == $current->getClienteId()) {
+                echo '<td>' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '</td>';
+            }
+        }
+        foreach ($getArt as $articulo) {
+            if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                echo '<td>' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '</td>';
+            }
+        }
+        echo '<td>₡' . $current->getPujaClienteEnvio() . '</td>';
+        echo '<td>' . $current->getPujaClienteFecha() . '</td>';
+        echo '<td>₡' . $current->getPujaClienteOferta() . '</td>';
+        echo '</tr>';
+        }
+
+        echo '</table>';
+} 

@@ -307,6 +307,10 @@
 
         </table>
     </section>
+    <br><br>
+    <div id="resultado" >
+
+    </div>
 
     <!-- Modal para Subastas Activas -->
     <div id="subastasActivasModal" class="modal">
@@ -360,6 +364,7 @@
             </table>
         </div>
     </div>
+
 
 
 
@@ -497,6 +502,25 @@
 
     <footer>
     </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#clienteIdView').change(function() {
+                recargarLista();
+            });
+        })
+
+        function recargarLista() {
+            $.ajax({
+                type: "POST",
+                url: "../business/pujaClienteAction.php",
+                data: "valor=" + $('#clienteIdView').val(),
+                success: function(r) {
+                    $('#resultado').html(r);
+                }
+            });
+        }
+    </script>
 
 </body>
 
