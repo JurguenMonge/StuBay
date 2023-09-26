@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-09-2023 a las 02:25:07
+-- Tiempo de generación: 26-09-2023 a las 05:53:53
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -46,11 +46,15 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`,
 (1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
 (1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
 (1, 'lAPTOP', 'HP', 'OMEN', '', 0, ''),
-(2, 'Parlantes', 'Redragon', 'as23', '', 0, '13'),
+(2, 'Parlantes', 'Redragon', '', '', 1, '13'),
 (3, 'Computadora', 'MSI', '', '', 0, ''),
 (4, 'Monitor', 'MSI', 'G523', '', 1, '14'),
 (5, 'Microfono', 'HyperX', 'Solocast', '', 1, '14'),
-(6, 'Teclado', 'HyperX', 'Galaxy', '', 1, '21');
+(6, 'Teclado', 'HyperX', 'Galaxy', 'U12', 1, '21'),
+(7, 'Escritorio', 'Racing', 'SKI12', '', 1, '25'),
+(8, 'Computadora', 'MSI', 'ASC3', '', 1, '14'),
+(9, 'Escritorio', 'asd', '', '', 1, '32'),
+(10, 'Teclado', 'GAmming', '', '', 1, '14');
 
 -- --------------------------------------------------------
 
@@ -195,7 +199,9 @@ CREATE TABLE `tbpujacliente` (
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
 (1, 1, 2, '2023-09-04 01:03:00', 910, 3000.00),
 (2, 2, 10, '2023-08-29 05:34:00', 760996, 5000.00),
-(3, 3, 8, '2023-11-09 22:56:23', 110001, 21261.21);
+(3, 3, 8, '2023-11-09 22:56:23', 110001, 21261.21),
+(4, 2, 5, '1970-01-01 01:00:00', 900000, 21207.19),
+(5, 2, 4, '1970-01-01 01:00:00', 9000000, 65033.28);
 
 -- --------------------------------------------------------
 
@@ -227,7 +233,10 @@ INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastafechahorainicio`, `tbsubastafe
 (5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, '', 0, 1, 10, 1),
 (6, '2023-09-11 18:49:00', '2023-09-13 18:49:00', 100000, 'Nuevo', 19, 1, 8, 1),
 (7, '2023-09-11 18:53:00', '2023-09-20 18:53:00', 100000, 'Usado', 10, 0, 2, 2),
-(8, '2023-09-12 18:53:00', '2023-09-13 18:53:00', 100000, 'Usado', 15, 1, 7, 1);
+(8, '2023-09-12 18:53:00', '2023-09-13 18:53:00', 100000, 'Usado', 15, 1, 7, 1),
+(9, '2023-09-25 18:53:00', '2023-09-28 18:53:00', 100000, 'Nuevo', 0, 0, 5, 3),
+(10, '2023-09-25 18:53:00', '2023-10-06 18:53:00', 100000, 'Nuevo', 0, 1, 4, 3),
+(11, '2023-09-25 19:10:00', '2023-09-28 19:10:00', 400000, 'Usado', 65, 1, 5, 1);
 
 -- --------------------------------------------------------
 
