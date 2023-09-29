@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Pujas del Cliente</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
         $(document).ready(function() {
@@ -300,7 +301,8 @@
                     </td>
 
 
-                    <td><input type="submit" value="Crear" name="create" id="create" /></td>
+                    <td>
+                    <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button></td>
                 </tr>
             </form>
 
@@ -518,6 +520,34 @@
                 success: function(r) {
                     $('#resultado').html(r);
                 }
+            });
+        }
+    </script>
+    <script>
+        var conn = new WebSocket('ws://192.168.100.240:8088');
+
+        conn.onopen = function(e) {
+            console.log("Conexión establecida");
+        };
+
+        conn.onmessage = function(e) {
+            var message = e.data;
+            showAlert(message);
+        };
+
+
+        function sendMessage() {
+            var message = "Se creo una nueva puja";
+            conn.send(message);
+        }
+
+
+        function showAlert(message) {
+            Swal.fire({
+                title: 'Nuevo mensaje',
+                text: message,
+                icon: 'info',
+                confirmButtonText: 'Aceptar'
             });
         }
     </script>
