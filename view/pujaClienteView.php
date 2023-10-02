@@ -7,6 +7,9 @@
     <title>Registro de Pujas del Cliente</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
 
     <script>
         $(document).ready(function() {
@@ -247,7 +250,7 @@
                             <?php
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
-                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '" data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -302,7 +305,8 @@
 
 
                     <td>
-                    <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button></td>
+                        <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button>
+                    </td>
                 </tr>
             </form>
 
@@ -310,7 +314,7 @@
         </table>
     </section>
     <br><br>
-    <div id="resultado" >
+    <div id="resultado">
 
     </div>
 
@@ -524,7 +528,7 @@
         }
     </script>
     <script>
-        var conn = new WebSocket('ws://192.168.100.240:8088');
+        var conn = new WebSocket('ws://192.168.1.167:8088');
 
         conn.onopen = function(e) {
             console.log("Conexión establecida");
@@ -532,23 +536,33 @@
 
         conn.onmessage = function(e) {
             var message = e.data;
-            showAlert(message);
+            showToast(message);
         };
 
-
         function sendMessage() {
-            var message = "Se creo una nueva puja";
+            // Obtén el elemento seleccionado en el select de clientes
+            var clienteSelect = document.getElementById("clienteIdView");
+            // Obtén el nombre del cliente seleccionado usando el atributo data-nombre
+            var nombreCliente = clienteSelect.options[clienteSelect.selectedIndex].getAttribute("data-nombre");
+
+            // Ahora, puedes enviar el nombre del cliente en el mensaje
+            var message = "El cliente " + nombreCliente + " ha realizado una nueva puja.";
             conn.send(message);
         }
 
-
-        function showAlert(message) {
-            Swal.fire({
-                title: 'Nuevo mensaje',
-                text: message,
-                icon: 'info',
-                confirmButtonText: 'Aceptar'
-            });
+        function showToast(message) {
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.info(message, "Nuevo mensaje");
         }
     </script>
 
