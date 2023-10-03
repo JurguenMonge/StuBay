@@ -49,7 +49,7 @@ class PujaClienteData extends Data
     }
 
     public function eliminarTBPujaCliente($pujaCliente)
-    { 
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
         $queryUpdate = "DELETE FROM tbpujacliente WHERE tbpujaclienteid=" . $pujaCliente->getPujaClienteId() . ";";
@@ -89,7 +89,7 @@ class PujaClienteData extends Data
 
         $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
 
-        $array = array(); 
+        $array = array();
 
         while ($row = mysqli_fetch_array($result)) {
             $pujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclientefecha'], $row['tbpujaclienteoferta'], $row['tbpujaclienteenvio']);
@@ -98,5 +98,25 @@ class PujaClienteData extends Data
 
         mysqli_close($conn); // cerrar la conexión
         return $array;
+    }
+
+    public function getPrecioMaximoByArticuloId($articuloId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+
+        // Modificar la consulta SQL para obtener el precio máximo de puja
+        $querySelect = "SELECT MAX(tbpujaclienteoferta) AS precioMaximo FROM tbpujacliente WHERE tbarticuloid = " . $articuloId . ";";
+
+        $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
+
+        $precioMaximo = 0; // Inicializa el precio máximo en 0
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            $precioMaximo = $row['precioMaximo'];
+        }
+
+        mysqli_close($conn); // cerrar la conexión
+        return $precioMaximo;
     }
 }

@@ -81,7 +81,7 @@ if (isset($_POST['update'])) {
             if ($result == 1) {
                 header("location: ../view/pujaClienteView.php?success=delete"); //redirect to the index.php page with a success message
                 session_start();
-            $_SESSION['msj'] = "Puja eliminada correctamente";
+                $_SESSION['msj'] = "Puja eliminada correctamente";
             } else {
                 header("location: ../view/pujaClienteView.php?error=dbError"); //redirect to the index.php page with an error message
             }
@@ -106,40 +106,48 @@ if (isset($_POST['update'])) {
 
         $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
         $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
+        $pujaClienteBusiness = new PujaClienteBusiness();
+        $precioMaximoPujaActual = $pujaClienteBusiness->getPrecioMaximoByArticuloId($articuloId);
+        //var_dump($precioMaximoPujaActual);
 
-        if (
-            strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
-            && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
-        ) { //check if the variables have values
-
-            $pujaCliente = new PujaCliente(
-                0,
-                $clienteId,
-                $articuloId,
-                $pujaClienteFecha,
-                $pujaClienteOferta,
-                $pujaClienteEnvio
-            );
-
-            $pujaClienteBusiness = new PujaClienteBusiness();
-
-            $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
-            if ($result == 1) {
-                header("location: ../view/pujaClienteView.php?success=insert"); //redirect to the index.php page with a success message
-                session_start();
-                $_SESSION['msj'] = "Puja registrada correctamente";
-            } else {
-                header("location: ../view/pujaClienteView.php?error=dbError"); //redirect to the index.php page with an error message
-                session_start();
-                $_SESSION['error'] = "Error al registrar la puja";
-            }
+        if ($pujaClienteOferta <= $precioMaximoPujaActual) {
+            header("location: ../view/pujaClienteView.php?error=fechaError");
+            session_start();
+            $_SESSION['error'] = "El valor de la oferta debe ser mayor al precio máximo actual ($precioMaximoPujaActual)";
         } else {
-            header("location: ../view/pujaClienteView.php?error=emptyField"); //redirect to the index.php page with an error message
+
+            if (
+                strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
+                && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
+            ) { //check if the variables have values
+
+                $pujaCliente = new PujaCliente(
+                    0,
+                    $clienteId,
+                    $articuloId,
+                    $pujaClienteFecha,
+                    $pujaClienteOferta,
+                    $pujaClienteEnvio
+                );
+
+                $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
+                if ($result == 1) {
+                    header("location: ../view/pujaClienteView.php?success=insert"); //redirect to the index.php page with a success message
+                    session_start();
+                    $_SESSION['msj'] = "Puja registrada correctamente";
+                } else {
+                    header("location: ../view/pujaClienteView.php?error=dbError"); //redirect to the index.php page with an error message
+                    session_start();
+                    $_SESSION['error'] = "Error al registrar la puja";
+                }
+            } else {
+                header("location: ../view/pujaClienteView.php?error=emptyField"); //redirect to the index.php page with an error message
+            }
         }
     } else {
         header("location: ../view/pujaClienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-}else if (isset($_POST['valor'])) {
+} else if (isset($_POST['valor'])) {
     $clienteId = $_POST['valor'];
     include '../business/clienteBusiness.php';
     include '../business/articuloBusiness.php';
@@ -159,7 +167,7 @@ if (isset($_POST['update'])) {
                 <th>Puja Oferta</th>
             </tr>';
 
-        foreach ($allPujasCliente as $current) {
+    foreach ($allPujasCliente as $current) {
         echo '<tr>';
         foreach ($getCli as $cliente) {
             if ($cliente->getClienteId() == $current->getClienteId()) {
@@ -175,7 +183,7 @@ if (isset($_POST['update'])) {
         echo '<td>' . $current->getPujaClienteFecha() . '</td>';
         echo '<td>₡' . $current->getPujaClienteOferta() . '</td>';
         echo '</tr>';
-        }
+    }
 
-        echo '</table>';
-} 
+    echo '</table>';
+}

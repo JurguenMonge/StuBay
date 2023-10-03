@@ -60,4 +60,8 @@ class PujaClienteBusiness
         return $distancia;
     }
 
+    public function getPrecioMaximoByArticuloId($articuloId){
+        return $this->pujaClienteData->getPrecioMaximoByArticuloId($articuloId);
+    }
+
 }
