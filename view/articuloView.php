@@ -9,7 +9,6 @@
         <link rel="stylesheet" type="text/css" href="../css/style.css">
         <?php
         error_reporting(0);
-        session_start();
         include '../business/articuloBusiness.php';
         include '../business/categoriaBusiness.php';
         include '../business/subCategoriaBusiness.php';
@@ -17,6 +16,16 @@
         $articuloCategoriaBusiness = new CategoriaBusiness();
         $getCat = $articuloCategoriaBusiness->getAllTBCategoria();
         $getSubCat = $subcategoriaBusiness->getAllTBSubCategoria();
+
+
+        include_once("../session/startsession.php");
+        //session_start();
+        if (isset($_SESSION['nombre'])) {
+
+            $clienteNombre = $_SESSION['nombre'];
+        } else {
+            echo "No has iniciado sesión";
+        }
         ?>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
@@ -73,7 +82,8 @@
     <body>
         <header>
             <h1>Registro Articulo</h1>
-            <h2><a href="../index.php">Home</a></h2>
+            <h1><?php echo "$clienteNombre!" ?></h1>
+            <h2><a href="inicioView.php">Home</a></h2>
         </header>
 
         <?php

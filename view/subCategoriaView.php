@@ -18,7 +18,17 @@
     $categoriaBusiness = new CategoriaBusiness();
     $getCat = $categoriaBusiness->getAllTBCategoria();
     $categoriaIdSelected;
-    session_start();
+
+
+    //lo que hace es que si el usuario no ha iniciado sesion lo redirecciona al login
+    include_once("../session/startsession.php");
+    //session_start();
+    if (isset($_SESSION['nombre'])) {
+
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
     ?>
 
     <style>
@@ -133,7 +143,7 @@
                         var inputNombre = $("<input>").attr({
                             type: "text",
                             value: item.nombre,
-                            readonly: false, 
+                            readonly: false,
                             name: "subcategoriaNombreView",
                             maxLength: 30
                         });
@@ -143,7 +153,7 @@
                         var inputDescripcion = $("<input>").attr({
                             type: "text",
                             value: item.descripcion,
-                            readonly: false, 
+                            readonly: false,
                             name: "subcategoriaDescripcionView",
                             maxLength: 1000
                         });
@@ -222,7 +232,6 @@
                 }
             });
         }
-
     </script>
 
     <style>
@@ -235,8 +244,9 @@
 
 <body>
     <header>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Subcategorías</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
     <!-- Botón para mostrar el modal -->
@@ -248,7 +258,7 @@
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <div id="mapaConceptual">
-                
+
                 <!-- Subcategorías y conexiones -->
                 <?php
                 if (count($getCat) > 0) {

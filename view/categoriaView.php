@@ -16,7 +16,14 @@
     $categoriaBusiness = new CategoriaBusiness();
     $getCat = $categoriaBusiness->getAllTBCategoria();
 
-    session_start();
+    include_once("../session/startsession.php");
+    //session_start();
+    if (isset($_SESSION['nombre'])) {
+
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
 
     ?>
 
@@ -97,7 +104,8 @@
 <body>
     <header>
         <h1>Registro Categorías</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h1><?php echo "$clienteNombre!" ?></h1>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
     <!-- Botón para mostrar el modal -->

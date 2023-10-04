@@ -27,11 +27,11 @@ class ClienteBusiness{
         return $this->clienteData->getAllTBCliente();
     }
 
-    public function clienteById($clienteCorreo){
+    public function clienteById($clienteCorreo){//aca se recibe el correo del cliente para buscarlo en la base de datos y retornar el cliente con todos sus datos 
         return $this->clienteData->clienteById($clienteCorreo);
     }
 
-    public function clienteLogin($clienteCorreo, $clientePassword){
+    public function clienteLogin($clienteCorreo, $clientePassword){//aca se recibe el correo y la contraseña del cliente para buscarlo en la base de datos y retornar el cliente con todos sus datos
         return $this->clienteData->clienteLogin($clienteCorreo, $clientePassword);
     }
     

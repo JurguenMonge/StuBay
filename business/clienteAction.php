@@ -160,14 +160,17 @@ if (isset($_POST['update'])) {
                 $id = $clienteBusiness->clienteById($clienteCorreo);
                 if ($id != null) {
                     $_SESSION["clientecorreoview"] = $clienteCorreo; //set the session variable to the tbclientecorreo that was entered in the form 
-                    $_SESSION["idCliente"] = $id;
+                    $_SESSION["id"] = $id;
                     header("location: ../view/inicioView.php?success=login"); //redirect the user to the clienteview.php
-
+                    session_start();
+                    $_SESSION['msj'] = "Bienvenido";
                 } else {
                     header("location: ../index.php?error=login");
                 }
-            } else {
-                header("location: ../index.php?error=login"); //if the method returns 0 then the user was not found in the database
+            } else if ($result == 2) {            
+                header("location: ../index.php?error=login"); //if the method returns 0 then the user was not found in the database 
+                session_start();
+                $_SESSION['error'] = "Contraseña incorrecta o usuario no existe";
             }
         } else {
             header("location: ../index.php?error=emptyField"); //if the variables don't have values then redirect the user to the index.php

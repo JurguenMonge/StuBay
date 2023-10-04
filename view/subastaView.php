@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <?php
     error_reporting(E_ALL);
-    session_start();
+    error_reporting(0);
     ini_set('display_errors', 1);
     include '../business/articuloBusiness.php';
     include '../business/subastaBusiness.php';
@@ -18,41 +18,52 @@
     $getAllArticulos = $articuloBusiness->getAllTBArticulo();
     $clienteBusiness = new ClienteBusiness();
     $getAllClientes = $clienteBusiness->getAllTBCliente();
+
+    //Aca es para la sesion
+    include_once("../session/startsession.php");
+    session_start();
+    if (isset($_SESSION['nombre'])) {
+
+        $clienteNombre = $_SESSION['nombre'];
+    } else {
+        echo "No has iniciado sesión";
+    }
     ?>
 </head>
 
 <body>
     <header>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Subasta</h1>
-        <h2><a href="../index.php">Home</a></h2>
+        <h2><a href="inicioView.php">Home</a></h2>
     </header>
     <?php
-        if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
-        ?>
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: '<?php echo $_SESSION['msj']; ?>',
-                    showConfirmButton: false,
-                    timer: 2500
-                })
-            </script>
-        <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
-        } ?>
+    if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<?php echo $_SESSION['msj']; ?>',
+                showConfirmButton: false,
+                timer: 2500
+            })
+        </script>
+    <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
+    } ?>
 
-        <?php
-        if (isset($_SESSION['error'])) { // Si existe la variable de sesión
-        ?>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: '<?php echo $_SESSION['error']; ?>',
-                    showConfirmButton: false,
-                    timer: 2500
-                })
-            </script>
-        <?php unset($_SESSION['error']); // Eliminar la variable de sesión
-        } 
+    <?php
+    if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<?php echo $_SESSION['error']; ?>',
+                showConfirmButton: false,
+                timer: 2500
+            })
+        </script>
+    <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+    }
     ?>
     <section>
         <table>

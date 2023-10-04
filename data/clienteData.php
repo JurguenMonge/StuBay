@@ -2,7 +2,7 @@
 
 include_once 'data.php';
 include '../domain/cliente.php';
-require_once '../business/subastaBusiness.php';//this is to use the checkSubasta method
+require_once '../business/subastaBusiness.php'; //this is to use the checkSubasta method
 
 class ClienteData extends Data
 {
@@ -133,7 +133,7 @@ class ClienteData extends Data
 
     public function deleteTBCliente($clienteId)
     { //este metodo actualiza el estado del cliente para no perder el registro del mismo, solo de desactiva.
-        
+
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8'); //set the charset to utf8 to support spanish characters
 
@@ -258,25 +258,25 @@ class ClienteData extends Data
             $passcliente = $row['tbclientepassword']; //obtener la contraseña del usuario en la base de datos
 
             if (password_verify($password, $passcliente)) { // verificar si la contraseña ingresada es igual a la contraseña de la base de datos
-                session_Start();
+                session_start();
                 $_SESSION['nombre'] = $row['tbclientenombre']; //crear una sesion con el nombre del usuario
-                $_SESSION['id'] = $row['tbclienteprimerapellido']; // Almacenar el nombre de usuario en otra variable de sesión
-                $_SESSION["idCliente"] = $row['tbclienteid']; // Almacenar el id de usuario en otra variable de sesión
-                $sesion = 1;
+                $_SESSION['apellido'] = $row['tbclienteprimerapellido']; // Almacenar el nombre de usuario en otra variable de sesión
+                $_SESSION["id"] = $row['tbclienteid']; // Almacenar el id de usuario en otra variable de sesión
+                $result = 1;
             } else {
-                $sesion = 0;
+                $result = 2;
             }
-            return $sesion;
         }
+        return $result;
     }
 
 
-    public function clienteById($clienteCorreo)
+    public function clienteById($clienteCorreo) //obtener el id del cliente por medio del correo
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
-        $querySelect = "SELECT tbclienteid FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');";
+        $querySelect = "SELECT tbclienteid FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');"; //obtener el id del cliente por medio del correo especificado de la base de datos y guardarlo en un objeto cliente 
         $result = mysqli_query($conn, $querySelect);
         mysqli_close($conn);
 
