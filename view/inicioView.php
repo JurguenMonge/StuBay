@@ -40,6 +40,20 @@
     <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
     } ?>
 
+    <?php
+    if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+    ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<?php echo $_SESSION['error']; ?>',
+                showConfirmButton: false,
+                timer: 2500
+            })
+        </script>
+    <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+    } ?>
+
     <a href="clienteView.php">Registro Cliente</a>
     <br><br>
     <a href="clienteDireccionView.php">Registro Dirección Cliente</a>
