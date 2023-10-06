@@ -132,7 +132,6 @@ if (isset($_POST['update'])) {
                 header("location: ../view/clienteView.php?error=exist"); //redirect to the index.php page with an error message
                 session_start();
                 $_SESSION['error'] = "El correo ya esta en uso";
-                
             } else {
                 header("location: ../view/clienteView.php?error=dbError"); //redirect to the index.php page with an error message
                 session_start();
@@ -144,7 +143,7 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/clienteView.php?error=error"); //redirect to the index.php page with an error message
     }
-}else if (isset($_POST['login'])) { //if the user clicked on the login button
+} else if (isset($_POST['login'])) { //if the user clicked on the login button
 
     if (isset($_POST['clientecorreoview']) && isset($_POST['clientepasswordview'])) { //check if the variables have values
 
@@ -158,24 +157,60 @@ if (isset($_POST['update'])) {
             $result = $clienteBusiness->clienteLogin($clienteCorreo, $passwordEncripted); //call the method clienteLogin from userBusiness 
             if ($result == 1) { //if the method returns 1 then the user was found in the database 
                 $id = $clienteBusiness->clienteById($clienteCorreo);
+                $nombre = $clienteBusiness->nombreClienteById($clienteCorreo);
                 if ($id != null) {
                     $_SESSION["clientecorreoview"] = $clienteCorreo; //set the session variable to the tbclientecorreo that was entered in the form 
                     $_SESSION["id"] = $id;
+                    //$_SESSION["nombre"] = $nombre->getClienteNombre();
                     header("location: ../view/inicioView.php?success=login"); //redirect the user to the clienteview.php
                     session_start();
-                    $_SESSION['msj'] = "Bienvenido";
+                    $_SESSION['msj'] = "Bienvenido " . $nombre;
                 } else {
                     header("location: ../index.php?error=login");
                 }
-            } else if ($result == 2) {            
+            } else if ($result == 2) {
                 header("location: ../index.php?error=login"); //if the method returns 0 then the user was not found in the database 
                 session_start();
-                $_SESSION['error'] = "Contraseña incorrecta o usuario no existe";
+                $_SESSION['error'] = "Usuario o contraseña incorrecta";
+            } else if ($result == 3) {
+                header("location: ../index.php?error=login"); //if the method returns 0 then the user was not found in the database 
+                session_start();
+                $_SESSION['error'] = "Usuario desactivada";
+            } else {
+                header("location: ../index.php?error=error"); //if the method returns 0 then the user was not found in the database 
+                session_start();
+                $_SESSION['error'] = "Error al iniciar sesión";
             }
         } else {
             header("location: ../index.php?error=emptyField"); //if the variables don't have values then redirect the user to the index.php
         }
     } else {
         header("location: ../index.php?error=error"); //if the variables are not set then redirect the user to the index.php
+    }
+}
+if (isset($_POST['reactivar'])) {
+    if (isset($_POST['clientecorreo']) && isset($_POST['clientepassword'])) {
+        $clienteBusiness = new ClienteBusiness();
+        $result = $clienteBusiness->reactivarCuenta($_POST['clientecorreo'], $_POST['clientepassword']);
+
+        if ($result == 1) {
+            // La cuenta se reactivó con éxito, redirige a una página de éxito
+            //header("location: ../view/inicioView.php?success=login"); //redirect the user to the clienteview.php
+            header("location: ../index.php?reactived"); //redirect the user to the clienteview.php
+            session_start();
+            $_SESSION['msj'] = "Cuenta reactivada correctamente";
+        } else if ($result == 2) {
+            header("location: ../view/reactivarCuenta.php?error=login"); //if the method returns 0 then the user was not found in the database
+            session_start();
+            $_SESSION['error'] = "Usuario o contraseña incorrecta";
+        } else if ($result == 3) {
+            header("location: ../view/reactivarCuenta.php?error=login"); //if the method returns 0 then the user was not found in the database
+            session_start();
+            $_SESSION['error'] = "Usuario no encontrada";
+        } else {
+            header("location: ../view/reactivarCuenta.php?error=error"); //if the method returns 0 then the user was not found in the database
+            session_start();
+            $_SESSION['error'] = "Error al iniciar sesión";
+        }
     }
 }

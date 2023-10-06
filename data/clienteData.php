@@ -244,31 +244,59 @@ class ClienteData extends Data
 
     public function clienteLogin($clienteCorreo, $password)
     {
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
-        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+        // Conexión a la base de datos
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
 
-        // obtener el cliente con el correo y contraseña especificados de la base de datos y guardarlos en un objeto cliente
-        $querySelect = "SELECT * FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');";
-        $result = mysqli_query($conn, $querySelect); //execute the query and get the result
-        mysqli_close($conn); //close the connection
+        // Consulta preparada para obtener el cliente por correo
+        $querySelect = "SELECT * FROM tbcliente WHERE tbclientecorreo = ?";
 
-        $sesion = 0; //variable para saber si el usuario esta activo o no
+        // Prepara la consulta
+        $stmt = $conn->prepare($querySelect);
+        // Vincula los parámetros
+        $stmt->bind_param("s", $clienteCorreo);
 
-        while ($row = mysqli_fetch_array($result)) { //iterar todas las filas del resultado mientras haya usuarios en la base de datos
-            $passcliente = $row['tbclientepassword']; //obtener la contraseña del usuario en la base de datos
+        // Ejecuta la consulta
+        if ($stmt->execute()) {
+            // Obtiene el resultado
+            $result = $stmt->get_result();
 
-            if (password_verify($password, $passcliente)) { // verificar si la contraseña ingresada es igual a la contraseña de la base de datos
-                session_start();
-                $_SESSION['nombre'] = $row['tbclientenombre']; //crear una sesion con el nombre del usuario
-                $_SESSION['apellido'] = $row['tbclienteprimerapellido']; // Almacenar el nombre de usuario en otra variable de sesión
-                $_SESSION["id"] = $row['tbclienteid']; // Almacenar el id de usuario en otra variable de sesión
-                $result = 1;
-            } else {
-                $result = 2;
+            // Inicializa el resultado a 0 (no encontrado)
+            $resultStatus = 0;
+
+            while ($row = $result->fetch_assoc()) {
+                $passcliente = $row['tbclientepassword']; // Obtener la contraseña del cliente en la base de datos
+                $clienteActivo = $row['tbclienteactivo']; // Obtener el estado del cliente
+
+                if (password_verify($password, $passcliente)) {
+                    if ($clienteActivo == 1) {
+                        // El cliente está activo
+                        session_start();
+                        $_SESSION['nombre'] = $row['tbclientenombre'];
+                        $_SESSION['apellido'] = $row['tbclienteprimerapellido'];
+                        $_SESSION["id"] = $row['tbclienteid'];
+                        $resultStatus = 1; // Éxito
+                    } else {
+                        // El cliente no está activo
+                        $resultStatus = 3; // Cliente inactivo
+                    }
+                } else {
+                    // Contraseña incorrecta
+                    $resultStatus = 2; // Contraseña incorrecta
+                }
             }
+
+            $stmt->close();
+        } else {
+            // Manejar el error de ejecución de la consulta
+            die("Error al ejecutar la consulta: " . $stmt->error);
         }
-        return $result;
+
+        $conn->close();
+
+        return $resultStatus;
     }
+
 
 
     public function clienteById($clienteCorreo) //obtener el id del cliente por medio del correo
@@ -286,5 +314,80 @@ class ClienteData extends Data
         }
 
         return null; // Si no se encuentra coincidencia, se retorna null
+    }
+
+    public function nombreClienteById($clienteCorreo) //obtener el nombre del cliente por medio del correo
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
+        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+
+        $querySelect = "SELECT tbclientenombre FROM tbcliente WHERE (tbclientecorreo='$clienteCorreo');"; //obtener el nombre del cliente por medio del correo especificado de la base de datos y guardarlo en un objeto cliente 
+        $result = mysqli_query($conn, $querySelect);
+        mysqli_close($conn);
+
+        while ($row = mysqli_fetch_array($result)) {
+
+            return $row['tbclientenombre'];
+        }
+
+        return null; // Si no se encuentra coincidencia, se retorna null
+    }
+
+    public function reactivarCuenta($clienteCorreo, $password)
+    {
+        // Conexión a la base de datos
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
+
+        $resultStatus = 0;
+
+        // Consulta preparada para obtener el cliente por correo
+        $querySelect = "SELECT * FROM tbcliente WHERE tbclientecorreo = ?";
+
+        // Prepara la consulta
+        $stmt = $conn->prepare($querySelect);
+
+        // Asigna el parámetro a la consulta preparada
+        $stmt->bind_param("s", $clienteCorreo);
+
+        // Ejecuta la consulta preparada
+        if ($stmt->execute()) {
+            // Obtiene el resultado
+            $result = $stmt->get_result();
+
+            // Verifica si se encontró un resultado
+            if ($result->num_rows == 1) { //este result es el resultado de la consulta preparada del cliente por correo
+                // Obtiene la fila del resultado
+                $row = $result->fetch_assoc();
+
+                // Verifica si el cliente está inactivo y la contraseña es válida
+                if ($row['tbclienteactivo'] == 0 && password_verify($password, $row['tbclientepassword'])) {
+                    // Actualiza el estado del cliente a activo
+                    $queryUpdate = "UPDATE tbcliente SET tbclienteactivo = 1 WHERE tbclientecorreo = ?";
+                    $stmtUpdate = $conn->prepare($queryUpdate);
+                    $stmtUpdate->bind_param("s", $clienteCorreo);
+
+                    // Ejecuta la consulta de actualización
+                    if ($stmtUpdate->execute()) {
+                        $resultStatus = 1; // Éxito: Cuenta reactivada
+                        return $resultStatus;
+                    }
+                } else {
+                    // La cuenta ya está activa o la contraseña es incorrecta
+                    $resultStatus = 2; // Cuenta activa o contraseña incorrecta
+                }
+            } else {
+                // No se encontró un resultado
+                $resultStatus = 3; // Cuenta no encontrada
+            }
+        } else {
+            // Manejar el error de ejecución de la consulta
+            die("Error al ejecutar la consulta: " . $stmt->error);
+        }
+
+        // Cierra la conexión a la base de datos
+        $conn->close();
+
+        return $resultStatus;
     }
 }

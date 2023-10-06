@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>StuBay</title>
     <?php
     error_reporting(0);
@@ -24,7 +24,6 @@
 
     <header>
         <h1>StuBay</h1>
-        <h1><?php echo "Bienvenido, $clienteNombre!" ?></h1>
     </header>
 
     <?php
@@ -39,20 +38,6 @@
             })
         </script>
     <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
-    } ?>
-
-    <?php
-    if (isset($_SESSION['error'])) { // Si existe la variable de sesión
-    ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: '<?php echo $_SESSION['error']; ?>',
-                showConfirmButton: false,
-                timer: 2500
-            })
-        </script>
-    <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
 
     <a href="clienteView.php">Registro Cliente</a>
