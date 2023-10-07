@@ -5,14 +5,16 @@ class ClienteDireccion{
     private $clienteDireccionId;
     private $clienteId;
     private $clienteDireccionBarrio;
-    private $clienteDireccionCoordenadaGps;
+    private $clienteDireccionLatitud;
+    private $clienteDireccionLongitud;
     private $clienteDireccionActivo;
 
-    function __construct($clienteDireccionId, $clienteId, $clienteDireccionBarrio, $clienteDireccionCoordenadaGps, $clienteDireccionActivo){
+    function __construct($clienteDireccionId, $clienteId, $clienteDireccionBarrio, $clienteDireccionLatitud, $clienteDireccionLongitud, $clienteDireccionActivo){
         $this->clienteDireccionId = $clienteDireccionId;
         $this->clienteId = $clienteId;
         $this->clienteDireccionBarrio = $clienteDireccionBarrio;
-        $this->clienteDireccionCoordenadaGps = $clienteDireccionCoordenadaGps;
+        $this->clienteDireccionLatitud = $clienteDireccionLatitud;
+        $this->clienteDireccionLongitud = $clienteDireccionLongitud;
         $this->clienteDireccionActivo = $clienteDireccionActivo;
     }
 
@@ -29,8 +31,12 @@ class ClienteDireccion{
         return $this->clienteDireccionBarrio;
     }
 
-    function getClienteDireccionCoordenadaGps() {
-        return $this->clienteDireccionCoordenadaGps;
+    function getClienteDireccionLatitud() {
+        return $this->clienteDireccionLatitud;
+    }
+
+    function getClienteDireccionLongitud() {
+        return $this->clienteDireccionLongitud;
     }
 
     function getClienteDireccionActivo() {
@@ -50,8 +56,12 @@ class ClienteDireccion{
         $this->clienteDireccionBarrio = $clienteDireccionBarrio;
     }
 
-    function setClienteDireccionCoordenadaGps($clienteDireccionCoordenadaGps) {
-        $this->clienteDireccionCoordenadaGps = $clienteDireccionCoordenadaGps;
+    function setClienteDireccionLatitud($clienteDireccionLatitud) {
+        $this->clienteDireccionLatitud = $clienteDireccionLatitud;
+    }
+
+    function setClienteDireccionLongitud($clienteDireccionLongitud) {
+        $this->clienteDireccionLongitud = $clienteDireccionLongitud;
     }
 
     function setClienteDireccionActivo($clienteDireccionActivo) {

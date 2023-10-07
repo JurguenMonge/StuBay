@@ -89,7 +89,8 @@
                             ?>
                         </select>
                     <td><input required type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s\-\,]+" oninput="validarCampo(this)" /></td>
+                    <td><input required type="text" name="clientedireccionlatitudview" id="clientedireccionlatitudview" oninput="actualizarCoordenadas()" /></td>
+                    <td><input required type="text" name="clientedireccionlongitudview" id="clientedireccionlongitudview" oninput="actualizarCoordenadas()" /></td>
                     <td></td>
                     <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
@@ -114,8 +115,9 @@
                 }
                 echo '</select></td>';
                 echo '<td><input required  type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" value="' . $current->getClienteDireccionBarrio() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required  type="text" name="clientedireccioncoordenadagpsview" id="clientedireccioncoordenadagpsview" pattern="[A-Za-z0-9\s\-\,]+" value="' . $current->getClienteDireccionCoordenadaGps() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input type="checkbox" name="clientedireccionactivoview" id="clientedireccionactivoview" ' . ($current->getClienteDireccionActivo() == 1 ? "checked" : "") . '/></td>';
+                echo '<td><input required  type="text" name="clientedireccionlatitudview" id="clientedireccionlatitudview"  value="' . $current->getClienteDireccionLatitud() . '" oninput="actualizarCoordenadas1(this)"/></td>';
+                echo '<td><input required  type="text" name="clientedireccionlongitudview" id="clientedireccionlongitudview"  value="' . $current->getClienteDireccionLongitud() . '" oninput="actualizarCoordenadas1(this)"/></td>';
+                echo '<td><input type="hidden" name="clientedireccionactivoview" id="clientedireccionactivoview" ' . ($current->getClienteDireccionActivo() == 1 ? "checked" : "") . '/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclientedireccionid="' . $current->getClienteDireccionId() . '">Eliminar</button></td>';
                 echo '</tr>';
@@ -186,7 +188,42 @@
         }
     </script>
 
+    <script>
+        function actualizarCoordenadas() {
+            var latitudInput = document.getElementById('clientedireccionlatitudview');
+            var longitudInput = document.getElementById('clientedireccionlongitudview');
 
+            // Expresión regular para permitir números y puntos (decimales)
+            var pattern = /^[0-9.]+$/;
+
+            // Validar latitud
+            if (!pattern.test(latitudInput.value)) {
+                latitudInput.setCustomValidity("Solo se permiten números y puntos.");
+            } else {
+                latitudInput.setCustomValidity("");
+            }
+
+            // Validar longitud
+            if (!pattern.test(longitudInput.value)) {
+                longitudInput.setCustomValidity("Solo se permiten números y puntos.");
+            } else {
+                longitudInput.setCustomValidity("");
+            }
+        }
+    </script>
+    <script>
+        function actualizarCoordenadas1(input) {
+            var value = input.value;
+            // Expresión regular para permitir números y puntos (decimales)
+            var pattern = /^[0-9.]+$/;
+
+            if (!pattern.test(value)) {
+                input.setCustomValidity("Solo se permiten números y puntos.");
+            } else {
+                input.setCustomValidity("");
+            }
+        }
+    </script>
 
     <footer>
     </footer>

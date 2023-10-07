@@ -8,23 +8,27 @@ if (isset($_POST['update'])) {
         isset($_POST['clientedireccionidview'])
         && isset($_POST['clienteidview'])
         && isset($_POST['clientedireccionbarrioview'])
-        && isset($_POST['clientedireccioncoordenadagpsview'])
+        && isset($_POST['clientedireccionlatitudview'])
+        && isset($_POST['clientedireccionlongitudview'])
     ) {
         $clienteDireccionId = $_POST['clientedireccionidview'];
         $clienteId = $_POST['clienteidview'];
         $clienteDireccionBarrio = $_POST['clientedireccionbarrioview'];
-        $clienteDireccionCoordenadaGps = $_POST['clientedireccioncoordenadagpsview'];
+        $clienteDireccionLatitud = $_POST['clientedireccionlatitudview'];
+        $clienteDireccionLongitud = $_POST['clientedireccionlongitudview'];
         $clienteDireccionActivo = isset($_POST['clientedireccionactivoview']) ? 1 : 0;
 
         if (
             strlen($clienteId) > 0 && strlen($clienteDireccionBarrio) > 0
-            && strlen($clienteDireccionCoordenadaGps) > 0
+            && strlen($clienteDireccionLatitud) > 0
+            && strlen($clienteDireccionLongitud) > 0
         ) {
             $clienteDireccion = new ClienteDireccion(
                 $clienteDireccionId,
                 $clienteId,
                 $clienteDireccionBarrio,
-                $clienteDireccionCoordenadaGps,
+                $clienteDireccionLatitud,
+                $clienteDireccionLongitud,
                 $clienteDireccionActivo
             ); //create a clientedireccion object
 
@@ -67,20 +71,23 @@ if (isset($_POST['update'])) {
 
     if (
         isset($_POST['clientedireccionbarrioview'])
-        && isset($_POST['clientedireccioncoordenadagpsview'])
+        && isset($_POST['clientedireccionlatitudview'])
+        && isset($_POST['clientedireccionlongitudview'])
         && isset($_POST['clienteidview'])
 
 
     ) { //check if the variables have values
 
         $clienteDireccionBarrio = $_POST['clientedireccionbarrioview']; //get the name from the form
-        $clienteDireccionCoordenadaGps = $_POST['clientedireccioncoordenadagpsview']; //get the first last name from the form
+        $clienteDireccionLatitud = $_POST['clientedireccionlatitudview']; //get the first last name from the form
+        $clienteDireccionLongitud = $_POST['clientedireccionlongitudview']; //get the second last name from the form
         $clienteId = $_POST['clienteidview']; //get the email from the form
         $clienteDireccionActivo = 1; //set the client to 1
 
         if (
             strlen($clienteDireccionBarrio) > 0
-            && strlen($clienteDireccionCoordenadaGps) > 0
+            && strlen($clienteDireccionLatitud) > 0
+            && strlen($clienteDireccionLongitud) > 0
             && strlen($clienteId) > 0
         ) { //check if the variables have values
 
@@ -88,7 +95,8 @@ if (isset($_POST['update'])) {
                 0,
                 $clienteId,
                 $clienteDireccionBarrio,
-                $clienteDireccionCoordenadaGps,
+                $clienteDireccionLatitud,
+                $clienteDireccionLongitud,
                 $clienteDireccionActivo
             ); //create a new client instance 
 

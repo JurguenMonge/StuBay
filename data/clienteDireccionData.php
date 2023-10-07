@@ -37,16 +37,18 @@ class ClienteDireccionData extends Data
         (tbclientedireccionid, 
         tbclienteid, 
         tbclientedireccionbarrio, 
-        tbclientedireccioncoordenadagps,
+        tbclientedireccionlatitud,
+        tbclientedireccionlongitud,
         tbclientedireccionactivo)
-        VALUES (?,?,?,?,?)");
+        VALUES (?,?,?,?,?,?)");
 
         $stmt->bind_param(
-            "iisss",
+            "iissss",
             $nextId,
             $clienteDireccion->getClienteId(),
             $clienteDireccion->getClienteDireccionBarrio(),
-            $clienteDireccion->getClienteDireccionCoordenadaGps(),
+            $clienteDireccion->getClienteDireccionLatitud(),
+            $clienteDireccion->getClienteDireccionLongitud(),
             $clienteDireccion->getClienteDireccionActivo()
         );
 
@@ -66,14 +68,16 @@ class ClienteDireccionData extends Data
         $updateStmt = $conn->prepare("UPDATE tbclientedireccion 
         SET tbclienteid = ?, 
         tbclientedireccionbarrio = ?, 
-        tbclientedireccioncoordenadagps = ?, 
+        tbclientedireccionlatitud = ?,
+        tbclientedireccionlongitud = ?, 
         tbclientedireccionactivo = ? 
         WHERE tbclientedireccionid = ?");
         $updateStmt->bind_param(
-            "isssi",
+            "issssi",
             $clienteDireccion->getClienteId(),
             $clienteDireccion->getClienteDireccionBarrio(),
-            $clienteDireccion->getClienteDireccionCoordenadaGps(),
+            $clienteDireccion->getClienteDireccionLatitud(),
+            $clienteDireccion->getClienteDireccionLongitud(),
             $clienteDireccion->getClienteDireccionActivo(),
             $clienteDireccion->getClienteDireccionId()
         );
@@ -124,7 +128,8 @@ class ClienteDireccionData extends Data
                 $clienteDireccionId,
                 $clienteId,
                 $clienteDireccionBarrio,
-                $clienteDireccionCoordenadaGps,
+                $clienteDireccionLatitud,
+                $clienteDireccionLongitud,
                 $clienteDireccionActivo
             );
 
@@ -136,7 +141,8 @@ class ClienteDireccionData extends Data
                     $clienteDireccionId,
                     $clienteId,
                     $clienteDireccionBarrio,
-                    $clienteDireccionCoordenadaGps,
+                    $clienteDireccionLatitud,
+                    $clienteDireccionLongitud,
                     $clienteDireccionActivo
                 );
                 array_push($array, $currentClienteDireccion); // Agregar el objeto al array de objetos 
@@ -168,7 +174,7 @@ class ClienteDireccionData extends Data
             $row = mysqli_fetch_assoc($result);
 
             // Crear un objeto CostoEnvio con los datos obtenidos
-            $clienteDireccion = new ClienteDireccion($row['tbclientedireccionid'], $row['tbclienteid'], $row['tbclientedireccionbarrio'], $row['tbclientedireccioncoordenadagps'], $row['tbclientedireccionactivo']);
+            $clienteDireccion = new ClienteDireccion($row['tbclientedireccionid'], $row['tbclienteid'], $row['tbclientedireccionbarrio'], $row['tbclientedireccionlatitud'], $row['tbclientedireccionlongitud'] , $row['tbclientedireccionactivo']);
         }
 
         mysqli_close($conn);
