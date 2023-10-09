@@ -6,37 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Pujas del Cliente</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
-    <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
-    include '../business/pujaClienteBusiness.php';
-    include '../business/clienteBusiness.php';
-    include '../business/articuloBusiness.php';
-    //include '../business/subastaBusiness.php';
-    $clienteBusiness = new ClienteBusiness();
-    $articuloBusiness = new ArticuloBusiness();
-    $subastaBusiness = new SubastaBusiness();
-
-    $getCli = $clienteBusiness->getAllTBCliente();
-    $getArt = $articuloBusiness->getAllTBArticulo();
-    $getSub = $subastaBusiness->getAllTBSubasta();
-    date_default_timezone_set('America/Costa_Rica');
-    $precioOferta = 1000;
-    
-
-    //aca esta lo de la sesion
-    include_once("../session/startsession.php");
-    //session_start();
-    if (isset($_SESSION['nombre'])) {
-
-        $clienteNombre = $_SESSION['nombre'];
-    } else {
-        echo "No has iniciado sesión";
-    }
-    ?>
 
     <script>
         $(document).ready(function() {
@@ -99,16 +72,6 @@
             border-radius: 5px;
             width: 80%;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            margin: 15% auto;
-            max-height: 40vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-content h2 {
-            text-align: center;
-            /* Centrar horizontalmente */
         }
 
         /* Estilo para el botón de cerrar */
@@ -158,13 +121,6 @@
             position: relative;
         }
 
-        .cell-column{
-            width: 150px;
-            /* Cambia el ancho según tus necesidades */
-            text-align: center;
-            /* Centra el contenido horizontalmente */
-        }
-
         /* Estilos para el botón de cerrar */
         .close {
             color: #aaa;
@@ -207,25 +163,37 @@
             /* Añade un espacio a la izquierda del campo para el símbolo */
         }
 
-        #subastaPrecioInicialView {
-            padding-left: 25px;
-            /* Añade un espacio a la izquierda del campo para el símbolo */
-        }
-
         #subastaIdView {
             padding-left: 25px;
             /* Añade un espacio a la izquierda del campo para el símbolo */
         }
     </style>
 
+    <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
+    include '../business/pujaClienteBusiness.php';
+    include '../business/clienteBusiness.php';
+    include '../business/articuloBusiness.php';
+    //include '../business/subastaBusiness.php';
+    $clienteBusiness = new ClienteBusiness();
+    $articuloBusiness = new ArticuloBusiness();
+    $subastaBusiness = new SubastaBusiness();
+
+    $getCli = $clienteBusiness->getAllTBCliente();
+    $getArt = $articuloBusiness->getAllTBArticulo();
+    $getSub = $subastaBusiness->getAllTBSubasta();
+    date_default_timezone_set('America/Costa_Rica');
+    $precioOferta = 1000;
+    //$precioOfertaFormateado = '₡' . number_format($precioInicial, 2, '.', ',');
+    ?>
 </head>
 
 <body>
     <header>
-    <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Pujas Cliente</h1>
-        <h2><a href="inicioView.php">Home</a></h2>
+        <h2><a href="../index.php">Home</a></h2>
     </header>
 
     <?php
@@ -268,7 +236,7 @@
                 <th>Nombre del artículo</th>
                 <th>Precio Inicial</th>
                 <th>Costo Envío</th>
-                <th>Fecha de Puja</th>
+                <th>Fecha</th>
                 <th>Oferta</th>
 
                 <th></th>
@@ -282,7 +250,7 @@
                             <?php
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
-                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '" data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -334,10 +302,11 @@
                             <input required type="text" name="pujaClienteOfertaView" id="pujaClienteOfertaView" min="0" step="0.01" />
                         </div>
                     </td>
-                    <input type="hidden" name="precioMaximoPujaActual" id="precioMaximoPujaActual" value="0">
 
 
-                    <td><input type="submit" value="Crear" name="create" id="create" /></td>
+                    <td>
+                        <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button>
+                    </td>
                 </tr>
             </form>
 
@@ -353,61 +322,51 @@
     <div id="subastasActivasModal" class="modal">
         <div class="modal-content">
             <span class="close" id="cerrarSubastasActivasModal">&times;</span>
-            <h2>Subastas Activas</h2>
+            <h2>Pujas Activas</h2>
             <table id="tablaSubastasActivas">
-                <thead>
-                    <tr>
-                        <th>Vendedor</th>
-                        <th>Artículo</th>
-                        <th>Fecha Inicial</th>
-                        <th>Fecha Final</th>
-                        <th>Precio Inicial</th>
-                        <th>Estado del Artículo</th>
-                        <th>Días de Uso</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $fechaHoy = date("Y-m-d H:i:s");
-                    foreach ($getSub as $actualSubasta) {
-                        if ($actualSubasta->getSubastaFechaHoraFinal() >=  $fechaHoy) {
-                            echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
-                            echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
-                            echo '<tr>';
-                            foreach ($getCli as $cliente) {
-                                if ($actualSubasta->getSubastaVendedorId() == $cliente->getClienteId()) {
-                                    echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $actualSubasta->getSubastaVendedorId() . '">';
-                                    echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
-                                }
+                <?php
+                $pujaClienteBusiness = new PujaClienteBusiness();
+                $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
+                $fechaHoy = date("Y-m-d H:i:s");
+
+                foreach ($allPujasCliente as $current) {
+                    if ($current->getPujaClienteFecha() >= $fechaHoy) {
+                        echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
+                        echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
+                        echo '<tr>';
+                        foreach ($getCli as $cliente) {
+                            if ($cliente->getClienteId() == $current->getClienteId()) {
+                                echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
                             }
-                            foreach ($getArt as $articulo) {
-                                if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
-                                    echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $actualSubasta->getSubastaArticuloId() . '">';
-                                    echo '<td class="cell-column"><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
-                                }
-                            }
-                            echo '<td class="cell-column"><input type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView" readonly value="' . $actualSubasta->getSubastaFechaHoraInicio() . '"/></td>';
-                            echo '<td class="cell-column"><input type="datetime-local" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView" readonly value="' . $actualSubasta->getSubastaFechaHoraFinal() . '"/></td>';
-                            echo '<td class="cell-column">
-                                <div class="input-container">
-                                    <span class="currency-symbol">₡</span>
-                                    <input type="text" name="subastaPrecioInicialView" id="subastaPrecioInicialView" readonly value="' . $actualSubasta->getSubastaPrecioInicial() . '"/>
-                                </div>
-                            </td>';
-                            if ($actualSubasta->getSubastaEstadoArticulo() == 'Nuevo') {
-                                echo '<td class="cell-column"><input type="text" name="estado" id="estado" readonly value="Nuevo"/></td>';
-                            } else {
-                                echo '<td class="cell-column"><input type="text" name="estado" id="estado" readonly value="Usado"/></td>';
-                            }
-                            if ($actualSubasta->getSubastaEstadoArticulo() == 'Usado') {
-                                echo '<td class="cell-column"><input type="text" name="mesesDeUso" id="mesesDeUso" readonly value="' . $actualSubasta->getSubastaDiasUsoArticulo() . '"/></td>';
-                            }
-                            echo '</tr>';
-                            echo '</form>';
                         }
+
+                        foreach ($getArt as $articulo) {
+                            if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                                echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
+                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                            }
+                        }
+
+                        echo '<td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                        </div">
+                    </td>';
+                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                        echo '<td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+                        </div">
+                    </td>';
+
+                        echo '</tr>';
+                        echo '</form>';
                     }
-                    ?>
-                </tbody>
+                }
+                ?>
             </table>
         </div>
     </div>
@@ -422,10 +381,10 @@
             <table class="tbHistorico">
                 <thead>
                     <tr>
-                        <th>Comprador</th>
+                        <th>Cliente</th>
                         <th>Artículo</th>
                         <th>Costo del Envío</th>
-                        <th>Fecha de Puja</th>
+                        <th>Fecha</th>
                         <th>Oferta</th>
                     </tr>
                 </thead>
@@ -440,30 +399,28 @@
                         foreach ($getCli as $cliente) {
                             if ($cliente->getClienteId() == $current->getClienteId()) {
                                 echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
-                                echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                                echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
                             }
                         }
 
                         foreach ($getArt as $articulo) {
                             if ($articulo->getArticuloId() == $current->getArticuloId()) {
                                 echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
-                                echo '<td class="cell-column"><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
                             }
                         }
 
-                        echo '<td class="cell-column">
+                        echo '<td>
                             <div class="input-container">
                                 <span class="currency-symbol">₡</span>
-                                <input type="text" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                                <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
                             </div">
                         </td>';
-
-                        echo '<td class="cell-column"><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
-                        
-                        echo '<td class="cell-column">
+                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                        echo '<td>
                             <div class="input-container">
                                 <span class="currency-symbol">₡</span>
-                                <input type="text" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+                                <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
                             </div">
                         </td>';
 
@@ -475,8 +432,6 @@
             </table>
         </div>
     </div>
-
-
 
     <script>
         // JavaScript para mostrar el modal de pujas activas
@@ -527,11 +482,7 @@
             console.log(precioInicial);
             // Verifica si el precio actual es mayor que el precio inicial
             if (precioActual <= precioInicial) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'La oferta debe ser mayor que el precio inicial del artículo.'
-                });
+                alert("La oferta debe ser mayor que el precio inicial del artículo.");
                 return false;
             }
             return true;
@@ -574,6 +525,44 @@
                     $('#resultado').html(r);
                 }
             });
+        }
+    </script>
+    <script>
+        var conn = new WebSocket('ws://192.168.1.167:8088');
+
+        conn.onopen = function(e) {
+            console.log("Conexión establecida");
+        };
+
+        conn.onmessage = function(e) {
+            var message = e.data;
+            showToast(message);
+        };
+
+        function sendMessage() {
+            // Obtén el elemento seleccionado en el select de clientes
+            var clienteSelect = document.getElementById("clienteIdView");
+            // Obtén el nombre del cliente seleccionado usando el atributo data-nombre
+            var nombreCliente = clienteSelect.options[clienteSelect.selectedIndex].getAttribute("data-nombre");
+
+            // Ahora, puedes enviar el nombre del cliente en el mensaje
+            var message = "El cliente " + nombreCliente + " ha realizado una nueva puja.";
+            conn.send(message);
+        }
+
+        function showToast(message) {
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.info(message, "Nuevo mensaje");
         }
     </script>
 
