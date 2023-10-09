@@ -149,7 +149,7 @@
 
                             </select>
                         </td>
-                        <td><input  type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" />
+                        <td><input  type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z0-9\s]+$"  title="Solo se permiten letras y espacios" />
                         <td><input  type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                         <td><input  type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                         <td><input type="submit" value="Crear" name="create" id="create" /></td>
