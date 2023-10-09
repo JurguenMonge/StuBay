@@ -9,8 +9,9 @@ class Articulo{
     private $articuloSerie;
     private $articuloActivo;
     private $articuloSubCategoriaId;
+    private $clienteId;
 
-    function __construct($articuloId, $articuloNombre, $articuloMarca, $articuloModelo, $articuloSerie, $articuloActivo, $articuloSubCategoriaId)
+    function __construct($articuloId, $articuloNombre, $articuloMarca, $articuloModelo, $articuloSerie, $articuloActivo, $articuloSubCategoriaId, $clienteId)
     {
         $this->articuloId = $articuloId;
         $this->articuloNombre = $articuloNombre;      
@@ -19,6 +20,7 @@ class Articulo{
         $this->articuloSerie = $articuloSerie;
         $this->articuloActivo = $articuloActivo;
         $this->articuloSubCategoriaId = $articuloSubCategoriaId;
+        $this->clienteId = $clienteId;
     }
 
     //Getters
@@ -50,6 +52,10 @@ class Articulo{
         return $this->articuloSubCategoriaId;
     }
 
+    function getClienteId(){
+        return $this->clienteId;
+    }
+
     //Setters
     function setArticuloId($articuloId){
         $this->articuloId = $articuloId;
@@ -77,6 +83,10 @@ class Articulo{
 
     function setArticuloSubCategoriaId($articuloSubCategoriaId){
         $this->articuloSubCategoriaId = $articuloSubCategoriaId;
+    }
+
+    function setClienteId($clienteId){
+        $this->clienteId = $clienteId;
     }
 }
 

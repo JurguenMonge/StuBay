@@ -13,6 +13,7 @@ if(isset($_POST['update'])){
         $serie = $_POST['serie'];
         $activo = 1;
         $subcategoria = $_POST['subcategorias'];
+        $cliente = $_POST['clienteid'];
 
         if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0){
             $articulo = new Articulo(
@@ -22,7 +23,8 @@ if(isset($_POST['update'])){
                 $modelo,
                 $serie,
                 $activo,
-                $subcategoria
+                $subcategoria,
+                $cliente
             );
 
             $articuloBusiness = new ArticuloBusiness();
@@ -55,13 +57,14 @@ if(isset($_POST['update'])){
         $articuloSerie = $_POST['articuloserieview'];
         $articuloActivo = 1;
         $articuloSubCategoriaId = $_POST['subcategorias'];
+        $cliente = $_POST['clienteid'];
+        
         //Validar variables
         if(strlen( $articuloNombre ) > 0 && strlen($articuloSubCategoriaId) > 0)
         {
-            $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId);       
+            $articulo = new Articulo(0,$articuloNombre,$articuloMarca,$articuloModelo,$articuloSerie,$articuloActivo,$articuloSubCategoriaId,$cliente);       
             $articuloBusiness = new ArticuloBusiness();
             $result = $articuloBusiness->insertarTBArticulo($articulo);
-
             if ($result == 1) { 
                 header("location: ../view/articuloView.php?success=insert"); 
                 session_start();
@@ -87,6 +90,7 @@ if(isset($_POST['update'])){
          $serie = $_POST['serie'];
          $activo = 0;
          $subcategoria = $_POST['subcategorias'];
+         $cliente = $_POST['clienteid'];
         
         if(strlen($id) > 0 && strlen($nombre) > 0 && strlen($subcategoria) > 0){
             $articulo = new Articulo(
@@ -96,7 +100,8 @@ if(isset($_POST['update'])){
                 $modelo,
                 $serie,
                 $activo,
-                $subcategoria
+                $subcategoria,
+                $cliente
             );
 
             $articuloBusiness = new ArticuloBusiness();

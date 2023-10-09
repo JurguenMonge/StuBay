@@ -12,8 +12,11 @@
         include '../business/articuloBusiness.php';
         include '../business/categoriaBusiness.php';
         include '../business/subCategoriaBusiness.php';
+        include '../business/clienteBusiness.php';
         $subcategoriaBusiness = new SubCategoriaBusiness();
         $articuloCategoriaBusiness = new CategoriaBusiness();
+        $clienteBusiness = new ClienteBusiness();
+        $getClientes = $clienteBusiness->getAllTBCliente();
         $getCat = $articuloCategoriaBusiness->getAllTBCategoria();
         $getSubCat = $subcategoriaBusiness->getAllTBSubCategoria();
 
@@ -119,6 +122,7 @@
             <table>
                 <tr>
                     <th>Nombre</th>
+                    <th>Cliente</th>
                     <th>Categoria</th>
                     <th>Subcategoria</th>
                     <th>Marca</th>
@@ -131,8 +135,22 @@
                             <datalist id="resultados"></datalist>
                         </td>
                         <td>
+                        <select name="clienteid" id="clienteid">
+                                <option value="">--Seleccionar cliente--</option>
+                                <?php
+                                if (count($getClientes) > 0) {
+                                    foreach ($getClientes as $cliente) {
+                                        echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    }
+                                } else {
+                                    echo '<option value="">Ningun cliente registrado</option>';
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td>
                             <select name="articulocategoria" id="articulocategoria">
-                                <option value="">Seleccionar categoria</option>
+                                <option value="">--Seleccionar categoria--</option>
                                 <?php
                                 if (count($getCat) > 0) {
                                     foreach ($getCat as $categoria) {
@@ -164,6 +182,15 @@
                     echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
                     echo '<tr>';
                     echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
+                    echo '<td>  <select name="clienteid" id="clienteid">';
+                    foreach ($getClientes as $cliente) {
+                        if($current->getClienteId() == $cliente->getClienteId()){                         
+                            echo "<option selected value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
+                        }else{
+                            echo "<option value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
+                        }     
+                    }
+                    echo ' </select></td>';
                     echo '<td>  <select name="categoria" id="categoria">';
                     foreach ($getSubCat as $subcategoria) {
                         if($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()){
