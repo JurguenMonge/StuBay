@@ -598,6 +598,7 @@
 
             // Ahora, puedes enviar el nombre del cliente en el mensaje
             var message = "El cliente " + nombreCliente + " ha realizado una nueva puja.";
+            console.log(message);
             conn.send(message);
         }
 
