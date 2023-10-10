@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-10-2023 a las 00:22:15
+-- Tiempo de generación: 10-10-2023 a las 03:49:53
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -96,7 +96,8 @@ CREATE TABLE `tbcliente` (
 
 INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
 (1, 'Giancarlo', 'Arias', 'P', 'arias@gmail.com', '$2y$10$Ah/9AvIaBmUbk5wA7WUSmuOwsx.myiRZn6CuFRo3xqeH6klv4qMaG', '2023-10-03', 1),
-(2, 'Jurguen', 'Monge', 'Rojas', 'jurguen@gmail.com', '$2y$10$I261MJPaDo1oZmhL5YW1q.IEG5U67qZlG5W9uN2cur4e1Bk6dmcpu', '2023-10-09', 1);
+(2, 'Jurguen', 'Monge', 'Rojas', 'jurguen@gmail.com', '$2y$10$I261MJPaDo1oZmhL5YW1q.IEG5U67qZlG5W9uN2cur4e1Bk6dmcpu', '2023-10-09', 1),
+(3, 'Juan', 'Dolmus', 'Corea', 'dolmus@gmail.com', '$2y$10$e/WGSVRBLE1I4r9euz8p2uqWKW.s7rqP1d1.gpVFIlyksZdYIoga.', '2023-10-09', 1);
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,8 @@ CREATE TABLE `tbclientedireccion` (
   `tbclientedireccionid` int(11) NOT NULL,
   `tbclienteid` int(11) NOT NULL,
   `tbclientedireccionbarrio` varchar(30) NOT NULL,
-  `tbclientedireccioncoordenadagps` varchar(30) NOT NULL,
+  `tbclientedireccionlatitud` varchar(200) NOT NULL,
+  `tbclientedireccionlongitud` varchar(200) NOT NULL,
   `tbclientedireccionactivo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -116,10 +118,10 @@ CREATE TABLE `tbclientedireccion` (
 -- Volcado de datos para la tabla `tbclientedireccion`
 --
 
-INSERT INTO `tbclientedireccion` (`tbclientedireccionid`, `tbclienteid`, `tbclientedireccionbarrio`, `tbclientedireccioncoordenadagps`, `tbclientedireccionactivo`) VALUES
-(1, 1, 'Rio frio', '40,-73', 1),
-(2, 2, 'Guapiles', '41,-80', 1),
-(3, 3, 'Puerto Viejo', '35,-65', 1);
+INSERT INTO `tbclientedireccion` (`tbclientedireccionid`, `tbclienteid`, `tbclientedireccionbarrio`, `tbclientedireccionlatitud`, `tbclientedireccionlongitud`, `tbclientedireccionactivo`) VALUES
+(1, 1, 'Rio frio', '12.44', '-13.43', 1),
+(2, 2, 'Guapiles', '16.44', '-19.983', 1),
+(3, 3, 'Puerto Viejo', '20.32', '-14.54', 1);
 
 -- --------------------------------------------------------
 
@@ -188,9 +190,7 @@ CREATE TABLE `tbpujacliente` (
 --
 
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
-(1, 1, 2, '2023-09-04 01:03:00', 910, 3000.00),
-(2, 2, 10, '2023-08-29 05:34:00', 760996, 5000.00),
-(3, 3, 8, '2023-11-09 22:56:23', 110001, 21261.21);
+(1, 1, 2, '2023-09-04 01:03:00', 910, 3000.00);
 
 -- --------------------------------------------------------
 
