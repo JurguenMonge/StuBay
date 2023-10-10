@@ -24,7 +24,6 @@
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
     date_default_timezone_set('America/Costa_Rica');
-    $precioOferta = 1000;
     
 
     //aca esta lo de la sesion
@@ -283,6 +282,7 @@
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
                                     echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -295,12 +295,12 @@
                             <option value="">Seleccionar artículo</option>
                             <?php
                             $currentDate =  date("Y-m-d H:i:s");
-                            //var_dump($currentDate);
+                            
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
 
                                     foreach ($getArt as $articulo) {
-
+                                        
                                         if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
                                             echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                         }

@@ -66,8 +66,8 @@
             <tr>
                 <th>Cliente</th>
                 <th>Direccion Barrio</th>
-                <th>Coordenadas GPS</th>
-                <th>Activo</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
                 <th></th>
                 <th></th>
             </tr>

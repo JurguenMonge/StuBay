@@ -47,7 +47,7 @@ if (isset($_POST['create'])) {
                 $subastaClienteId
             );
             $subastaBusiness = new SubastaBusiness();
-            $result = $subastaBusiness->insertarTBSubasta($subasta);    
+            $result = $subastaBusiness->insertarTBSubasta($subasta);
             if ($result == 1) {
                 header("location: ../view/subastaView.php?success=insert");
                 session_start();
@@ -176,14 +176,10 @@ if (isset($_POST['create'])) {
     $direccionVendedor = $businessClienteDireccion->getTBClienteDireccionByIdCliente($subasta->getSubastaVendedorId());
     $costoEnvioVendedor = $costoEnvioBusiness->getTBCostoEnvioByIdCliente($subasta->getSubastaVendedorId());
     
-    $coordenasCliente = explode(",", $direccionCliente->getClienteDireccionCoordenadaGps());
-    $coordenasVendedor = explode(",", $direccionVendedor->getClienteDireccionCoordenadaGps());
-
-
-    $latCliente = (float) $coordenasCliente[0];
-    $lonCliente = (float) $coordenasCliente[1];
-    $latVendedor = (float) $coordenasVendedor[0];
-    $lonVendedor = (float) -$coordenasVendedor[1];
+    $latCliente = (float) $direccionCliente->getClienteDireccionLatitud();
+    $lonCliente = (float) $direccionCliente->getClienteDireccionLongitud();
+    $latVendedor = (float) $direccionVendedor->getClienteDireccionLatitud();
+    $lonVendedor = (float) $direccionVendedor->getClienteDireccionLongitud();
 
     $distanciaClienteVendedor = $pujaClienteBusiness->calcularDistanciaClienteVendedor($latCliente, $lonCliente, $latVendedor, $lonVendedor);
 
