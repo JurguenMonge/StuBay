@@ -284,7 +284,7 @@
                             <?php
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
-                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '"data-nombre="' . $cliente->getClienteNombre() . '>' . $cliente->getClienteNombre() . '</option>';
+                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '"data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
