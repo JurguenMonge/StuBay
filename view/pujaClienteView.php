@@ -24,7 +24,7 @@
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
     date_default_timezone_set('America/Costa_Rica');
-    
+
 
     //aca esta lo de la sesion
     include_once("../session/startsession.php");
@@ -157,7 +157,7 @@
             position: relative;
         }
 
-        .cell-column{
+        .cell-column {
             width: 150px;
             /* Cambia el ancho según tus necesidades */
             text-align: center;
@@ -222,7 +222,7 @@
 
 <body>
     <header>
-    <h1><?php echo "$clienteNombre!" ?></h1>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Pujas Cliente</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -282,7 +282,6 @@
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
                                     echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
-                                    
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -295,12 +294,12 @@
                             <option value="">Seleccionar artículo</option>
                             <?php
                             $currentDate =  date("Y-m-d H:i:s");
-                            
+
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
 
                                     foreach ($getArt as $articulo) {
-                                        
+
                                         if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
                                             echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                         }
@@ -459,7 +458,7 @@
                         </td>';
 
                         echo '<td class="cell-column"><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
-                        
+
                         echo '<td class="cell-column">
                             <div class="input-container">
                                 <span class="currency-symbol">₡</span>
@@ -577,7 +576,7 @@
         }
     </script>
     <script>
-        var conn = new WebSocket('ws://192.168.100.240:8088');
+        var conn = new WebSocket('ws://192.168.1.167:8088');
 
         conn.onopen = function(e) {
             console.log("Conexión establecida");
@@ -585,23 +584,33 @@
 
         conn.onmessage = function(e) {
             var message = e.data;
-            showAlert(message);
+            showToast(message);
         };
 
-
         function sendMessage() {
-            var message = "Se creo una nueva puja";
+            // Obtén el elemento seleccionado en el select de clientes
+            var clienteSelect = document.getElementById("clienteIdView");
+            // Obtén el nombre del cliente seleccionado usando el atributo data-nombre
+            var nombreCliente = clienteSelect.options[clienteSelect.selectedIndex].getAttribute("data-nombre");
+
+            // Ahora, puedes enviar el nombre del cliente en el mensaje
+            var message = "El cliente " + nombreCliente + " ha realizado una nueva puja.";
             conn.send(message);
         }
 
-
-        function showAlert(message) {
-            Swal.fire({
-                title: 'Nuevo mensaje',
-                text: message,
-                icon: 'info',
-                confirmButtonText: 'Aceptar'
-            });
+        function showToast(message) {
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.info(message, "Nuevo mensaje");
         }
     </script>
 
