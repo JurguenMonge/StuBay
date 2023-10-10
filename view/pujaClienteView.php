@@ -576,6 +576,34 @@
             });
         }
     </script>
+    <script>
+        var conn = new WebSocket('ws://192.168.100.240:8088');
+
+        conn.onopen = function(e) {
+            console.log("Conexión establecida");
+        };
+
+        conn.onmessage = function(e) {
+            var message = e.data;
+            showAlert(message);
+        };
+
+
+        function sendMessage() {
+            var message = "Se creo una nueva puja";
+            conn.send(message);
+        }
+
+
+        function showAlert(message) {
+            Swal.fire({
+                title: 'Nuevo mensaje',
+                text: message,
+                icon: 'info',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    </script>
 
 </body>
 
