@@ -22,7 +22,10 @@
     <header>
         <h1>StuBay</h1>
     </header>
-
+    <h1>
+        correo: arias@gmail.com
+        pass:1234
+    </h1>
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
     ?>
