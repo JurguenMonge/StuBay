@@ -339,7 +339,9 @@
                     <input type="hidden" name="precioMaximoPujaActual" id="precioMaximoPujaActual" value="0">
 
 
-                    <td><input type="submit" value="Crear" name="create" id="create" /></td>
+                    <td>
+                        <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button>
+                    </td>
                 </tr>
             </form>
 
