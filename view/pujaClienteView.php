@@ -9,9 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <?php
+    /*
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-
+*/
     include '../business/pujaClienteBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/articuloBusiness.php';
