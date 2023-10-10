@@ -72,6 +72,8 @@
     <br><br>
     <a href="costoEnvioView.php">Registrar Costo envio</a>
     <br><br>
+    <a href="seguirSubastaView.php">Seguir Subasta</a>
+    <br><br>
     <a href="../session/closesession.php">Cerrar Sesión</a>
 </body>
 

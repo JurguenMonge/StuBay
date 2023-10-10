@@ -2,31 +2,65 @@
 
 class SeguirSubasta{
 
+    private $seguirSubastaId;
     private $clienteId;
-    private $pujaId;
-    
-    function __construct($clienteId, $pujaId) {
+    private $subastaId;
+    private $seguirSubastaActivo;
+
+    function __construct($seguirSubastaId, $clienteId, $subastaId, $seguirSubastaActivo)
+    {
+        $this->seguirSubastaId = $seguirSubastaId;
         $this->clienteId = $clienteId;
-        $this->pujaId = $pujaId;
+        $this->subastaId = $subastaId;
+        $this->seguirSubastaActivo = $seguirSubastaActivo;
     }
 
-    function getClienteId() {
+    public function getSeguirSubastaId()
+    {
+        return $this->seguirSubastaId;
+    }
+
+    public function setSeguirSubastaId($seguirSubastaId)
+    {
+        $this->seguirSubastaId = $seguirSubastaId;
+
+        return $this;
+    }
+
+    public function getClienteId()
+    {
         return $this->clienteId;
     }
-
-    function getPujaId() {
-        return $this->pujaId;
-    }
-
     
-
-    function setClienteId($clienteId) {
+    public function setClienteId($clienteId)
+    {
         $this->clienteId = $clienteId;
+
+        return $this;
     }
 
-    function setPujaId($pujaId) {
-        $this->pujaId = $pujaId;
+    public function getSubastaId()
+    {
+        return $this->subastaId;
     }
 
+    public function setSubastaId($subastaId)
+    {
+        $this->subastaId = $subastaId;
+
+        return $this;
+    }
+
+    public function getSeguirSubastaActivo()
+    {
+        return $this->seguirSubastaActivo;
+    }
+
+    public function setSubastaSeguidorActivo($seguirSubastaActivo)
+    {
+        $this->seguirSubastaActivo = $seguirSubastaActivo;
+
+        return $this;
+    }
     
 }

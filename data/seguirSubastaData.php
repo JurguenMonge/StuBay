@@ -12,7 +12,7 @@ class SeguirSubastaData extends Data
         $conn->set_charset('utf8');
 
         //get the last id in the database
-        $queryGetLastId = "SELECT MAX(tbpujaseguidorid) AS tbpujaseguidorid FROM tbpujaseguidor";
+        $queryGetLastId = "SELECT MAX(tbsubastaseguidorid) AS tbsubastaseguidorid FROM tbpujaseguidor";
         $idCont = mysqli_query($conn, $queryGetLastId);
         $nextId = 1;
 
@@ -20,16 +20,9 @@ class SeguirSubastaData extends Data
             $nextId = trim($row[0]) + 1;
         }
 
-        $stmt = $conn->prepare("INSERT INTO tbpujaseguidor VALUES (?,?,?)");
-        $stmt->bind_param(
-            "iii", 
-            $nextId, 
-            $seguirSubasta->getClienteId(), 
-            $seguirSubasta->getPujaId()
-        );
-
-        $result = mysqli_query($conn, $stmt);
-        $stmt->close();
+        // Insert the follower auction in the database
+        $queryInsert = "INSERT INTO tbpujaseguidor VALUES (" . $nextId . ", " . $seguirSubasta->getClienteId() . ", " . $seguirSubasta->getSubastaId() . ", " . $seguirSubasta->getSeguirSubastaActivo() . ");";
+        $result = mysqli_query($conn, $queryInsert);
         mysqli_close($conn);
         return $result;
     }
@@ -38,49 +31,98 @@ class SeguirSubastaData extends Data
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-        $stmt = $conn->prepare("UPDATE tbpujaseguidor SET clienteid=?, pujaid=? WHERE tbpujaseguidorid=?");
-        $stmt->bind_param(
-            "iii",
+
+        //update the auction follower in the database
+        $updateStmt = $conn->prepare("UPDATE tbpujaseguidor 
+        SET tbclienteid = ?, 
+        tbsubastaid = ?, 
+        tbsubastaseguidoractivo = ? 
+        WHERE tbsubastaseguidorid = ?");
+
+        $updateStmt->bind_param(
+            "iiii",
             $seguirSubasta->getClienteId(),
-            $seguirSubasta->getPujaId(),
+            $seguirSubasta->getSubastaId(),
+            $seguirSubasta->getSeguirSubastaActivo(),
             $seguirSubasta->getSeguirSubastaId()
         );
 
-        $result = mysqli_query($conn, $stmt);
-        $stmt->close();
+        $result = $updateStmt->execute();
+
+        $updateStmt->close();
         mysqli_close($conn);
         return $result;
     }
 
-    public function deleteTBSeguirSubasta($seguirSubasta)
+    public function deleteTBSeguirSubasta($seguirSubastaId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-        $stmt = $conn->prepare("DELETE FROM tbpujaseguidor WHERE tbpujaseguidorid=?");
-        $stmt->bind_param("i", $seguirSubasta->getSeguirSubastaId());
 
-        $result = mysqli_query($conn, $stmt);
-        $stmt->close();
+        // update value to active for 0
+        $update = "UPDATE tbpujaseguidor 
+        SET tbsubastaseguidoractivo = 0 
+        WHERE tbsubastaseguidorid = " . $seguirSubastaId . ";";
+
+        $result = mysqli_query($conn, $update);
         mysqli_close($conn);
         return $result;
     }
 
     public function getAllTBSeguirSubasta()
     {
-        $seguirSubastaList = array();
+        // Conexión a la base de datos
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $query = "SELECT * FROM tbpujaseguidor";
-        $result = mysqli_query($conn, $query);
+        $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
 
-        while ($row = mysqli_fetch_array($result)) {
-            $currentSeguirSubasta = new SeguirSubasta(
-                $row['tbpujaseguidorid'],
-                $row['clienteid'],
-                $row['pujaid']
+        // Consulta SQL para seleccionar todos los registros de la tabla tbcliente donde clienteactivo sea 1
+        $querySelect = "SELECT * FROM tbpujaseguidor WHERE tbsubastaseguidoractivo = 1;";
+
+        // Preparar la consulta
+        $stmt = mysqli_prepare($conn, $querySelect);
+
+        if ($stmt) {
+            // Ejecutar la consulta preparada
+            mysqli_stmt_execute($stmt);
+
+            // Vincular las columnas de resultado a las variables correspondientes
+            mysqli_stmt_bind_result(
+                $stmt,
+                $seguirSubastaId,
+                $clienteId,
+                $subastaId,
+                $seguirSubastaActivo
             );
-            array_push($seguirSubastaList, $currentSeguirSubasta);
+
+            $array = array(); // Crear un array para almacenar los resultados de la consulta preparada del mysqli_stmt_fetch
+
+            // Recorrer el conjunto de resultados y extraer los datos en las variables
+            while (mysqli_stmt_fetch($stmt)) {
+                // Crear una instancia de Cliente con los datos extraídos
+                $currentSeguirSubasta = new SeguirSubasta(
+                    $seguirSubastaId,
+                    $clienteId,
+                    $subastaId,
+                    $seguirSubastaActivo
+                );
+                // Agregar la instancia al array
+                array_push($array, $currentSeguirSubasta);
+            }
+
+            // Cerrar la consulta preparada
+            mysqli_stmt_close($stmt);
+        } else {
+            // Manejar el error si la preparación de la consulta falla
+            $array = array();
         }
+
+        // Cerrar la conexión a la base de datos
         mysqli_close($conn);
-        return $seguirSubastaList;
+
+        // Devolver el array con los resultados
+        return $array;
     }
+    
+
+    
 }
