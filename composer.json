@@ -1,0 +1,19 @@
+{
+    "name": "jurguen/stubay",
+    "description": "socket,stubay",
+    "autoload": {
+        "psr-4": {
+            "Jurguen\\StuBay\\": "data/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jurguen,Juan,Giancarlos"
+        }
+    ],
+    "require": {
+        "cboden/ratchet": "dev-master"
+    }
+    ,
+    "minimum-stability": "dev" 
+}
