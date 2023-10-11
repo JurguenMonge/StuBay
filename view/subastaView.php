@@ -93,7 +93,9 @@
                         <?php
                         if (count($getAllClientes) > 0) {
                             foreach ($getAllClientes as $cliente) {
-                                echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                if ($clienteNombre == $cliente->getClienteNombre()) {
+                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
+                                }
                             }
                         } else {
                             echo '<option value="">Ningun cliente registrado</option>';

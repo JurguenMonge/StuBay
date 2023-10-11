@@ -267,8 +267,7 @@
         <table>
             <tr>
                 <th>Nombre del Cliente</th>
-                <th>Nombre del artículo</th>
-                <th>Precio Inicial</th>
+                <th>Subasta</th>
                 <th>Costo Envío</th>
                 <th>Fecha de Puja</th>
                 <th>Oferta</th>
@@ -279,12 +278,16 @@
             <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
                 <tr>
                     <td>
+
                         <select name="clienteIdView" id="clienteIdView">
                             <option value="">Seleccionar cliente</option>
                             <?php
+                            echo $clienteNombre;
                             if (count($getCli) > 0) {
                                 foreach ($getCli as $cliente) {
-                                    echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '"data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    if ($cliente->getClienteNombre() == $clienteNombre) {
+                                        echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '"data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
+                                    }
                                 }
                             } else {
                                 echo '<option value="">Ninguna categoria registrada</option>';
@@ -294,7 +297,7 @@
                     </td>
                     <td>
                         <select name="articuloIdView" id="articuloIdView">
-                            <option value="">Seleccionar artículo</option>
+                            <option value="">Seleccionar subasta</option>
                             <?php
                             $currentDate =  date("Y-m-d H:i:s");
 
@@ -316,12 +319,10 @@
                     </td>
 
 
-                    <td>
-                        <div class="input-container">
-                            <span class="currency-symbol">₡</span>
-                            <input required type="text" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
-                        </div>
-                    </td>
+                    <div class="input-container">
+                        <input required type="hidden" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
+                    </div>
+
                     <td>
                         <div class="input-container">
                             <span class="currency-symbol">₡</span>
@@ -526,20 +527,20 @@
 
         function validarPrecio() {
             var precioInicial = parseFloat(document.getElementById("subastaIdView").value.replace("₡", "").replace(",", ""));
-
             var precioActual = parseFloat(document.getElementById("pujaClienteOfertaView").value);
-            console.log(precioInicial);
-            // Verifica si el precio actual es mayor que el precio inicial
+
             if (precioActual <= precioInicial) {
+                // Usamos una plantilla de cadena para insertar el precio inicial en la alerta
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'La oferta debe ser mayor que el precio inicial del artículo.'
+                    text: `La oferta debe ser mayor que el precio inicial del artículo: ₡${precioInicial}!`
                 });
                 return false;
             }
             return true;
         }
+
 
         /// Función para actualizar la fecha y hora
         function actualizarFechaHora() {

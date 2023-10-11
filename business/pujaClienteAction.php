@@ -1,7 +1,8 @@
 <?php
+/*
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+*/
 include '../business/pujaClienteBusiness.php';
 
 if (isset($_POST['update'])) {
@@ -161,7 +162,7 @@ if (isset($_POST['update'])) {
     echo '<table border="1">
             <tr>
                 <th>Cliente</th>
-                <th>Artículo</th>
+                <th>Subasta</th>
                 <th>Puja Envío</th>
                 <th>Puja Fecha</th>
                 <th>Puja Oferta</th>
