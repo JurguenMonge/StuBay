@@ -16,6 +16,9 @@
     include '../business/seguirSubastaBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/pujaBusiness.php';
+    include '../business/articuloBusiness.php';
+    $articuloBusiness = new ArticuloBusiness();
+    $getArticulos = $articuloBusiness->getAllTBArticulo();
     $clienteBusiness = new clienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
@@ -98,8 +101,11 @@
                             <?php
                             if (count($getSub) > 0) {
                                 foreach ($getSub as $sub) {
-
-                                    echo '<option value="' . $sub->getSubastaId() . '">' . $sub->getSubastaArticuloId() . '</option>';
+                                    foreach ($getArticulos as $art){
+                                        if($sub->getSubastaArticuloId() == $art->getArticuloId()){
+                                            echo '<option value="' . $sub->getSubastaId() . '">' . $art->getArticuloNombre() . '</option>';
+                                        }
+                                    }
                                 }
                             } else {
                                 echo '<option value="">Ninguna subasta registrada</option>';
