@@ -21,13 +21,16 @@
     $subastaBusiness = new SubastaBusiness();
     $getSub = $subastaBusiness->getAllTBSubasta();
     include_once("../session/startsession.php");
-    session_start();
-    if (isset($_SESSION['nombre'])) {
-
-        $clienteNombre = $_SESSION['nombre'];
-    } else {
-        echo "No has iniciado sesión";
-    }
+        //session_start();
+        if (isset($_SESSION['nombre'])) {
+            $clienteId = $_SESSION['id'];
+            $clienteNombre = $_SESSION['nombre'];
+            $clientePrimerApellido = $_SESSION['apellido1'];
+            $clienteSegundoApellido = $_SESSION['apellido2'];
+            $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
+        } else {
+            echo "No has iniciado sesión";
+        }
     ?>
 
 
@@ -77,20 +80,8 @@
             <form method="post" enctype="multipart/form-data" action="../business/seguirSubastaAction.php">
                 <tr>
                     <td>
-                        <select name="clienteidview" id="clienteidview">
-                            <option value="">Seleccionar cliente</option>
-                            <?php
-                            if (count($getCliente) > 0) {
-                                foreach ($getCliente as $cliente) {
-
-                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                                    ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                                }
-                            } else {
-                                echo '<option value="">Ningun cliente registrado</option>';
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="clienteid" id="clienteid" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
                         <select name="subastaidview" id="subastaidview">
