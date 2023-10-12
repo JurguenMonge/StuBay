@@ -30,6 +30,10 @@ class ArticuloBusiness{
         return $this->articuloData->getArticulosBySubcategoriaId($subcategoriaId);
     }
 
+    public function getArticuloByClienteId($clienteId){
+        return $this->articuloData->getArticuloByClienteId($clienteId);
+    }
+
     public function getTBArticuloName($nombre){
         return $this->articuloData->buscarNombres($nombre);
     }

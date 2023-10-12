@@ -156,29 +156,86 @@ class ClienteDireccionData extends Data
         return $array; // Devolver el array
     }
 
-    public function getTBClienteDireccionByIdCliente($idCliente)
+    public function getTBClienteDireccionByClienteId($clienteId)
     {
-        // Conexión a la base de datos
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
-        $conn->set_charset('utf8'); // Establecer el conjunto de caracteres en utf8
+        $conn->set_charset('utf8');
 
-        // Consulta a la base de datos
-        $querySelect = "SELECT * FROM tbclientedireccion WHERE tbclientedireccionactivo = 1 AND tbclienteid = $idCliente;";
+        // Consulta SQL para obtener las direcciones del cliente por su ID
+        $query = "SELECT * FROM tbclientedireccion WHERE tbclienteid = ? AND tbclientedireccionactivo = 1";
+        // Preparar la consulta
+        $stmt = $conn->prepare($query);
 
-        $result = mysqli_query($conn, $querySelect);
+        // Enlazar el ID del cliente como un entero
+        $stmt->bind_param("i", $clienteId);
 
-        $clienteDireccion = NULL;
+        // Ejecutar la consulta
+        $stmt->execute();
 
-        if ($result && mysqli_num_rows($result) > 0) {
-            // Obtener la primera fila de resultados
-            $row = mysqli_fetch_assoc($result);
+        // Obtener el resultado de la consulta
+        $result = $stmt->get_result();
 
-            // Crear un objeto CostoEnvio con los datos obtenidos
-            $clienteDireccion = new ClienteDireccion($row['tbclientedireccionid'], $row['tbclienteid'], $row['tbclientedireccionbarrio'], $row['tbclientedireccionlatitud'], $row['tbclientedireccionlongitud'] , $row['tbclientedireccionactivo']);
+        $direcciones = array(); // Almacenará las direcciones
+
+        // Recorrer los resultados y crear objetos de dirección del cliente
+        while ($row = $result->fetch_assoc()) {
+            $direccion =
+                new ClienteDireccion(
+                    $row['tbclientedireccionid'],
+                    $row['tbclienteid'],
+                    $row['tbclientedireccionbarrio'],
+                    $row['tbclientedireccionlatitud'],
+                    $row['tbclientedireccionlongitud'],
+                    $row['tbclientedireccionactivo']
+                );
+            $direcciones[] = $direccion;
         }
 
+        // Cerrar la conexión y el stmt
+        $stmt->close();
         mysqli_close($conn);
 
-        return $clienteDireccion; // Devolver la dirección del cliente
+        return $direcciones;
+    }
+
+    public function getArticuloByClienteId($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Consulta SQL con sentencia preparada
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbclienteid = ? AND tbarticuloactivo = 1";
+
+        // Preparar la consulta
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $clienteId); // Enlazar el ID del cliente como un entero
+
+        // Ejecutar la consulta
+        $stmt->execute();
+
+        // Obtener el resultado de la consulta
+        $result = $stmt->get_result();
+
+        $array = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $currentArticulo = new Articulo(
+                $row['tbarticuloid'],
+                $row['tbarticulonombre'],
+                $row['tbarticulomarca'],
+                $row['tbarticulomodelo'],
+                $row['tbarticuloserie'],
+                $row['tbarticuloactivo'],
+                $row['tbsubcategoriaid'],
+                $row['tbclienteid']
+            );
+            array_push($array, $currentArticulo);
+        }
+
+        // Cerrar la conexión y el stmt
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $array;
     }
 }

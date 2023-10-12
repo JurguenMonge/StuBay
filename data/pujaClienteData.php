@@ -80,25 +80,40 @@ class PujaClienteData extends Data
         return $array; // devolver el array
     }
 
-    public function getTBPujaClienteById($id)
+    public function getTBPujaClienteById($clienteId)
     {
-        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); // conectar a la base de datos
-        $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbpujacliente WHERE tbclienteid = " . $id . ";";
+        $querySelect = "SELECT * FROM tbpujacliente WHERE tbclienteid = ? AND tbpujaclienteactivo = 1";
 
-        $result = mysqli_query($conn, $querySelect); // ejecutar la consulta y obtener el resultado
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $clienteId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         $array = array();
 
-        while ($row = mysqli_fetch_array($result)) {
-            $pujaCliente = new PujaCliente($row['tbpujaclienteid'], $row['tbclienteid'], $row['tbarticuloid'], $row['tbpujaclientefecha'], $row['tbpujaclienteoferta'], $row['tbpujaclienteenvio']);
+        while ($row = $result->fetch_assoc()) {
+            $pujaCliente = new PujaCliente(
+                $row['tbpujaclienteid'],
+                $row['tbclienteid'],
+                $row['tbarticuloid'],
+                $row['tbpujaclientefecha'],
+                $row['tbpujaclienteoferta'],
+                $row['tbpujaclienteenvio']
+            );
             array_push($array, $pujaCliente);
         }
 
-        mysqli_close($conn); // cerrar la conexión
+        $stmt->close();
+        mysqli_close($conn);
+
         return $array;
     }
+
+
 
     public function getPrecioMaximoByArticuloId($articuloId)
     {

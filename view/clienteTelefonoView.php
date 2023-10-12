@@ -20,8 +20,11 @@
     include_once("../session/startsession.php");
     session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
+        $clientePrimerApellido = $_SESSION['apellido1'];
+        $clienteSegundoApellido = $_SESSION['apellido2'];
+        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
     } else {
         echo "No has iniciado sesión";
     }
@@ -72,20 +75,9 @@
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/clienteTelefonoAction.php">
                 <tr>
-                    <td><select name="clienteidview" id="clienteidview">
-                            <option value="">Seleccionar cliente</option>
-                            <?php
-                            if (count($getCliente) > 0) {
-                                foreach ($getCliente as $cliente) {
-
-                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                                    ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                                }
-                            } else {
-                                echo '<option value="">Ningun cliente registrado</option>';
-                            }
-                            ?>
-                        </select></td>
+                    <td>
+                        <input type="hidden" id="clientetelefonoidview" name="clientetelefonoviewid" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
                     <td>
                         <input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="Número" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
                     </td>
@@ -98,21 +90,15 @@
             error_reporting(0);
             $clienteTelefonoBusiness = new clienteTelefonoBusiness();
             $allClienteTelefonos = $clienteTelefonoBusiness->getAllTBClienteTelefono();
-            foreach ($allClienteTelefonos as $current) {
+            $clienteById = $clienteTelefonoBusiness->getClienteTelefonosByClienteId($clienteId);
+            foreach ($clienteById as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteTelefonoAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clientetelefonoidview" value="' . $current->getClienteTelefonoId() . '">';
                 echo '<tr>';
-                echo '<td><select name="clienteidview" id="clienteidview">';
-                foreach ($getCliente as $cliente) {
-                    if ($current->getClienteId() == $cliente->getClienteId()) {
-                        echo '<option selected value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '
-                            ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    } else {
-                        echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                           ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    }
-                }
-                echo '</select></td>';
+                echo '<td>';
+                echo '<input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
+                echo '<span>' . $clienteNombreCompleto . '</span>';
+                echo '</td>';
                 echo '<td><input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="Número" oninput="this.value = this.value.replace(/[^0-9]/g, \'\').slice(0, 8);" value="' . $current->getClienteTelefonoNumero() . '" /></td>';
                 echo '<td><input required  type="text" name="clientetelefonodescripcionview" id="clientetelefonodescripcionview" pattern="^[0-9,\s-]+$" value="' . $current->getClienteTelefonoDescripcion() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input type="checkbox" name="clientetelefonoactivoview" id="clientetelefonoactivoview" ' . ($current->getClienteTelefonoActivo() == 1 ? "checked" : "") . '/></td>';

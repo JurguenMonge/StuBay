@@ -31,6 +31,10 @@ class SubastaBusiness {
         return $this->subastaData->getTBSubastaById($subastaId);
     }
 
+    public function getTBSubastaByClienteId($articuloId){
+        return $this->subastaData->getTBSubastaByClienteId($articuloId);
+    }
+
     public function checkSubasta($clienteId){
         return $this->subastaData->checkSubasta($clienteId);
     }

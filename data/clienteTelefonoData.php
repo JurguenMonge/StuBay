@@ -75,7 +75,8 @@ class ClienteTelefonoData extends Data
         return $result;
     }
 
-    public function deleteTBClienteTelefono($clienteTelefonoId){
+    public function deleteTBClienteTelefono($clienteTelefonoId)
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -108,34 +109,65 @@ class ClienteTelefonoData extends Data
 
             // Vincular las columnas del resultado con variables
             mysqli_stmt_bind_result(
-                $stmt, 
-                $clienteTelefonoId, 
-                $clienteId, 
-                $clienteTelefonoNumero, 
-                $clienteTelefonoDescripcion, 
+                $stmt,
+                $clienteTelefonoId,
+                $clienteId,
+                $clienteTelefonoNumero,
+                $clienteTelefonoDescripcion,
                 $clienteTelefonoActivo
             );
 
-            $array = array(); // Definir un array para guardar los datos del resultado
+            $array = array(); // Definir un array para guardar los datos adel resultado
 
             // Recorrer el resultado fila por fila y guardar los datos en el array
             while (mysqli_stmt_fetch($stmt)) {
                 $currentClienteTelefono = new ClienteTelefono(
-                    $clienteTelefonoId, 
-                    $clienteId, 
-                    $clienteTelefonoNumero, 
-                    $clienteTelefonoDescripcion, 
+                    $clienteTelefonoId,
+                    $clienteId,
+                    $clienteTelefonoNumero,
+                    $clienteTelefonoDescripcion,
                     $clienteTelefonoActivo
                 );
                 array_push($array, $currentClienteTelefono);
             }
-             
-        }else{
-            $array = array();// Definir un array vacío en caso de que no se pueda ejecutar la consulta
+        } else {
+            $array = array(); // Definir un array vacío en caso de que no se pueda ejecutar la consulta
         }
 
         mysqli_stmt_close($stmt); // Cerrar la consulta
 
         return $array; // Devolver el array
+    }
+
+    public function getClienteTelefonosByClienteId($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $query = "SELECT * FROM tbclientetelefono WHERE tbclienteid = ? AND tbclientetelefonoactivo = 1";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $clienteId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $telefonos = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $telefono = new ClienteTelefono(
+                $row['tbclientetelefonoid'],
+                $row['tbclienteid'],
+                $row['tbclientetelefononumero'],
+                $row['tbclientetelefonodescripcion'],
+                $row['tbclientetelefonoactivo']
+            );
+            $telefonos[] = $telefono;
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $telefonos;
     }
 }

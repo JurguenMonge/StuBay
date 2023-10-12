@@ -23,8 +23,11 @@
     include_once("../session/startsession.php");
     session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
+        $clientePrimerApellido = $_SESSION['apellido1'];
+        $clienteSegundoApellido = $_SESSION['apellido2'];
+        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
     } else {
         echo "No has iniciado sesión";
     }
@@ -33,7 +36,7 @@
 
 <body>
     <header>
-    <h1><?php echo "$clienteNombre!" ?></h1>
+        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Costo Envio</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -52,18 +55,8 @@
             <form method="post" enctype="multipart/form-data" action="../business/costoEnvioAction.php">
                 <tr>
                     <td>
-                        <select name="clienteIdView" id="clienteIdView">
-                            <option value="">Seleccionar cliente</option>
-                            <?php
-                            if (count($getAllClientes) > 0) {
-                                foreach ($getAllClientes as $cliente) {
-                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
-                                }
-                            } else {
-                                echo '<option value="">Ningun cliente registrado</option>';
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
                         <input required type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="<?php echo $precioInicialFormateado; ?>" />
@@ -74,7 +67,8 @@
                 </tr>
             </form>
             <?php
-            foreach ($getAllCostoEnvio as $current) {
+            $clienteById = $costoEnvioBusiness->getTBCostoEnvioByCliente($clienteId);
+            foreach ($clienteById as $current) {
                 $precioInicial = $current->getCostoPorKM();
                 $precioSinSimboloComas = str_replace(['₡', ','], '', $precioInicial);
                 $precioComoFloat = (float)($precioSinSimboloComas / 100);
@@ -82,15 +76,8 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/costoEnvioAction.php">';
                 echo '<input type="hidden" name="id" value="' . $current->getCostoEnvioId() . '">';
                 echo '<tr>';
-                echo '<td>  <select name="clienteIdView" id="clienteIdView">';
-                foreach ($getAllClientes as $cliente) {
-                    if ($current->getTbclienteid() == $cliente->getClienteId()) {
-                        echo "<option selected value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                    } else {
-                        echo "<option value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                    }
-                }
-                echo ' </select></td>';
+                echo '<td><input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getTbclienteid() . '" readonly>';
+                echo '<span>' . $clienteNombreCompleto . '</span></td>';
                 echo '<td><input type="text" name="costoEnvioKMView" id="costoEnvioKMView" value="' . $precioFormateado . '"/></td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';

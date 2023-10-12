@@ -27,6 +27,9 @@ class ClienteTelefonoBusiness{
         return $this->clienteTelefonoData->getAllTBClienteTelefono();
     }
 
+    public function getClienteTelefonosByClienteId($clienteTelefonoId){
+        return $this->clienteTelefonoData->getClienteTelefonosByClienteId($clienteTelefonoId);
+    }
     
 
 }

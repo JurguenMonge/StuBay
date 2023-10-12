@@ -16,7 +16,7 @@
     include_once("../session/startsession.php");
     session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
     } else {
         echo "No has iniciado sesión";

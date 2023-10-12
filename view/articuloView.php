@@ -27,8 +27,11 @@
         include_once("../session/startsession.php");
         //session_start();
         if (isset($_SESSION['nombre'])) {
-
+            $clienteId = $_SESSION['id'];
             $clienteNombre = $_SESSION['nombre'];
+            $clientePrimerApellido = $_SESSION['apellido1'];
+            $clienteSegundoApellido = $_SESSION['apellido2'];
+            $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
         } else {
             echo "No has iniciado sesión";
         }
@@ -92,32 +95,32 @@
         </header>
 
         <?php
-            if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
-            ?>
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: '<?php echo $_SESSION['msj']; ?>',
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                </script>
-            <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
-            } ?>
+        if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
+        ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['msj']; ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            </script>
+        <?php unset($_SESSION['msj']); // Eliminar la variable de sesión
+        } ?>
 
-            <?php
-            if (isset($_SESSION['error'])) { // Si existe la variable de sesión
-            ?>
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: '<?php echo $_SESSION['error']; ?>',
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                </script>
-            <?php unset($_SESSION['error']); // Eliminar la variable de sesión
-            } 
+        <?php
+        if (isset($_SESSION['error'])) { // Si existe la variable de sesión
+        ?>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['error']; ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            </script>
+        <?php unset($_SESSION['error']); // Eliminar la variable de sesión
+        }
         ?>
 
         <section id="form">
@@ -137,18 +140,8 @@
                             <datalist id="resultados"></datalist>
                         </td>
                         <td>
-                        <select name="clienteid" id="clienteid">
-                                <option value="">--Seleccionar cliente--</option>
-                                <?php
-                                if (count($getClientes) > 0) {
-                                    foreach ($getClientes as $cliente) {
-                                        echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
-                                    }
-                                } else {
-                                    echo '<option value="">Ningun cliente registrado</option>';
-                                }
-                                ?>
-                            </select>
+                            <input type="hidden" name="clienteid" id="clienteid" value="<?php echo $clienteId; ?>" readonly>
+                            <span><?php echo $clienteNombreCompleto; ?></span>
                         </td>
                         <td>
                             <select name="articulocategoria" id="articulocategoria">
@@ -169,9 +162,9 @@
 
                             </select>
                         </td>
-                        <td><input  type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z0-9\s]+$"  title="Solo se permiten letras y espacios" />
-                        <td><input  type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
-                        <td><input  type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
+                        <td><input type="text" name="articulomarcaview" id="articulomarcaview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras y espacios" />
+                        <td><input type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
+                        <td><input type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                         <td><input type="submit" value="Crear" name="create" id="create" /></td>
                     </tr>
                 </form>
@@ -179,41 +172,36 @@
                 <?php
                 $articuloBusiness = new ArticuloBusiness();
                 $allArticulos = $articuloBusiness->getAllTBArticulo();
-                foreach ($allArticulos as $current) {
+                $articulosByCliente = $articuloBusiness->getArticuloByClienteId($clienteId);
+                foreach ($articulosByCliente as $current) {
                     echo '<form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">';
                     echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
                     echo '<tr>';
                     echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
-                    echo '<td>  <select name="clienteid" id="clienteid">';
-                    foreach ($getClientes as $cliente) {
-                        if($current->getClienteId() == $cliente->getClienteId()){                         
-                            echo "<option selected value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                        }else{
-                            echo "<option value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                        }     
-                    }
-                    echo ' </select></td>';
+                    echo '<td>';
+                    echo '<input type="hidden" name="clienteid" id="clienteid" value="' . $current->getClienteId() . '" readonly>';
+                    echo '<span>' . $clienteNombreCompleto . '</span>';
+                    echo '</td>';
                     echo '<td>  <select name="categoria" id="categoria">';
                     foreach ($getSubCat as $subcategoria) {
-                        if($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()){
+                        if ($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()) {
                             $categoriaId = $subcategoria->getCategoriaId();
-                            foreach($getCat as $categoria){
-                                if($categoria->getId() ==  $categoriaId){
+                            foreach ($getCat as $categoria) {
+                                if ($categoria->getId() ==  $categoriaId) {
                                     echo "<option selected value='" . $categoria->getId() . "'>" . $categoria->getNombre() . "</option>";
-                                }else{
+                                } else {
                                     echo "<option value='" . $categoria->getId() . "'>" . $categoria->getNombre() . "</option>";
                                 }
                             }
                         }
-                        
-                    }
+                    }//vendedorIdView
                     echo ' </select></td>';
                     echo '<td>  <select name="subcategorias" id="subcategorias">';
                     foreach ($getSubCat as $subcategoria) {
                         if ($current->getArticuloSubCategoriaId() == $subcategoria->getSigla()) {
-                            echo "<option selected value='" . $subcategoria->getSigla(). "'>" . $subcategoria->getSigla(). '-'. $subcategoria->getNombre() . "</option>";
+                            echo "<option selected value='" . $subcategoria->getSigla() . "'>" . $subcategoria->getSigla() . '-' . $subcategoria->getNombre() . "</option>";
                         } else {
-                            echo "<option value='" . $subcategoria->getSigla() . "'>" . $subcategoria->getSigla() . '-'. $subcategoria->getNombre() . "</option>";
+                            echo "<option value='" . $subcategoria->getSigla() . "'>" . $subcategoria->getSigla() . '-' . $subcategoria->getNombre() . "</option>";
                         }
                     }
                     echo ' </select></td>';

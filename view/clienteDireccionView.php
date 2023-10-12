@@ -20,8 +20,11 @@
     include_once("../session/startsession.php");
     session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
+        $clientePrimerApellido = $_SESSION['apellido1'];
+        $clienteSegundoApellido = $_SESSION['apellido2'];
+        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
     } else {
         echo "No has iniciado sesión";
     }
@@ -76,20 +79,9 @@
             <form method="post" enctype="multipart/form-data" action="../business/clienteDireccionAction.php">
                 <tr>
                     <td>
-                        <select name="clienteidview" id="clienteidview">
-                            <option value="">Seleccionar cliente</option>
-                            <?php
-                            if (count($getCliente) > 0) {
-                                foreach ($getCliente as $cliente) {
-
-                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                                    ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                                }
-                            } else {
-                                echo '<option value="">Ningun cliente registrado</option>';
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="clienteidview" id="clienteidview" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
+                    </td>
                     <td><input required type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" oninput="validarCampo(this)" /></td>
                     <td><input required type="text" name="clientedireccionlatitudview" id="clientedireccionlatitudview" oninput="actualizarCoordenadas()" /></td>
                     <td><input required type="text" name="clientedireccionlongitudview" id="clientedireccionlongitudview" oninput="actualizarCoordenadas()" /></td>
@@ -101,21 +93,17 @@
             error_reporting(0);
             $clienteDireccionBusiness = new clienteDireccionBusiness();
             $allClienteDirecciones = $clienteDireccionBusiness->getAllTBClienteDireccion();
-            foreach ($allClienteDirecciones as $current) {
+            //Aca se obtienen las direcciones del cliente por el id del cliente
+            $clienteDireccionesPorId = $clienteDireccionBusiness->getTBClienteDireccionByClienteId($clienteId);
+
+            foreach ($clienteDireccionesPorId  as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteDireccionAction.php" onsubmit="return confirmarActualizacion();">';
                 echo '<input type="hidden" name="clientedireccionidview" value="' . $current->getClienteDireccionId() . '">';
                 echo '<tr>';
-                echo '<td><select name="clienteidview" id="clienteidview">';
-                foreach ($getCliente as $cliente) {
-                    if ($current->getClienteId() == $cliente->getClienteId()) {
-                        echo '<option selected value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '
-                            ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    } else {
-                        echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                           ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    }
-                }
-                echo '</select></td>';
+                echo '<td>';
+                echo '<input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
+                echo '<span>' . $clienteNombreCompleto . '</span>';
+                echo '</td>';
                 echo '<td><input required  type="text" name="clientedireccionbarrioview" id="clientedireccionbarrioview" pattern="[A-Za-z0-9\s]+" value="' . $current->getClienteDireccionBarrio() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required  type="text" name="clientedireccionlatitudview" id="clientedireccionlatitudview"  value="' . $current->getClienteDireccionLatitud() . '" oninput="actualizarCoordenadas1(this)"/></td>';
                 echo '<td><input required  type="text" name="clientedireccionlongitudview" id="clientedireccionlongitudview"  value="' . $current->getClienteDireccionLongitud() . '" oninput="actualizarCoordenadas1(this)"/></td>';

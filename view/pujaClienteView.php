@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <?php
-    /*
+
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-*/
+
     include '../business/pujaClienteBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/articuloBusiness.php';
@@ -27,6 +27,7 @@
     $getCli = $clienteBusiness->getAllTBCliente();
     $getArt = $articuloBusiness->getAllTBArticulo();
     $getSub = $subastaBusiness->getAllTBSubasta();
+
     date_default_timezone_set('America/Costa_Rica');
 
 
@@ -34,8 +35,11 @@
     include_once("../session/startsession.php");
     //session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
+        $clientePrimerApellido = $_SESSION['apellido1'];
+        $clienteSegundoApellido = $_SESSION['apellido2'];
+        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
     } else {
         echo "No has iniciado sesión";
     }
@@ -227,6 +231,7 @@
 <body>
     <header>
         <h1><?php echo "$clienteNombre!" ?></h1>
+        <h1><?php echo "$clienteId" ?></h1>
         <h1>Registro Pujas Cliente</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -279,22 +284,8 @@
             <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
                 <tr>
                     <td>
-
-                        <select name="clienteIdView" id="clienteIdView">
-                            <option value="">Seleccionar cliente</option>
-                            <?php
-                            echo $clienteNombre;
-                            if (count($getCli) > 0) {
-                                foreach ($getCli as $cliente) {
-                                    if ($cliente->getClienteNombre() == $clienteNombre) {
-                                        echo '<option value="' . $cliente->getClienteId() .  '" data-id="' . $cliente->getClienteId() . '"data-nombre="' . $cliente->getClienteNombre() . '">' . $cliente->getClienteNombre() . '</option>';
-                                    }
-                                }
-                            } else {
-                                echo '<option value="">Ninguna categoria registrada</option>';
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
                         <select name="articuloIdView" id="articuloIdView">
@@ -374,18 +365,15 @@
                 </thead>
                 <tbody>
                     <?php
+                    $clienteById = $pujaClienteBusiness->getTBPujaClienteById($clienteId);
                     $fechaHoy = date("Y-m-d H:i:s");
-                    foreach ($getSub as $actualSubasta) {
+                    foreach ($pujaClienteBusiness as $actualSubasta) {
                         if ($actualSubasta->getSubastaFechaHoraFinal() >=  $fechaHoy) {
                             echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
                             echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
                             echo '<tr>';
-                            foreach ($getCli as $cliente) {
-                                if ($actualSubasta->getSubastaVendedorId() == $cliente->getClienteId()) {
-                                    echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $actualSubasta->getSubastaVendedorId() . '">';
-                                    echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
-                                }
-                            }
+                            echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $actualSubasta->getSubastaVendedorId() . '" readonly>';
+                            echo '<span>' . $cliente->clienteNombreCompleto() . '</span>';
                             foreach ($getArt as $articulo) {
                                 if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
                                     echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $actualSubasta->getSubastaArticuloId() . '">';
@@ -439,16 +427,14 @@
                     <?php
                     $pujaClienteBusiness = new PujaClienteBusiness();
                     $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
-                    foreach ($allPujasCliente as $current) {
+                    $clienteById = $pujaClienteBusiness->getTBPujaClienteById($clienteId);
+                    foreach ($clienteById as $current) {
                         echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
                         echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
                         echo '<tr>';
-                        foreach ($getCli as $cliente) {
-                            if ($cliente->getClienteId() == $current->getClienteId()) {
-                                echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
-                                echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
-                            }
-                        }
+                        echo '<tr>';
+                        echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getSubastaVendedorId() . '" readonly>';
+                        echo '<span>' . $cliente->clienteNombreCompleto() . '</span>';
 
                         foreach ($getArt as $articulo) {
                             if ($articulo->getArticuloId() == $current->getArticuloId()) {
@@ -582,7 +568,7 @@
             });
         }
     </script>
-    
+
 
 </body>
 

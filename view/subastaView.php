@@ -26,11 +26,15 @@
     include_once("../session/startsession.php");
     session_start();
     if (isset($_SESSION['nombre'])) {
-
+        $clienteId = $_SESSION['id'];
         $clienteNombre = $_SESSION['nombre'];
+        $clientePrimerApellido = $_SESSION['apellido1'];
+        $clienteSegundoApellido = $_SESSION['apellido2'];
+        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
     } else {
         echo "No has iniciado sesión";
     }
+    $id = $clienteBusiness->clienteById($clienteId);
     ?>
 </head>
 
@@ -91,20 +95,11 @@
 
             <form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">
                 <td>
-                    <select name="vendedorIdView" id="vendedorIdView">
-                        <option value="">Seleccionar vendedor</option>
-                        <?php
-                        if (count($getAllClientes) > 0) {
-                            foreach ($getAllClientes as $cliente) {
-                                if ($clienteNombre == $cliente->getClienteNombre()) {
-                                    echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
-                                }
-                            }
-                        } else {
-                            echo '<option value="">Ningun cliente registrado</option>';
-                        }
-                        ?>
-                    </select>
+
+                    <input type="hidden" name="vendedorIdView" id="vendedorIdView" value="<?php echo $clienteId; ?>" readonly>
+                    <span><?php echo $clienteNombreCompleto; ?></span>
+
+
                 </td>
                 <td>
                     <select name="subastaArticuloView" id="subastaArticuloView">
@@ -146,7 +141,8 @@
             <?php
             $subastaBusiness = new SubastaBusiness();
             $obtenerSubastas = $subastaBusiness->getAllTBSubasta();
-            foreach ($obtenerSubastas as $actualSubasta) {
+            $obtenerClienteById = $subastaBusiness->getTBSubastaByClienteId($clienteId);
+            foreach ($obtenerClienteById as $actualSubasta) {
                 $precioInicial = $actualSubasta->getSubastaPrecioInicial();
                 $precioSinSimboloComas = str_replace(['₡', ','], '', $precioInicial);
                 $precioComoFloat = (float)($precioSinSimboloComas / 100);
@@ -154,15 +150,9 @@
                 echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
                 echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
                 echo '<tr>';
-                echo '<td>  <select name="vendedorIdView" id="vendedorIdView">';
-                foreach ($getAllClientes as $cliente) {
-                    if ($actualSubasta->getSubastaVendedorId() == $cliente->getClienteId()) {
-                        echo "<option selected value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                    } else {
-                        echo "<option value='" . $cliente->getClienteId() . "'>" . $cliente->getClienteNombre() . "</option>";
-                    }
-                }
-                echo ' </select></td>';
+                echo '<td><input type="hidden" name="vendedorIdView" id="vendedorIdView" value="' . $clienteId . '" readonly>
+                        <span>' . $clienteNombreCompleto . '</span>
+                        </td>';
                 echo '<td>  <select name="subastaArticuloView" id="subastaArticuloView">';
                 foreach ($getAllArticulos as $articulo) {
                     if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {

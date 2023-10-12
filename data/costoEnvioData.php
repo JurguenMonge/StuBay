@@ -86,21 +86,35 @@ class CostoEnvioData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbcostoenvio WHERE tbcostoenvioestado = 1 AND tbclienteid = $idCliente;";
-        $result = mysqli_query($conn, $querySelect);
+        // Consulta SQL con sentencia preparada
+        $querySelect = "SELECT * FROM tbcostoenvio WHERE tbclienteid = ? AND tbcostoenvioestado = 1";
 
-        $costoEnvio = NULL;
+        // Preparar la consulta
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $idCliente); // Enlazar el ID del cliente como un entero
 
-        if ($result && mysqli_num_rows($result) > 0) {
-            // Obtener la primera fila de resultados
-            $row = mysqli_fetch_assoc($result);
+        // Ejecutar la consulta
+        $stmt->execute();
 
-            // Crear un objeto CostoEnvio con los datos obtenidos
-            $costoEnvio = new CostoEnvio($row['tbcostoenvioid'], $row['tbcostoenviokm'], $row['tbclienteid'], $row['tbcostoenvioestado']);
+        // Obtener el resultado de la consulta
+        $result = $stmt->get_result();
+
+        $array = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $currentCostoEnvio = new CostoEnvio(
+                $row['tbcostoenvioid'],
+                $row['tbcostoenviokm'],
+                $row['tbclienteid'],
+                $row['tbcostoenvioestado']
+            );
+            array_push($array, $currentCostoEnvio);
         }
 
+        // Cerrar la conexión y el stmt
+        $stmt->close();
         mysqli_close($conn);
 
-        return $costoEnvio;
+        return $array;
     }
 }
