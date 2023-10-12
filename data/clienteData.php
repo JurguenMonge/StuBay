@@ -273,7 +273,8 @@ class ClienteData extends Data
                         // El cliente está activo
                         session_start();
                         $_SESSION['nombre'] = $row['tbclientenombre'];
-                        $_SESSION['apellido'] = $row['tbclienteprimerapellido'];
+                        $_SESSION['apellido1'] = $row['tbclienteprimerapellido'];
+                        $_SESSION['apellido2'] = $row['tbclientesegundoapellido'];
                         $_SESSION["id"] = $row['tbclienteid'];
                         $resultStatus = 1; // Éxito
                     } else {
