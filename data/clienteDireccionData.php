@@ -175,7 +175,6 @@ class ClienteDireccionData extends Data
         // Obtener el resultado de la consulta
         $result = $stmt->get_result();
 
-        $direcciones = array(); // Almacenará las direcciones
 
         // Recorrer los resultados y crear objetos de dirección del cliente
         while ($row = $result->fetch_assoc()) {
@@ -188,14 +187,13 @@ class ClienteDireccionData extends Data
                     $row['tbclientedireccionlongitud'],
                     $row['tbclientedireccionactivo']
                 );
-            $direcciones[] = $direccion;
         }
 
         // Cerrar la conexión y el stmt
         $stmt->close();
         mysqli_close($conn);
 
-        return $direcciones;
+        return $direccion;
     }
 
     public function getArticuloByClienteId($clienteId)

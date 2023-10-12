@@ -47,6 +47,7 @@
 
     <script>
         $(document).ready(function() {
+            /*
             // Inicialmente, deshabilita la selección del artículo y las etiquetas HTML
             $('#articuloIdView').prop('disabled', true);
 
@@ -61,7 +62,7 @@
                     $('#articuloIdView').prop('disabled', true);
                 }
             });
-
+*/
             // Escucha el evento change del campo de selección del artículo
             $('#articuloIdView').change(function() {
                 //var valor = "valor=" + $(this).val();
@@ -77,7 +78,7 @@
                     success: function(r) {
 
                         var data = JSON.parse(r);
-
+                        console.log(data);
                         $('#subastaIdView').val(data.precioInicial);
                         $('#pujaClienteEnvioView').val(data.costoEnvio);
                     }
@@ -428,14 +429,16 @@
                     $pujaClienteBusiness = new PujaClienteBusiness();
                     $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
                     $clienteById = $pujaClienteBusiness->getTBPujaClienteById($clienteId);
-                    foreach ($clienteById as $current) {
+                    foreach ($allPujasCliente as $current) {
                         echo '<form method="post" enctype="multipart/form-data" action="../business/pujaClienteAction.php">';
                         echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
                         echo '<tr>';
-                        echo '<tr>';
-                        echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getSubastaVendedorId() . '" readonly>';
-                        echo '<span>' . $cliente->clienteNombreCompleto() . '</span>';
-
+                        foreach ($getCli as $cliente) {
+                            if ($cliente->getClienteId() == $current->getClienteId()) {
+                                echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                            }
+                        }
                         foreach ($getArt as $articulo) {
                             if ($articulo->getArticuloId() == $current->getArticuloId()) {
                                 echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';

@@ -107,7 +107,9 @@
                         <?php
                         if (count($getAllArticulos) > 0) {
                             foreach ($getAllArticulos as $articulo) {
-                                echo '<option value="' . $articulo->getArticuloId() . '">' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                if ($articulo->getClienteId() == $clienteId) {
+                                    echo '<option value="' . $articulo->getArticuloId() . '">' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                }
                             }
                         } else {
                             echo '<option value="">Ningun articulo registrado</option>';
@@ -155,10 +157,12 @@
                         </td>';
                 echo '<td>  <select name="subastaArticuloView" id="subastaArticuloView">';
                 foreach ($getAllArticulos as $articulo) {
-                    if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
-                        echo "<option selected value='" . $articulo->getArticuloId() . "'>" . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . "</option>";
-                    } else {
-                        echo "<option value='" . $articulo->getArticuloId() . "'>" . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . "</option>";
+                    if ($articulo->getClienteId() == $clienteId) {
+                        if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
+                            echo "<option selected value='" . $articulo->getArticuloId() . "'>" . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . "</option>";
+                        } else {
+                            echo "<option value='" . $articulo->getArticuloId() . "'>" . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . "</option>";
+                        }
                     }
                 }
                 echo ' </select></td>';

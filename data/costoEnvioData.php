@@ -115,6 +115,6 @@ class CostoEnvioData extends Data
         $stmt->close();
         mysqli_close($conn);
 
-        return $array;
+        return $currentCostoEnvio;
     }
 }

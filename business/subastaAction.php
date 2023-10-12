@@ -172,9 +172,9 @@ if (isset($_POST['create'])) {
 
     $subasta = $businessSubasta->getTBSubastaById($subastaId);
 
-    $direccionCliente = $businessClienteDireccion->getTBClienteDireccionByIdCliente($_POST['valor2']);
-    $direccionVendedor = $businessClienteDireccion->getTBClienteDireccionByIdCliente($subasta->getSubastaVendedorId());
-    $costoEnvioVendedor = $costoEnvioBusiness->getTBCostoEnvioByIdCliente($subasta->getSubastaVendedorId());
+    $direccionCliente = $businessClienteDireccion->getTBClienteDireccionByClienteId($_POST['valor2']);
+    $direccionVendedor = $businessClienteDireccion->getTBClienteDireccionByClienteId($subasta->getSubastaVendedorId());
+    $costoEnvioVendedor = $costoEnvioBusiness->getTBCostoEnvioByCliente($subasta->getSubastaVendedorId());
     
     $latCliente = (float) $direccionCliente->getClienteDireccionLatitud();
     $lonCliente = (float) $direccionCliente->getClienteDireccionLongitud();
