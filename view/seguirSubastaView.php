@@ -11,15 +11,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <?php
-    error_reporting(0);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);    
 
     include '../business/seguirSubastaBusiness.php';
     include '../business/clienteBusiness.php';
-    include '../business/pujaBusiness.php';
+    include '../business/pujaClienteBusiness.php';
+    include '../business/articuloBusiness.php';
     $clienteBusiness = new clienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
     $getSub = $subastaBusiness->getAllTBSubasta();
+    $articuloBusiness = new ArticuloBusiness();
+    $getArticulos = $articuloBusiness->getAllTBArticulo();
     include_once("../session/startsession.php");
         //session_start();
         if (isset($_SESSION['nombre'])) {
@@ -32,12 +36,9 @@
             echo "No has iniciado sesión";
         }
     ?>
-
-
 </head>
 
 <body>
-
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
     ?>
@@ -75,7 +76,6 @@
             <tr>
                 <th>Cliente</th>
                 <th>Subasta</th>
-                <th></th>
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/seguirSubastaAction.php">
                 <tr>
@@ -87,10 +87,18 @@
                         <select name="subastaidview" id="subastaidview">
                             <option value="">Seleccionar subasta</option>
                             <?php
+                            $fechaHoraActual = date('Y-m-d H:i:s'); 
                             if (count($getSub) > 0) {
                                 foreach ($getSub as $sub) {
-
-                                    echo '<option value="' . $sub->getSubastaId() . '">' . $sub->getSubastaArticuloId() . '</option>';
+                                    if($sub->getSubastaFechaHoraFinal() > $fechaHoraActual){
+                                        foreach($getArticulos as $art){
+                                            foreach($getCliente as $cliente){
+                                                if($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()){
+                                                    echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '-' . $cliente->getClienteNombre() .'</option>';
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             } else {
                                 echo '<option value="">Ninguna subasta registrada</option>';
@@ -98,82 +106,35 @@
                             ?>
                         </select>
                     </td>
-                    <td><input required type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
-            <?php
-            error_reporting(0);
-            $seguirSubastaBusiness = new SeguirSubastaBusiness();
-            $allSeguirSubasta = $seguirSubastaBusiness->getAllTBSeguirSubasta();
-            foreach ($allSeguirSubasta as $current) {
-                echo '<form method="post" enctype="multipart/form-data" action="../business/seguirSubastaAction.php" onsubmit="return confirmarActualizacion();">';
-                echo '<input type="hidden" name="subastaseguidoridview" id="subastaseguidoridview" value="' . $current->getSeguirSubastaId() . '"/>';
-                echo '<tr>';
-                echo '<td>
-                <select name="clienteidview" id="clienteidview">';
-                foreach ($getCliente as $cliente) {
-                    if ($current->getClienteId() == $cliente->getClienteId()) {
-                        echo '<option selected value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '
-                            ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    } else {
-                        echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . ' 
-                           ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido() . '</option>';
-                    }
-                }
-                echo '</select>
-                </td>';
-                echo '<td><select name="subastaidview" id="subastaidview">';
-                foreach ($getSub as $sub) {
-                    if ($current->getSubastaId() == $sub->getSubastaId()) {
-                        echo '<option selected value="' . $sub->getSubastaId() . '">' . $sub->getSubastaArticuloId() . '</option>';
-                    } else {
-                        echo '<option value="' . $sub->getSubastaId() . '">' . $sub->getSubastaArticuloId() . '</option>';
-                    }
-                }
-                echo '</select></td>';
-                echo '<td><input type="hidden" name="subastaseguidoractivoview" id="subastaseguidoractivoview" ' . ($current->getSeguirSubastaActivo() == 1 ? 'checked' : '') . '></td>';
-                echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
-                echo '<td><button type="button" class="btn btn-danger delete_seguirsubasta" tbsubastaseguidorid="' . $current->getSeguirSubastaId() . '">Eliminar</button></td>';
-                echo '</tr>';
-                echo '</form>';
-            }
-            ?>
-
         </table>
     </section>
+    <br><br>
+    <div id="resultado">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </div>
+
     <script>
         $(document).ready(function() {
-            $(".delete_seguirsubasta").on("click", function() {
-                var seguirsubastaid = $(this).attr("tbpujaseguidorid");
-
-                Swal.fire({
-                    title: '¿Desea eliminar el cliente?',
-                    text: "No se podrá revertir el cambio",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: "Cancelar",
-                    confirmButtonText: 'Eliminar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "../business/seguirSubastaAction.php?delete1=true&tbpujaseguidorid=" + seguirsubastaid;
-                    }
-                });
+            $('#subastaidview').change(function() {
+                recargarLista();
             });
-        });
-    </script>
-    <script>
-        function confirmarActualizacion() {
-            // Muestra una alerta de confirmación y captura la respuesta del usuario.
-            var confirmacion = confirm("¿Desea confirmar la actualización de este cliente?");
+        })
 
-            // Retorna true si el usuario acepta, lo que enviará el formulario.
-            return confirmacion;
+        function recargarLista() {
+            $.ajax({
+                type: "POST",
+                url: "../business/seguirSubastaAction.php",
+                data: "valor=" + $('#subastaidview').val(),
+                success: function(r) {
+                    $('#resultado').html(r);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error en la solicitud AJAX: " + errorThrown);
+                },
+            });
         }
     </script>
 </body>
-
 </html>

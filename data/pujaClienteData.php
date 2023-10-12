@@ -113,6 +113,39 @@ class PujaClienteData extends Data
         return $array;
     }
 
+    public function getTBPujaClienteByArticulo($articuloId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbpujacliente WHERE tbarticuloid = ?";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $articuloId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $array = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $pujaCliente = new PujaCliente(
+                $row['tbpujaclienteid'],
+                $row['tbclienteid'],
+                $row['tbarticuloid'],
+                $row['tbpujaclientefecha'],
+                $row['tbpujaclienteoferta'],
+                $row['tbpujaclienteenvio']
+            );
+            array_push($array, $pujaCliente);
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $array;
+    }
+
 
 
     public function getPrecioMaximoByArticuloId($articuloId)
