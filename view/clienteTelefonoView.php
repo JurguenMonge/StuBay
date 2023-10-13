@@ -76,7 +76,7 @@
             <form method="post" enctype="multipart/form-data" action="../business/clienteTelefonoAction.php">
                 <tr>
                     <td>
-                        <input type="hidden" id="clientetelefonoidview" name="clientetelefonoviewid" value="<?php echo $clienteId; ?>" readonly>
+                        <input type="hidden" id="clienteidview" name="clienteidview" value="<?php echo $clienteId; ?>" readonly>
                         <span><?php echo $clienteNombreCompleto; ?></span>
                     <td>
                         <input required type="text" name="clientetelefononumeroview" id="clientetelefononumeroview" placeholder="Número" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />

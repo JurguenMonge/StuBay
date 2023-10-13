@@ -94,7 +94,7 @@
             $clienteDireccionBusiness = new clienteDireccionBusiness();
             $allClienteDirecciones = $clienteDireccionBusiness->getAllTBClienteDireccion();
             //Aca se obtienen las direcciones del cliente por el id del cliente
-            $clienteDireccionesPorId = $clienteDireccionBusiness->getTBClienteDireccionByClienteId($clienteId);
+            $clienteDireccionesPorId = $clienteDireccionBusiness->getTBClienteDireccionByClienteIdView($clienteId);
 
             foreach ($clienteDireccionesPorId  as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteDireccionAction.php" onsubmit="return confirmarActualizacion();">';
@@ -183,8 +183,8 @@
             var latitudInput = document.getElementById('clientedireccionlatitudview');
             var longitudInput = document.getElementById('clientedireccionlongitudview');
 
-            // Expresión regular para permitir números y puntos (decimales)
-            var pattern = /^[0-9.]+$/;
+            // Expresión regular para permitir números y puntos (decimales), así como el signo "-" para números negativos
+            var pattern = /^-?\d+(\.\d+)?$/;
 
             // Validar latitud
             if (!pattern.test(latitudInput.value)) {
@@ -204,8 +204,8 @@
     <script>
         function actualizarCoordenadas1(input) {
             var value = input.value;
-            // Expresión regular para permitir números y puntos (decimales)
-            var pattern = /^[0-9.]+$/;
+            // Expresión regular para permitir números y puntos (decimales), así como el signo "-" para números negativos
+            var pattern = /^-?\d+(\.\d+)?$/;
 
             if (!pattern.test(value)) {
                 input.setCustomValidity("Solo se permiten números y puntos.");

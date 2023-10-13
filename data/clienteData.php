@@ -391,4 +391,41 @@ class ClienteData extends Data
 
         return $resultStatus;
     }
+
+    
+
+    public function getClientsById($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbcliente WHERE tbclienteid = ? AND tbclienteactivo = 1";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $clienteId);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $clients = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $cliente = new Cliente(
+                $row['tbclienteid'],
+                $row['tbclientenombre'],
+                $row['tbclienteprimerapellido'],
+                $row['tbclientesegundoapellido'],
+                $row['tbclientecorreo'],
+                $row['tbclientepassword'],
+                $row['tbclientefechaingreso'],
+                $row['tbclienteactivo']
+            );
+            $clients[] = $cliente;
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $clients;
+    }
 }

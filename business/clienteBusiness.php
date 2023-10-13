@@ -42,4 +42,12 @@ class ClienteBusiness{
     public function reactivarCuenta($clienteCorreo, $clientePassword){//aca se recibe el correo y la contraseña del cliente para buscarlo en la base de datos y retornar el cliente con todos sus datos
         return $this->clienteData->reactivarCuenta($clienteCorreo, $clientePassword);
     }
+
+    // public function desactivarCuenta($clienteCorreo, $clientePassword){//aca se recibe el correo y la contraseña del cliente para buscarlo en la base de datos y retornar el cliente con todos sus datos
+    //     return $this->clienteData->desactivarCuenta($clienteCorreo, $clientePassword);
+    // }
+
+    public function getClientsById($clienteCorreo){
+        return $this->clienteData->getClientsById($clienteCorreo);
+    }
 }

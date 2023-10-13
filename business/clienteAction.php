@@ -213,4 +213,67 @@ if (isset($_POST['reactivar'])) {
             $_SESSION['error'] = "Error al iniciar sesión";
         }
     }
+}if (isset($_POST['createC'])) { //if the user clicked on the create button
+
+    if (
+        isset($_POST['clientenombreview'])
+        && isset($_POST['clienteprimerapellidoview'])
+        && isset($_POST['clientesegundoapellidoview'])
+        && isset($_POST['clientecorreoview'])
+        && isset($_POST['clientepasswordview'])
+        && isset($_POST['clientefechaingresoview'])
+
+    ) { //check if the variables have values
+
+        $clienteNombre = $_POST['clientenombreview']; //get the name from the form
+        $clientePrimerApellido = $_POST['clienteprimerapellidoview']; //get the first last name from the form
+        $clienteSegundoApellido = $_POST['clientesegundoapellidoview']; //get the second last name from the form
+        $clienteCorreo = $_POST['clientecorreoview']; //get the identification from the form
+        $clientePassword = password_hash($_POST['clientepasswordview'], PASSWORD_DEFAULT); //get the password from the form and encript it
+        $clienteFechaIngreso = $_POST['clientefechaingresoview']; //get the email from the form
+        $clienteActivo = 1; //set the client to 1
+
+        if (
+            strlen($clienteNombre) > 0
+            && strlen($clientePrimerApellido) > 0
+            && strlen($clienteSegundoApellido) > 0
+            && strlen($clienteCorreo) > 0
+            && strlen($clientePassword) > 0
+            && strlen($clienteFechaIngreso) > 0
+        ) { //check if the variables have values
+
+            $cliente = new Cliente(
+                0,
+                $clienteNombre,
+                $clientePrimerApellido,
+                $clienteSegundoApellido,
+                $clienteCorreo,
+                $clientePassword,
+                $clienteFechaIngreso,
+                $clienteActivo
+            ); //create a new client instance 
+
+            $clienteBusiness = new ClienteBusiness(); //create a new instance of clientBusiness
+
+            $result = $clienteBusiness->insertTBCliente($cliente); //call the method insertTBClient from clientBusiness
+
+            if ($result == 1) { //if the method insertTBClient was executed succesfully it will return 1
+                header("location: ../index.php?success=insert"); //redirect to the index.php page with a success message
+                session_start();
+                $_SESSION['msj'] = "Cliente registrado correctamente";
+            } else if ($result == 2) {
+                header("location: ../index.php?error=exist"); //redirect to the index.php page with an error message
+                session_start();
+                $_SESSION['error'] = "El correo ya esta en uso";
+            } else {
+                header("location: ../index.php?error=dbError"); //redirect to the index.php page with an error message
+                session_start();
+                $_SESSION['error'] = "Error al registrar el cliente";
+            }
+        } else {
+            header("location: ../index.php?error=emptyField"); //redirect to the index.php page with an error message
+        }
+    } else {
+        header("location: ../index.php?error=error"); //redirect to the index.php page with an error message
+    }
 }

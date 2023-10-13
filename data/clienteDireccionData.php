@@ -196,17 +196,18 @@ class ClienteDireccionData extends Data
         return $direccion;
     }
 
-    public function getArticuloByClienteId($clienteId)
+    public function getTBClienteDireccionByClienteIdView($clienteId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        // Consulta SQL con sentencia preparada
-        $querySelect = "SELECT * FROM tbarticulo WHERE tbclienteid = ? AND tbarticuloactivo = 1";
-
+        // Consulta SQL para obtener las direcciones del cliente por su ID
+        $query = "SELECT * FROM tbclientedireccion WHERE tbclienteid = ? AND tbclientedireccionactivo = 1";
         // Preparar la consulta
-        $stmt = $conn->prepare($querySelect);
-        $stmt->bind_param("i", $clienteId); // Enlazar el ID del cliente como un entero
+        $stmt = $conn->prepare($query);
+
+        // Enlazar el ID del cliente como un entero
+        $stmt->bind_param("i", $clienteId);
 
         // Ejecutar la consulta
         $stmt->execute();
@@ -214,26 +215,25 @@ class ClienteDireccionData extends Data
         // Obtener el resultado de la consulta
         $result = $stmt->get_result();
 
-        $array = array();
 
+        // Recorrer los resultados y crear objetos de dirección del cliente
         while ($row = $result->fetch_assoc()) {
-            $currentArticulo = new Articulo(
-                $row['tbarticuloid'],
-                $row['tbarticulonombre'],
-                $row['tbarticulomarca'],
-                $row['tbarticulomodelo'],
-                $row['tbarticuloserie'],
-                $row['tbarticuloactivo'],
-                $row['tbsubcategoriaid'],
-                $row['tbclienteid']
-            );
-            array_push($array, $currentArticulo);
+            $direccion =
+                new ClienteDireccion(
+                    $row['tbclientedireccionid'],
+                    $row['tbclienteid'],
+                    $row['tbclientedireccionbarrio'],
+                    $row['tbclientedireccionlatitud'],
+                    $row['tbclientedireccionlongitud'],
+                    $row['tbclientedireccionactivo']
+                );
+            $direcciones[] = $direccion;
         }
 
         // Cerrar la conexión y el stmt
         $stmt->close();
         mysqli_close($conn);
 
-        return $array;
+        return $direcciones;
     }
 }

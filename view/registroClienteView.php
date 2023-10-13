@@ -13,25 +13,15 @@
     <?php
     error_reporting(0);
     include '../business/clienteBusiness.php';
-    include_once("../session/startsession.php");
-    session_start();
-    if (isset($_SESSION['nombre'])) {
-        $clienteId = $_SESSION['id'];
-        $clienteNombre = $_SESSION['nombre'];
-        $clientePrimerApellido = $_SESSION['apellido1'];
-        $clienteSegundoApellido = $_SESSION['apellido2'];
-        $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
-    } else {
-        echo "No has iniciado sesión";
-    }
+    
     ?>
+
 </head>
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre!" ?></h1>
         <h1>Registro Cliente</h1>
-        <h2><a href="inicioView.php">Home</a></h2>
+        <h2><a href="../index.php">StuBay</a></h2>
     </header>
 
     <?php
@@ -63,51 +53,30 @@
     } ?>
 
     <section id="form">
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Correo</th>
-                <th>Fecha Ingreso</th>
-                <th>Password</th>
-                <th></th>
-            </tr>
-            <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
-                <tr>
-                    <td><input required type="text" name="clientenombreview" id="clientenombreview" placeholder="Nombre" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" placeholder="Primer Apellido" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" placeholder="Segundo Apellido" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="email" name="clientecorreoview" id="clientecorreoview" placeholder="correo@ejemplo.com" oninput="validarCampo(this)" /></td>
-                    <td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" /></td>
-                    <td><input required type="password" name="clientepasswordview" id="clientepasswordview" /><button type="button" class="showPassword">Mostrar</button></td>
-                    <td><input required type="submit" value="Crear" name="create" id="create" /></td>
-
-                </tr>
-            </form>
-            <?php
-            error_reporting(0);
-            $clienteBusiness = new clienteBusiness();
-            $allClientes = $clienteBusiness->getAllTBCliente();
-            foreach ($allClientes as $current) {
-                echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
-                echo '<input type="hidden" name="clienteidview" value="' . $current->getClienteId() . '">';
-                echo '<tr>';
-                echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="[a-zA-Z.]*" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="[a-zA-Z.]*" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" pattern="[a-zA-Z.]*" value="' . $current->getClienteSegundoApellido() . '" oninput="validateName(this)"/></td>';
-                echo '<td><input required type="email" name="clientecorreoview" id="clientecorreoview" value="' . $current->getClienteCorreo() . '" oninput="validateEmail(this)" /></td>';
-
-                echo '<td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" value="' . $current->getClienteFechaIngreso() . '"/></td>';
-                echo '<td><input type="password" name="clientepasswordview" id="clientepasswordview" value="' . $current->getClientePassword() . '"/><button type="button" class="showPassword">Mostrar</button></td>';
-                echo '<td><input type="hidden" name="clienteactivoview" id="clientactivoview" ' . ($current->getClienteActivo() == 1 ? "checked" : "") . '/></td>';
-                echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
-                echo '<td><button type="button" class="btn btn-danger delete_cliente" tbclienteid="' . $current->getClienteId() . '">Eliminar</button></td>';
-                echo '</tr>';
-                echo '</form>';
-            }
-            ?>
-
+    <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
+            <div class="form-group">
+                <input type="text" id="clientenombreview" name="clientenombreview" placeholder="Nombre" required pattern="[a-zA-Z.]*">
+            </div>
+            <div class="form-group">
+                <input type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" placeholder="Primer Apellido" required pattern="[a-zA-Z.]*">
+            </div>
+            <div class="form-group">
+                <input type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" placeholder="Segundo Apellido" required pattern="[a-zA-Z.]*">
+            </div>
+            <div class="form-group">
+                <input type="email" name="clientecorreoview" id="clientecorreoview" placeholder="correo@ejemplo.com" required>
+            </div>
+            <div class="form-group">
+                <input type="date" name="clientefechaingresoview" id="clientefechaingresoview">
+            </div>
+            <div class="form-group">
+                <input type="password" name="clientepasswordview" id="clientepasswordview">
+                <button type="button" class="showPassword">Mostrar</button>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" name="createC" id="create">
+            </div>
+        </form>
         </table>
     </section>
 
