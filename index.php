@@ -22,7 +22,12 @@
     <header>
         <h1>StuBay</h1>
     </header>
-    
+    <!-- Verificar si $mensaje está definido y no es nulo -->
+    <?php if (isset($mensaje) && !is_null($mensaje)): ?>
+        <div class="alert alert-success">
+            <?php echo $mensaje; ?>
+        </div>
+    <?php endif; ?>
     <?php
     if (isset($_SESSION['msj'])) { // Si existe la variable de sesión
     ?>

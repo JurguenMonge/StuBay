@@ -1,7 +1,7 @@
 <?php
 
 include '../business/clienteBusiness.php';
-
+session_start();
 if (isset($_POST['update'])) {
 
     if (
@@ -66,11 +66,20 @@ if (isset($_POST['update'])) {
     $clienteId = $_GET['tbclienteid'];
     $clienteBusiness = new ClienteBusiness();
     $result = $clienteBusiness->deleteTBCliente($clienteId);
+    $id = $clienteBusiness->clienteByIdDelete($clienteId);
+    if ($result == 1) { //este if es para verificar si se elimino correctamente el cliente
 
-    if ($result == 1) { // if the method deleteTBClient was executed successfully it will return 1
-        header("Location: ../view/clienteView.php?success=delete1"); // redirect to the userview.php page with a success message
-        session_start();
-        $_SESSION['msj'] = "Cliente eliminado correctamente";
+        if ($clienteId == $id) { //si el cliente que se elimino es el mismo que el que esta en sesion se cierra la sesion
+            //echo "entro";
+            //exit();
+            header("location: ../index.php?success=delete1");
+            $_SESSION['msj'] = "Cliente eliminado correctamente"; //ARREGLAR
+            session_destroy();
+        } else {
+            header("location: ../view/clienteView.php?success=delete1");
+            session_start();
+            $_SESSION['msj'] = "Cliente eliminado correctamente";
+        }
     } else if ($result == 2) {
         header("location: ../view/clienteView.php?error=delete1"); // redirect to the userview.php page with an error message
         session_start();
@@ -213,7 +222,8 @@ if (isset($_POST['reactivar'])) {
             $_SESSION['error'] = "Error al iniciar sesión";
         }
     }
-}if (isset($_POST['createC'])) { //if the user clicked on the create button
+}
+if (isset($_POST['createC'])) { //if the user clicked on the create button
 
     if (
         isset($_POST['clientenombreview'])

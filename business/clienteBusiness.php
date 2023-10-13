@@ -27,6 +27,10 @@ class ClienteBusiness{
         return $this->clienteData->getAllTBCliente();
     }
 
+    public function clienteByIdDelete($clienteId){
+        return $this->clienteData->clienteByIdDelete($clienteId);
+    }
+
     public function clienteById($clienteCorreo){//aca se recibe el correo del cliente para buscarlo en la base de datos y retornar el cliente con todos sus datos 
         return $this->clienteData->clienteById($clienteCorreo);
     }

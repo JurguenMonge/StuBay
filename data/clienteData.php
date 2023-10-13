@@ -298,6 +298,36 @@ class ClienteData extends Data
         return $resultStatus;
     }
 
+    public function clienteByIdDelete($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT tbclienteid FROM tbcliente WHERE tbclienteid = ?";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $clienteId);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows == 1) {
+                // Se encontró una coincidencia, retornar el ID del cliente
+                $row = $result->fetch_assoc();
+                $clienteId = $row['tbclienteid'];
+            } else {
+                // No se encontró una coincidencia
+                $clienteId = null;
+            }
+        } else {
+            // Manejar el error de ejecución de la consulta
+            $clienteId = null;
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $clienteId;
+    }
 
 
     public function clienteById($clienteCorreo) //obtener el id del cliente por medio del correo
@@ -316,6 +346,7 @@ class ClienteData extends Data
 
         return null; // Si no se encuentra coincidencia, se retorna null
     }
+
 
     public function nombreClienteById($clienteCorreo) //obtener el nombre del cliente por medio del correo
     {
@@ -392,7 +423,7 @@ class ClienteData extends Data
         return $resultStatus;
     }
 
-    
+
 
     public function getClientsById($clienteId)
     {

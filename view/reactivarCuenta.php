@@ -43,7 +43,7 @@
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
     <main>
-
+        <h2><a href="../index.php">StuBay</a></h2>
         <h4>Reactivar cuenta</h4>
 
         <div class="card-body">
