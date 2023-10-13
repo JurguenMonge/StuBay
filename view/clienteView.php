@@ -29,7 +29,7 @@
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre!" ?></h1>
+        <h1><?php echo "$clienteNombre" ?></h1>
         <h1>Registro Cliente</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -73,25 +73,15 @@
                 <th>Password</th>
                 <th></th>
             </tr>
-            <form method="post" enctype="multipart/form-data" action="../business/clienteAction.php">
-                <tr>
-                    <td><input required type="text" name="clientenombreview" id="clientenombreview" placeholder="Nombre" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" placeholder="Primer Apellido" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="text" name="clientesegundoapellidoview" id="clientesegundoapellidoview" placeholder="Segundo Apellido" pattern="[a-zA-Z.]*" oninput="this.value = this.value.replace(/[^a-zA-Z.]/g, '');" oninput="validarCampo(this)" /></td>
-                    <td><input required type="email" name="clientecorreoview" id="clientecorreoview" placeholder="correo@ejemplo.com" oninput="validarCampo(this)" /></td>
-                    <td><input required type="date" name="clientefechaingresoview" id="clientefechaingresoview" /></td>
-                    <td><input required type="password" name="clientepasswordview" id="clientepasswordview" /><button type="button" class="showPassword">Mostrar</button></td>
-                    <td><input required type="submit" value="Crear" name="create" id="create" /></td>
-
-                </tr>
-            </form>
+            
             <?php
             error_reporting(0);
             $clienteBusiness = new clienteBusiness();
             $allClientes = $clienteBusiness->getAllTBCliente();
-            foreach ($allClientes as $current) {
+            $clienteById = $clienteBusiness->getClientsById($clienteId);
+            foreach ($clienteById as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/clienteAction.php" onsubmit="return confirmarActualizacion();">';
-                echo '<input type="hidden" name="clienteidview" value="' . $current->getClienteId() . '">';
+                echo '<input type="hidden" name="clienteidview" value="' . $clienteId . '">';
                 echo '<tr>';
                 echo '<td><input required  type="text" name="clientenombreview" id="clientenombreview" pattern="[a-zA-Z.]*" value="' . $current->getClienteNombre() . '" oninput="validateName(this)"/></td>';
                 echo '<td><input required type="text" name="clienteprimerapellidoview" id="clienteprimerapellidoview" pattern="[a-zA-Z.]*" value="' . $current->getClientePrimerApellido() . '" oninput="validateName(this)"/></td>';
