@@ -203,7 +203,7 @@
                         fila.append($("<td>").append(botonEditar));
 
                         var botonEliminar = $("<button>").text("Eliminar");
-                        botonEliminar.attr("tbsubcategoriaid", item.subcategoriaId);
+                        botonEliminar.attr("tbsubcategoriaid", item.sigla);
                         botonEliminar.click(function() {
                             var subCategoriaId = $(this).attr("tbsubcategoriaid");
 

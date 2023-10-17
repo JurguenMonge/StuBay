@@ -57,6 +57,7 @@ if (isset($_GET['update'])) {
 
     $articuloBusiness = new ArticuloBusiness();
     $articulos = $articuloBusiness->getArticulosBySubcategoriaId($subcategoriaId);
+    
 
     if ($articulos == NULL) {
 

@@ -169,46 +169,25 @@ class ArticuloData extends Data
         return $array;
     }
 
-    public function getArticulosBySubcategoriaId($subcategoriaId)
-    {
+    public function getArticulosBySubcategoriaId($subcategoriaId){
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-
-        // Consulta SQL con sentencia preparada
-        $querySelect = "SELECT * FROM tbarticulo WHERE tbsubcategoriaid = ? AND tbarticuloactivo = 1";
-
-        // Preparar la consulta
-        $stmt = $conn->prepare($querySelect);
-        $stmt->bind_param("i", $subcategoriaId); // Enlazar el ID de la subcategoría como un entero
-
-        // Ejecutar la consulta
-        $stmt->execute();
-
-        // Obtener el resultado de la consulta
-        $result = $stmt->get_result();
-
+    
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbsubcategoriaid='$subcategoriaId' && tbarticuloactivo = 1;";
+    
+        $result = mysqli_query($conn, $querySelect);
+    
         $array = array();
-
-        while ($row = $result->fetch_assoc()) {
-            $currentArticulo = new Articulo(
-                $row['tbarticuloid'],
-                $row['tbarticulonombre'],
-                $row['tbarticulomarca'],
-                $row['tbarticulomodelo'],
-                $row['tbarticuloserie'],
-                $row['tbarticuloactivo'],
-                $row['tbsubcategoriaid'],
-                $row['tbclienteid']
-            );
+    
+        while ($row = mysqli_fetch_array($result)) {
+            $currentArticulo = new Articulo($row['tbarticuloid'],$row['tbarticulonombre'],$row['tbarticulomarca'],$row['tbarticulomodelo']
+            ,$row['tbarticuloserie'], $row['tbarticuloactivo'],$row['tbsubcategoriaid'],$row['tbclienteid']);
             array_push($array, $currentArticulo);
         }
-
-        // Cerrar la conexión y el stmt
-        $stmt->close();
         mysqli_close($conn);
-
         return $array;
     }
+
 
     public function getArticuloByClienteId($clienteId)
     {
