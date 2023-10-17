@@ -77,11 +77,19 @@ class ArticuloData extends Data
     }
 
     public function deleteTBArticulo($articulo)
-    { // este metodo actualiza el estado del cliente para no perder el registro del mismo solo de desactiva.
+    { 
+        require_once '../business/subastaBusiness.php'; //this is to use the checkSubasta method
+        $subastaBusiness = new SubastaBusiness();
+        $subasta = $subastaBusiness->checkSubastaArticulo($articulo->getArticuloId());
+
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
+        if ($subasta == true) {
+            mysqli_close($conn);
+            return 8;
+        }else{
+            $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
             "', tbarticulomarca='" . $articulo->getArticuloMarca() .
             "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
             "', tbarticuloserie='" . $articulo->getArticuloSerie() .
@@ -89,10 +97,10 @@ class ArticuloData extends Data
             "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
             " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
 
-
-        $result = mysqli_query($conn, $queryUpdate);
-        mysqli_close($conn);
-        return $result;
+            $result = mysqli_query($conn, $queryUpdate);
+            mysqli_close($conn);
+            return $result;
+        }
     }
 
     public function getAllTBArticulo()

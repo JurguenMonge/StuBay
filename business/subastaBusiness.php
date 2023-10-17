@@ -38,4 +38,8 @@ class SubastaBusiness {
     public function checkSubasta($clienteId){
         return $this->subastaData->checkSubasta($clienteId);
     }
+
+    public function checkSubastaArticulo($articuloId){
+        return $this->subastaData->checkSubastaArticulo($articuloId);
+    }
 }

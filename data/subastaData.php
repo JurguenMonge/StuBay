@@ -199,4 +199,26 @@ class SubastaData extends Data
         return ($count > 0); //return true if the user exists, false otherwise
 
     }
+
+    public function checkSubastaArticulo($articuloId){
+        $booleano = false;
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $articuloId = mysqli_real_escape_string($conn, $articuloId); 
+
+        $query = "SELECT COUNT(*) FROM tbsubasta WHERE tbarticuloid = ? AND tbsubastaactivo = 1;"; 
+        $stmt = mysqli_prepare($conn, $query); 
+        mysqli_stmt_bind_param($stmt, 'i', $articuloId); 
+        mysqli_stmt_execute($stmt); 
+        mysqli_stmt_bind_result($stmt, $count); 
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt); 
+        mysqli_close($conn); 
+        
+        if($count > 0){
+            $booleano = true;
+        }
+        return $booleano;    
+    }
 }

@@ -111,6 +111,10 @@ if(isset($_POST['update'])){
                 header("location: ../view/articuloView.php?success=delete");
                 session_start();
                 $_SESSION['msj'] = "Articulo eliminado correctamente";
+            }else if($result == 8){
+                header("location: ../view/articuloView.php?error=delete");
+                session_start();
+                $_SESSION['error'] = "Error al eliminar articulo, pertenece a una subasta activa";
             } else {        
                 header("location: ../view/articuloView.php?error=dbError");
                 session_start();
