@@ -72,7 +72,7 @@ class SubCategoriaData extends Data
         $conn->set_charset('utf8'); // establecer el conjunto de caracteres en utf8
 
         // actualizar el valor de active a 0
-        $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriaactivo = 0 WHERE tbsubcategoriaid = " . $subCategoriaId . ";";
+        $queryUpdate = "UPDATE tbsubcategoria SET tbsubcategoriaactivo = 0 WHERE tbsubcategoriasigla = " . $subCategoriaId . ";";
 
         $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
         mysqli_close($conn); // cerrar la conexión
