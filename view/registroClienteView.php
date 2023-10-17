@@ -13,7 +13,7 @@
     <?php
     error_reporting(0);
     include '../business/clienteBusiness.php';
-    
+    session_start();
     ?>
 
 </head>

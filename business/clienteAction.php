@@ -272,7 +272,7 @@ if (isset($_POST['createC'])) { //if the user clicked on the create button
                 session_start();
                 $_SESSION['msj'] = "Cliente registrado correctamente";
             } else if ($result == 2) {
-                header("location: ../index.php?error=exist"); //redirect to the index.php page with an error message
+                header("location: ../view/registroClienteView.php?error=exist"); //redirect to the index.php page with an error message
                 session_start();
                 $_SESSION['error'] = "El correo ya esta en uso";
             } else {
