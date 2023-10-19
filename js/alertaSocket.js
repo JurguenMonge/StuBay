@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://192.168.100.240:8088');
+var conn = new WebSocket('ws://192.168.0.101:8088');
 
 conn.onopen = function(e) {
     console.log("Conexión establecida");

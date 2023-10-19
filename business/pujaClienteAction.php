@@ -103,13 +103,16 @@ if (isset($_POST['update'])) {
         $clienteId = $_POST['clienteIdView'];
         $articuloId = $cadena[1];
         // Formatear la fecha en el formato correcto 'YYYY-MM-DD HH:MM:SS'
-        $pujaClienteFecha = date('Y-m-d H:i:s', strtotime($_POST['pujaClienteFechaView']));
+        $pujaClienteFechaView = $_POST['pujaClienteFechaView'];
+
+        $timestamp = strtotime(str_replace('/', '-', $pujaClienteFechaView));
+
+        $pujaClienteFecha = date('Y-m-d H:i:s', $timestamp);
 
         $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
         $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
         $pujaClienteBusiness = new PujaClienteBusiness();
         $precioMaximoPujaActual = $pujaClienteBusiness->getPrecioMaximoByArticuloId($articuloId);
-        //var_dump($precioMaximoPujaActual);
 
         if ($pujaClienteOferta <= $precioMaximoPujaActual) {
             header("location: ../view/pujaClienteView.php?error=fechaError");
@@ -120,7 +123,7 @@ if (isset($_POST['update'])) {
             if (
                 strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
                 && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
-            ) { //check if the variables have values
+            ) { 
 
                 $pujaCliente = new PujaCliente(
                     0,

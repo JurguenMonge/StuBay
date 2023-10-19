@@ -17,6 +17,7 @@
     include '../business/articuloBusiness.php';
     include '../business/subastaBusiness.php';
     include '../business/clienteBusiness.php';
+    include '../business/pujaClienteBusiness.php';
     $articuloBusiness = new ArticuloBusiness();
     $getAllArticulos = $articuloBusiness->getAllTBArticulo();
     $clienteBusiness = new ClienteBusiness();
@@ -36,6 +37,123 @@
     }
     $id = $clienteBusiness->clienteById($clienteId);
     ?>
+
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: 15% auto;
+            max-height: 40vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            /* Centrar horizontalmente */
+        }
+
+        /* Estilo para el botón de cerrar */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+
+        .input-container {
+            position: relative;
+            width: 200px;
+            /* Puedes ajustar el ancho según tus necesidades */
+        }
+
+        /* Estilos para el contenido del modal */
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .cell-column {
+            width: 150px;
+            /* Cambia el ancho según tus necesidades */
+            text-align: center;
+            /* Centra el contenido horizontalmente */
+        }
+
+        /* Estilos para el botón de cerrar */
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 5px;
+            /* Ajusta la posición horizontal del símbolo */
+            top: 40%;
+            /* Centra verticalmente el símbolo */
+            transform: translateY(-50%);
+            font-size: 18px;
+            /* Ajusta el tamaño del símbolo según tus necesidades */
+            color: #333;
+            /* Ajusta el color según tus necesidades */
+            pointer-events: none;
+            /* Evita que el usuario interactúe con el símbolo */
+        }
+
+        #pujaClienteOfertaView {
+            padding-left: 25px;
+            /* Añade un espacio a la izquierda del campo para el símbolo */
+        }
+
+        #pujaClienteEnvioView {
+            padding-left: 25px;
+            /* Añade un espacio a la izquierda del campo para el símbolo */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -72,6 +190,8 @@
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     }
     ?>
+    <button type="button" id="verHistorialBtn">Ver Subastas Terminadas</button>
+    <br><br>
     <section>
         <table>
             <tr>
@@ -189,7 +309,104 @@
             ?>
         </table>
     </section>
+
+    <div id="historialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="cerrarModal">&times;</span>
+            <h2>Historial de Subastas Terminadas</h2>
+            <table class="tbHistorico">
+                <thead>
+                    <tr>
+                        <th>Comprador</th>
+                        <th>Artículo</th>
+                        <th>Costo del Envío</th>
+                        <th>Fecha</th>
+                        <th>Oferta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $pujaClienteBusiness = new PujaClienteBusiness();
+                    $allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
+                    $subastaBusiness = new SubastaBusiness();
+                    //$obtenerSubastas = $subastaBusiness->getAllTBSubasta();
+                    //$obtenerSubastasByClienteId = $subastaBusiness->getTBSubastaByClienteId($clienteId);
+                    $flag = 0;
+                    $currentDate =  date("Y-m-d H:i:s");
+                    foreach ($allPujasCliente as $current) {
+                        //if ($current->getClienteId() != $clienteId) {
+                        //foreach ($obtenerSubastas as $currentSub) {
+                            $obtenerSubastaByClienteId = $subastaBusiness->getSubastaByClienteId($clienteId);
+                        if ($current->getClienteId() != $clienteId) {
+                            
+                            if ($obtenerSubastaByClienteId->getSubastaFechaHoraFinal() < $currentDate) {
+                                $flag = 1;
+                                echo '<input type="hidden" name="pujaClienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                echo '<tr>';
+                                foreach ($getAllClientes as $cliente) {
+                                    if ($cliente->getClienteId() == $current->getClienteId()) {
+                                        echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getPujaClienteId() . '">';
+                                        echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                                    }
+                                }
+
+                                foreach ($getAllArticulos as $articulo) {
+                                    if ($articulo->getArticuloId() == $current->getArticuloId()) {
+                                        echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
+                                        echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                                    }
+                                }
+
+                                echo '<td>
+                            <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                            </div">
+                        </td>';
+                                echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                                echo '<td>
+                            <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+                            </div">
+                        </td>';
+
+                                echo '</tr>';
+                            }
+                        }
+                        //}
+                        // }
+                    }
+                    if ($flag == 0) {
+                        echo '<td><span>No posee Subastas terminadas</span></td>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
+        // JavaScript para mostrar el modal del historial de pujas
+        var verHistorialBtn = document.getElementById("verHistorialBtn");
+        var historialModal = document.getElementById("historialModal");
+        var cerrarModal = document.getElementById("cerrarModal");
+
+        verHistorialBtn.addEventListener("click", function() {
+            historialModal.style.display = "block";
+        });
+
+        cerrarModal.addEventListener("click", function() {
+            historialModal.style.display = "none";
+        });
+
+        // Cierra el modal si el usuario hace clic fuera de él
+        window.addEventListener("click", function(event) {
+            if (event.target == historialModal) {
+                historialModal.style.display = "none";
+            }
+        });
+
         document.getElementById('subastaEstadoArticuloView').addEventListener('change', function() {
             var estadoSeleccionado = this.value;
             var estadoUsado = document.getElementById('estadoUsado');
