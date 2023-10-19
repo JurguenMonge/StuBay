@@ -273,7 +273,7 @@
                 <tr>
                     <td>
                         <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId ?>" />
-                        <input type="text" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>"/>
+                        <input type="hidden" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>"/>
                         <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
