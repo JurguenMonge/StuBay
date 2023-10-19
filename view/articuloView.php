@@ -136,7 +136,8 @@
                 </tr>
                 <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                     <tr>
-                        <td><input required type="text" name="articulonombreview" id="articulonombreview" pattern="^[A-Za-z\s]+$" title="Solo se permiten letras y espacios" list="resultados" />
+                        <td>
+                            <textarea required name="articulonombreview" id="articulonombreview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" rows="3" cols="40"></textarea>
                             <datalist id="resultados"></datalist>
                         </td>
                         <td>
@@ -177,7 +178,7 @@
                     echo '<form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">';
                     echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
                     echo '<tr>';
-                    echo '<td><input type="text" name="nombre" id="nombre" value="' . $current->getArticuloNombre() . '"/></td>';
+                    echo '<td><textarea required name="nombre" id="nombre" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" rows="3" cols="40">' . $current->getArticuloNombre() . '</textarea></td>';
                     echo '<td>';
                     echo '<input type="hidden" name="clienteid" id="clienteid" value="' . $current->getClienteId() . '" readonly>';
                     echo '<span>' . $clienteNombreCompleto . '</span>';

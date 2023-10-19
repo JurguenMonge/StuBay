@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://192.168.0.101:8088');
+var conn = new WebSocket('ws://192.168.100.240:8088');
 
 conn.onopen = function(e) {
     console.log("Conexión establecida");
@@ -11,12 +11,12 @@ conn.onmessage = function(e) {
 
 function sendMessage() {
     // Obtén el elemento seleccionado en el select de clientes
-    var clienteSelect = document.getElementById("clienteIdView");
+    var monto = document.getElementById("pujaClienteOfertaView").value;
     // Obtén el nombre del cliente seleccionado usando el atributo data-nombre
-    var nombreCliente = clienteSelect.options[clienteSelect.selectedIndex].getAttribute("data-nombre");
+    var nombreCliente = document.getElementById("clienteNombreView").value;
 
     // Ahora, puedes enviar el nombre del cliente en el mensaje
-    var message = "El cliente "+nombreCliente+" ha realizado una nueva puja.";
+    var message = "El cliente " +nombreCliente+ " ha realizado una nueva puja por el monto de "+monto;
     console.log(message);
     conn.send(message);
 }

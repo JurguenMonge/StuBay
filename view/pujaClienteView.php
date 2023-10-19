@@ -272,7 +272,8 @@
             <form method="post" enctype="multipart/form-data" onsubmit="return validarPrecio()" action="../business/pujaClienteAction.php">
                 <tr>
                     <td>
-                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId; ?>" readonly>
+                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId ?>" />
+                        <input type="text" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>"/>
                         <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
