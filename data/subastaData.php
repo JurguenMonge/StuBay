@@ -83,7 +83,7 @@ class SubastaData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaActivo = 1;";
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1;";
         $result = mysqli_query($conn, $querySelect);
 
         $array = array();
@@ -106,6 +106,57 @@ class SubastaData extends Data
         mysqli_close($conn);
         return $array;
     }
+
+    public function getAllTBSubastasTerminadas($fechaActual, $clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Validación y limpieza del valor de entrada
+        $clienteId = mysqli_real_escape_string($conn, $clienteId);
+
+        // Preparar la consulta SQL usando una sentencia preparada
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 AND tbclienteid=? AND tbsubastafechahorafinal<?";
+
+        $stmt = mysqli_prepare($conn, $querySelect);
+
+        if ($stmt) {
+            // Vincular los parámetros a la consulta
+            mysqli_stmt_bind_param($stmt, 'is', $clienteId, $fechaActual);
+
+            // Ejecutar la consulta
+            mysqli_stmt_execute($stmt);
+
+            // Obtener los resultados
+            $result = mysqli_stmt_get_result($stmt);
+
+            $array = array();
+
+            while ($row = mysqli_fetch_array($result)) {
+                $currentSubasta = new Subasta(
+                    $row['tbsubastaid'],
+                    $row['tbsubastafechahorainicio'],
+                    $row['tbsubastafechahorafinal'],
+                    $row['tbsubastaprecio'],
+                    $row['tbsubastaestadoarticulo'],
+                    $row['tbsubastaarticulodiasuso'],
+                    $row['tbsubastaactivo'],
+                    $row['tbarticuloid'],
+                    $row['tbclienteid']
+                );
+                array_push($array, $currentSubasta);
+            }
+
+            mysqli_stmt_close($stmt);
+        } else {
+            // Manejar errores de consulta
+            $array = array();
+        }
+
+        mysqli_close($conn);
+        return $array;
+    }
+
 
     public function getTBSubastaById($subastaId)
     {
@@ -228,26 +279,27 @@ class SubastaData extends Data
 
     }
 
-    public function checkSubastaArticulo($articuloId){
+    public function checkSubastaArticulo($articuloId)
+    {
         $booleano = false;
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $articuloId = mysqli_real_escape_string($conn, $articuloId); 
+        $articuloId = mysqli_real_escape_string($conn, $articuloId);
 
-        $query = "SELECT COUNT(*) FROM tbsubasta WHERE tbarticuloid = ? AND tbsubastaactivo = 1;"; 
-        $stmt = mysqli_prepare($conn, $query); 
-        mysqli_stmt_bind_param($stmt, 'i', $articuloId); 
-        mysqli_stmt_execute($stmt); 
-        mysqli_stmt_bind_result($stmt, $count); 
+        $query = "SELECT COUNT(*) FROM tbsubasta WHERE tbarticuloid = ? AND tbsubastaactivo = 1;";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'i', $articuloId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $count);
         mysqli_stmt_fetch($stmt);
-        mysqli_stmt_close($stmt); 
-        mysqli_close($conn); 
-        
-        if($count > 0){
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+
+        if ($count > 0) {
             $booleano = true;
         }
-        return $booleano;    
+        return $booleano;
     }
 
     public function getAllTBSubastaNoActivas()

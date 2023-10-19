@@ -47,10 +47,8 @@
     ?>
 
     <script>
-        
-
         $(document).ready(function() {
-            
+
             // Escucha el evento change del campo de selección del artículo
             $('#articuloIdView').change(function() {
                 //var valor = "valor=" + $(this).val();
@@ -273,23 +271,22 @@
                 <tr>
                     <td>
                         <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId ?>" />
-                        <input type="hidden" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>"/>
+                        <input type="hidden" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>" />
                         <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
                         <select name="articuloIdView" id="articuloIdView">
                             <option value="">Seleccionar subasta</option>
                             <?php
-                            $currentDate =  date("Y-m-d H:i:s");
+                            $currentDate = date("Y-m-d H:i:s");
 
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
                                     if ($subasta->getSubastaVendedorId() != $clienteId) {
-                                        
                                         foreach ($getArt as $articulo) {
 
                                             if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
-                                                echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                                echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                             }
                                         }
                                     }
@@ -300,7 +297,6 @@
                             ?>
                         </select>
                     </td>
-
 
                     <div class="input-container">
                         <input required type="hidden" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
@@ -322,13 +318,11 @@
                     </td>
                     <input type="hidden" name="precioMaximoPujaActual" id="precioMaximoPujaActual" value="0">
 
-
                     <td>
                         <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button>
                     </td>
                 </tr>
             </form>
-
 
         </table>
     </section>
@@ -346,57 +340,53 @@
                 <thead>
                     <tr>
                         <th>Vendedor</th>
-                        <th>Articulo</th>
-                        <th>Fecha y Hora inicio</th>
-                        <th>Fecha y Hora final</th>
-                        <th>Precio inicial</th>
-                        <th>Estado del articulo</th>
-                        <th>Dias de uso</th>
+                        <th>Artículo</th>
+                        <th>Fecha Inicial</th>
+                        <th>Fecha Final</th>
+                        <th>Precio Inicial</th>
+                        <th>Estado del Artículo</th>
+                        <th>Días de Uso</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-
                     $fechaHoy = date("Y-m-d H:i:s");
-                    $flag = 0;
-                    foreach ($getSub as $current) {
-                        if ($current->getSubastaFechaHoraFinal() >= $fechaHoy) {
-                            $flag = 1;
-                            echo '<input type="hidden" name="subastaId" value="' . $current->getSubastaId() . '">';
+                    foreach ($getSub as $actualSubasta) {
+                        if ($actualSubasta->getSubastaFechaHoraFinal() >=  $fechaHoy) {
+                            echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
+                            echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
                             echo '<tr>';
                             foreach ($getCli as $cliente) {
-                                if ($cliente->getClienteId() == $current->getSubastaVendedorId()) {
-                                    echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $current->getSubastaVendedorId() . '">';
-                                    echo '<td><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
+                                if ($actualSubasta->getSubastaVendedorId() == $cliente->getClienteId()) {
+                                    echo '<input type="hidden" name="clienteIdView" id="clienteIdView" value="' . $actualSubasta->getSubastaVendedorId() . '">';
+                                    echo '<td class="cell-column"><input type="text" pattern="\d+" title="Ingresa solo números" maxlength="4" readonly value="' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '"/></td>';
                                 }
                             }
                             foreach ($getArt as $articulo) {
-                                if ($current->getSubastaArticuloId() == $articulo->getArticuloId()) {
-                                    echo '<td><input type="text" name="subastaArticuloView" id="subastaArticuloView" readonly value="' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '"/></td>';
+                                if ($actualSubasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
+                                    echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $actualSubasta->getSubastaArticuloId() . '">';
+                                    echo '<td class="cell-column"><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
                                 }
                             }
-                            echo '<td><input type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView" readonly value="' . $current->getSubastaFechaHoraInicio() . '"/></td>';
-                            echo '<td><input type="datetime-local" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView" readonly value="' . $current->getSubastaFechaHoraFinal() . '"/></td>';
-
-                            echo '<td>
-                            <div class="input-container">
-                                <span class="currency-symbol">₡</span>
-                                <input type="number" name="subastaPrecioInicialView" id="subastaPrecioInicialView" readonly value="' . $current->getSubastaPrecioInicial() . '"/>
-                            </div">
-                        </td>';
-                            if ($current->getSubastaEstadoArticulo() == 'Nuevo') {
-                                echo '<td><input type="text" name="subastaEstadoArticuloView" id="subastaEstadoArticuloView"readonly value="Nuevo"/></td>';
+                            echo '<td class="cell-column"><input type="datetime-local" name="subastaFechaHoraInicioView" id="subastaFechaHoraInicioView" readonly value="' . $actualSubasta->getSubastaFechaHoraInicio() . '"/></td>';
+                            echo '<td class="cell-column"><input type="datetime-local" name="subastaFechaHoraFinalView" id="subastaFechaHoraFinalView" readonly value="' . $actualSubasta->getSubastaFechaHoraFinal() . '"/></td>';
+                            echo '<td class="cell-column">
+                                <div class="input-container">
+                                    <span class="currency-symbol">₡</span>
+                                    <input type="text" name="subastaPrecioInicialView" id="subastaPrecioInicialView" readonly value="' . $actualSubasta->getSubastaPrecioInicial() . '"/>
+                                </div>
+                            </td>';
+                            if ($actualSubasta->getSubastaEstadoArticulo() == 'Nuevo') {
+                                echo '<td class="cell-column"><input type="text" name="estado" id="estado" readonly value="Nuevo"/></td>';
                             } else {
-                                echo '<td><input type="text" name="subastaEstadoArticuloView" id="subastaEstadoArticuloView"readonly value="Usado"/></td>';
+                                echo '<td class="cell-column"><input type="text" name="estado" id="estado" readonly value="Usado"/></td>';
                             }
-                            if ($current->getSubastaEstadoArticulo() == 'Usado') {
-                                echo '<td><input type="number" name="mesesDeUso" id="mesesDeUso" readonly value="' . $actualSubasta->getSubastaDiasUsoArticulo() . '"/></td>';
+                            if ($actualSubasta->getSubastaEstadoArticulo() == 'Usado') {
+                                echo '<td class="cell-column"><input type="text" name="mesesDeUso" id="mesesDeUso" readonly value="' . $actualSubasta->getSubastaDiasUsoArticulo() . '"/></td>';
                             }
                             echo '</tr>';
+                            echo '</form>';
                         }
-                    }
-                    if ($flag == 0) {
-                        echo '<td><span>No hay Subasta Activas</span></td>';
                     }
                     ?>
                 </tbody>
@@ -438,23 +428,23 @@
                         foreach ($getArt as $articulo) {
                             if ($articulo->getArticuloId() == $current->getArticuloId()) {
                                 echo '<input type="hidden" name="articuloIdView" id="articuloIdView" value="' . $current->getArticuloId() . '">';
-                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo()  . '"/></td>';
+                                echo '<td><input type="text" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Solo se permiten letras, espacios y tildes" maxlength="30" readonly value="' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '"/></td>';
                             }
                         }
 
                         echo '<td>
-                            <div class="input-container">
-                                <span class="currency-symbol">₡</span>
-                                <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
-                            </div">
-                        </td>';
+<div class="input-container">
+<span class="currency-symbol">₡</span>
+<input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+</div">
+</td>';
                         echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
                         echo '<td>
-                            <div class="input-container">
-                                <span class="currency-symbol">₡</span>
-                                <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
-                            </div">
-                        </td>';
+<div class="input-container">
+<span class="currency-symbol">₡</span>
+<input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+</div">
+</td>';
 
                         echo '</tr>';
                     }
@@ -469,9 +459,7 @@
 
 
 
-
     <script>
-       
         // JavaScript para mostrar el modal de pujas activas
         var verSubastasActivasBtn = document.getElementById("verSubastasActivasBtn");
         var subastasActivasModal = document.getElementById("subastasActivasModal"); // Cambiado el ID
@@ -533,14 +521,12 @@
         /// Función para actualizar la fecha y hora
         function actualizarFechaHora() {
             // Obtener la fecha y hora actual en la zona horaria de Costa Rica
-            console.log("Actualizando Fecha");
             var fechaActual = new Date().toLocaleString('es-ES', {
                 timeZone: 'America/Costa_Rica'
             });
 
             // Actualizar el valor del campo de texto
             document.getElementById('pujaClienteFechaView').value = fechaActual;
-            console.log(fechaActual);
         }
 
         // Actualizar la fecha y hora cada segundo
@@ -554,8 +540,6 @@
     </footer>
 
     <script>
-        
-        
         $(document).ready(function() {
             $('#clienteIdView').change(function() {
                 recargarLista();

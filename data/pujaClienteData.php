@@ -168,7 +168,8 @@ class PujaClienteData extends Data
         return $precioMaximo;
     }
 
-    public function getTBPujaClienteGanador($articuloId){
+    public function getTBPujaClienteGanador($articuloId)
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -207,4 +208,46 @@ class PujaClienteData extends Data
         return $array;
     }
 
+    public function getPujaClienteGanador($articuloId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Validación y limpieza del valor de entrada
+        $articuloId = mysqli_real_escape_string($conn, $articuloId);
+
+        $querySelect = "SELECT pc.* 
+        FROM tbpujacliente pc
+        WHERE pc.tbarticuloid = ".$articuloId."
+        AND pc.tbpujaclienteoferta = (
+            SELECT MAX(tbpujaclienteoferta) 
+            FROM tbpujacliente 
+            WHERE tbarticuloid = ".$articuloId."
+        )";
+
+        $result = mysqli_query($conn, $querySelect);
+
+        if ($result) {
+            // Verificar si se obtuvieron resultados
+            if ($row = $result->fetch_assoc()) {
+                $pujaCliente = new PujaCliente(
+                    $row['tbpujaclienteid'],
+                    $row['tbclienteid'],
+                    $row['tbarticuloid'],
+                    $row['tbpujaclientefecha'],
+                    $row['tbpujaclienteoferta'],
+                    $row['tbpujaclienteenvio']
+                );
+            } else {
+                // No se encontraron resultados
+                $pujaCliente = null; // Otra opción podría ser lanzar una excepción
+            }
+        } else {
+            // Error al ejecutar la consulta
+            $pujaCliente = null; // Otra opción podría ser lanzar una excepción
+        }
+
+        mysqli_close($conn);
+        return $pujaCliente;
+    }
 }
