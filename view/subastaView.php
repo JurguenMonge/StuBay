@@ -328,21 +328,13 @@
                 <tbody>
                     <?php
                     $pujaClienteBusiness = new PujaClienteBusiness();
-                    //$allPujasCliente = $pujaClienteBusiness->getAllTBPujaCliente();
                     $subastaBusiness = new SubastaBusiness();
-
-                    //$obtenerSubastasByClienteId = $subastaBusiness->getTBSubastaByClienteId($clienteId);
                     
                     $currentDate =  date("Y-m-d H:i:s");
                     $subastasTerminadas = $subastaBusiness->getAllTBSubastasTerminadas($currentDate, $clienteId);
-                    $pujaClienteGanador = $pujaClienteBusiness->getPujaClienteGanador(5);
-                    var_dump($subastasTerminadas);
-
-                    
+                                        
                     foreach ($subastasTerminadas as $subastas) {
-                        
-                        //var_dump($subastas->getArticuloId());
-                        
+                        $pujaClienteGanador = $pujaClienteBusiness->getPujaClienteGanador($subastas->getSubastaArticuloId());
                         echo '<input type="hidden" name="pujaClienteIdView" value="' . $pujaClienteGanador->getPujaClienteId() . '">';
                         echo '<tr>';
                         foreach ($getAllClientes as $cliente) {
