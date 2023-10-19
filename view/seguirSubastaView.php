@@ -21,7 +21,7 @@
     $clienteBusiness = new clienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
-    $getSub = $subastaBusiness->getAllTBSubasta();
+    $getSub = $subastaBusiness->getAllTBSubastaNoActivas();
     $articuloBusiness = new ArticuloBusiness();
     $getArticulos = $articuloBusiness->getAllTBArticulo();
     include_once("../session/startsession.php");
@@ -86,19 +86,17 @@
                     <td>
                         <select name="subastaidview" id="subastaidview">
                             <option value="">Seleccionar subasta</option>
-                            <?php
-                            $fechaHoraActual = date('Y-m-d H:i:s'); 
+                            <?php                         
                             if (count($getSub) > 0) {
                                 foreach ($getSub as $sub) {
-                                    if($sub->getSubastaFechaHoraFinal() > $fechaHoraActual){
-                                        foreach($getArticulos as $art){
-                                            foreach($getCliente as $cliente){
-                                                if($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()){
-                                                    echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '-' . $cliente->getClienteNombre() .'</option>';
-                                                }
+                                    foreach($getArticulos as $art){
+                                        foreach($getCliente as $cliente){
+                                            if($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()){
+                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '-' . $cliente->getClienteNombre() .'</option>';
                                             }
                                         }
                                     }
+                                    
                                 }
                             } else {
                                 echo '<option value="">Ninguna subasta registrada</option>';

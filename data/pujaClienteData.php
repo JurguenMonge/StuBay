@@ -167,4 +167,44 @@ class PujaClienteData extends Data
         mysqli_close($conn); // cerrar la conexión
         return $precioMaximo;
     }
+
+    public function getTBPujaClienteGanador($articuloId){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT pc.* 
+                    FROM tbpujacliente pc
+                    WHERE pc.tbarticuloid = ?
+                    AND pc.tbpujaclienteoferta = (
+                        SELECT MAX(tbpujaclienteoferta) 
+                        FROM tbpujacliente 
+                        WHERE tbarticuloid = ?
+                    )";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("ii", $articuloId, $articuloId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $array = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $pujaCliente = new PujaCliente(
+                $row['tbpujaclienteid'],
+                $row['tbclienteid'],
+                $row['tbarticuloid'],
+                $row['tbpujaclientefecha'],
+                $row['tbpujaclienteoferta'],
+                $row['tbpujaclienteenvio']
+            );
+            array_push($array, $pujaCliente);
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $array;
+    }
+
 }

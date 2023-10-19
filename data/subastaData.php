@@ -249,4 +249,33 @@ class SubastaData extends Data
         }
         return $booleano;    
     }
+
+    public function getAllTBSubastaNoActivas()
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbsubasta";
+        $result = mysqli_query($conn, $querySelect);
+
+        $array = array();
+
+        while ($row = mysqli_fetch_array($result)) {
+            $currentSubasta = new Subasta(
+                $row['tbsubastaid'],
+                $row['tbsubastafechahorainicio'],
+                $row['tbsubastafechahorafinal'],
+                $row['tbsubastaprecio'],
+                $row['tbsubastaestadoarticulo'],
+                $row['tbsubastaarticulodiasuso'],
+                $row['tbsubastaactivo'],
+                $row['tbarticuloid'],
+                $row['tbclienteid']
+            );
+            array_push($array, $currentSubasta);
+        }
+
+        mysqli_close($conn);
+        return $array;
+    }
 }

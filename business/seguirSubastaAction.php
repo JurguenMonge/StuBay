@@ -9,6 +9,7 @@ if (isset($_POST['valor'])) {
     include '../business/articuloBusiness.php';
     $pujaClienteBusiness = new PujaClienteBusiness();
     $getPujas = $pujaClienteBusiness->getTBPujaClienteByArticulo($tbarticuloid);
+    $getGanador = $pujaClienteBusiness->getTBPujaClienteGanador($tbarticuloid);
     $clienteBusiness = new ClienteBusiness();
     $articuloBusiness = new ArticuloBusiness();
     $getCli = $clienteBusiness->getAllTBCliente();
@@ -41,5 +42,16 @@ if (isset($_POST['valor'])) {
     }
 
     echo '</table>';
+    foreach($getGanador as $ganador){
+        foreach ($getCli as $cliente) {
+            if ($cliente->getClienteId() == $current->getClienteId()) {
+                echo '<br/><br/>';
+                echo '<span> Ganador = ' . $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . '</span>';
+                echo '<br/>';
+                echo '<span> Monto = ₡' . $ganador->getPujaClienteOferta() . '</span>';
+            }
+        }
+       
+    }
 }
     
