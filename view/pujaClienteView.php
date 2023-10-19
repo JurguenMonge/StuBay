@@ -350,9 +350,11 @@
                 </thead>
                 <tbody>
                     <?php
+                    $flag = 0;
                     $fechaHoy = date("Y-m-d H:i:s");
                     foreach ($getSub as $actualSubasta) {
                         if ($actualSubasta->getSubastaFechaHoraFinal() >=  $fechaHoy) {
+                            $flag = 1;
                             echo '<form method="post" enctype="multipart/form-data" action="../business/subastaAction.php">';
                             echo '<input type="hidden" name="subastaIdView" value="' . $actualSubasta->getSubastaId() . '">';
                             echo '<tr>';
@@ -387,6 +389,9 @@
                             echo '</tr>';
                             echo '</form>';
                         }
+                    }
+                    if ($flag == 0) {
+                        echo '<td><span>No hay subastas activas en el Sistema</span></td>';
                     }
                     ?>
                 </tbody>
@@ -433,18 +438,18 @@
                         }
 
                         echo '<td>
-<div class="input-container">
-<span class="currency-symbol">₡</span>
-<input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
-</div">
-</td>';
-                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
-                        echo '<td>
-<div class="input-container">
-<span class="currency-symbol">₡</span>
-<input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
-</div">
-</td>';
+                                <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteEnvioView" id="pujaClienteEnvioView" readonly value="' . $current->getPujaClienteEnvio() . '"/>
+                                </div">
+                                </td>';
+                                                        echo '<td><input type="datetime-local" name="pujaClienteFechaView" id="pujaClienteFechaView" readonly value="' . $current->getPujaClienteFecha() . '"/></td>';
+                                                        echo '<td>
+                                <div class="input-container">
+                                <span class="currency-symbol">₡</span>
+                                <input type="number" name="pujaClienteOfertaView" id="pujaClienteOfertaView" readonly value="' . $current->getPujaClienteOferta() . '"/>
+                                </div">
+                            </td>';
 
                         echo '</tr>';
                     }
