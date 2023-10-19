@@ -284,6 +284,7 @@
                             if (count($getArt) > 0 && count($getSub) > 0) {
                                 foreach ($getSub as $subasta) {
                                     if ($subasta->getSubastaVendedorId() != $clienteId) {
+                                        
                                         foreach ($getArt as $articulo) {
 
                                             if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
@@ -552,6 +553,7 @@
     </footer>
 
     <script>
+        
         
         $(document).ready(function() {
             $('#clienteIdView').change(function() {
