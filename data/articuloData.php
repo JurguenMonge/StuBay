@@ -21,8 +21,17 @@ class ArticuloData extends Data
 
         // Utiliza un query parametrizado para la inserción
         $queryInsert = "INSERT INTO tbarticulo 
-                       (tbarticuloid, tbarticulonombre, tbarticulomarca, tbarticulomodelo, tbarticuloserie, tbarticuloactivo, tbsubcategoriaid, tbclienteid) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    (tbarticuloid, 
+                    tbarticulonombre, 
+                    tbarticulomarca, 
+                    tbarticulomodelo, 
+                    tbarticuloserie, 
+                    tbarticuloactivo, 
+                    tbsubcategoriaid, 
+                    tbclienteid,
+                    tbarticulofoto
+                    ) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Preparar la consulta
         $stmt = mysqli_prepare($conn, $queryInsert);
@@ -31,7 +40,7 @@ class ArticuloData extends Data
             // Asignar valores a los parámetros
             mysqli_stmt_bind_param(
                 $stmt,
-                "isssssii",
+                "isssssiis",
                 $nextId,
                 $articulo->getArticuloNombre(),
                 $articulo->getArticuloMarca(),
@@ -39,7 +48,8 @@ class ArticuloData extends Data
                 $articulo->getArticuloSerie(),
                 $articulo->getArticuloActivo(),
                 $articulo->getArticuloSubCategoriaId(),
-                $articulo->getClienteId()
+                $articulo->getClienteId(),
+                $articulo->getArticuloFoto()
             );
 
             // Ejecutar la consulta
@@ -57,27 +67,66 @@ class ArticuloData extends Data
     }
 
 
-    public function updateTBArticulo($articulo)
+    /*public function updateTBArticulo($articulo)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-
+        
         $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
             "', tbarticulomarca='" . $articulo->getArticuloMarca() .
             "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
             "', tbarticuloserie='" . $articulo->getArticuloSerie() .
             "', tbarticuloactivo='" . $articulo->getArticuloActivo() .
-            "', tbsubcategoriaid='" . $articulo->getArticuloSubCategoriaId() .
-            "', tbclienteid=" . $articulo->getClienteId() .
+            "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
+            "', tbarticulofoto=" . $articulo->getArticuloFoto() .
             " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
-
+        
         $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+        return $result;
+    }*/
+    public function updateTBArticulo($articulo)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre=?, 
+            tbarticulomarca=?, 
+            tbarticulomodelo=?, 
+            tbarticuloserie=?, 
+            tbarticuloactivo=?, 
+            tbsubcategoriaid=?, 
+            tbarticulofoto=? 
+            WHERE tbarticuloid=?";
+
+        $stmt = mysqli_prepare($conn, $queryUpdate);
+
+        if ($stmt) {
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ssssissi",
+                $articulo->getArticuloNombre(),
+                $articulo->getArticuloMarca(),
+                $articulo->getArticuloModelo(),
+                $articulo->getArticuloSerie(),
+                $articulo->getArticuloActivo(),
+                $articulo->getArticuloSubCategoriaId(),
+                $articulo->getArticuloFoto(),
+                $articulo->getArticuloId()
+            );
+            $result = mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        } else {
+            $result = false;
+        }
+
         mysqli_close($conn);
         return $result;
     }
 
-    public function deleteTBArticulo($articulo)
-    { 
+
+    /*public function deleteTBArticulo($articulo)
+    {
         require_once '../business/subastaBusiness.php'; //this is to use the checkSubasta method
         $subastaBusiness = new SubastaBusiness();
         $subasta = $subastaBusiness->checkSubastaArticulo($articulo->getArticuloId());
@@ -88,20 +137,72 @@ class ArticuloData extends Data
         if ($subasta == true) {
             mysqli_close($conn);
             return 8;
-        }else{
+        } else {
             $queryUpdate = "UPDATE tbarticulo SET tbarticulonombre='" . $articulo->getArticuloNombre() .
-            "', tbarticulomarca='" . $articulo->getArticuloMarca() .
-            "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
-            "', tbarticuloserie='" . $articulo->getArticuloSerie() .
-            "', tbarticuloactivo='" . $articulo->getArticuloActivo() .
-            "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
-            " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
+                "', tbarticulomarca='" . $articulo->getArticuloMarca() .
+                "', tbarticulomodelo='" . $articulo->getArticuloModelo() .
+                "', tbarticuloserie='" . $articulo->getArticuloSerie() .
+                "', tbarticuloactivo='" . $articulo->getArticuloActivo() .
+                "', tbsubcategoriaid=" . $articulo->getArticuloSubCategoriaId() .
+                "', tbarticulofoto=" . $articulo->getArticuloFoto() .
+                " WHERE tbarticuloid=" . $articulo->getArticuloId() . ";";
 
             $result = mysqli_query($conn, $queryUpdate);
             mysqli_close($conn);
             return $result;
         }
+    }*/
+    public function deleteTBArticulo($articulo)
+    {
+        require_once '../business/subastaBusiness.php'; // Esto debe estar aquí si lo necesitas
+        $subastaBusiness = new SubastaBusiness();
+
+        // Verificar si el artículo está asociado a una subasta
+        if ($subastaBusiness->checkSubastaArticulo($articulo->getArticuloId())) {
+            return 8; // Código de error para indicar que el artículo pertenece a una subasta activa
+        }
+
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Iniciar una transacción para asegurarte de que ambas operaciones tengan éxito
+        mysqli_begin_transaction($conn);
+
+        // Utilizar una consulta SQL UPDATE para marcar el artículo como inactivo
+        $queryUpdate = "UPDATE tbarticulo SET tbarticuloactivo = 0 WHERE tbarticuloid = ?";
+
+        // Preparar la consulta
+        $stmtUpdate = mysqli_prepare($conn, $queryUpdate);
+
+        if ($stmtUpdate) {
+            // Asignar el valor del ID del artículo como parámetro
+            mysqli_stmt_bind_param($stmtUpdate, "i", $articulo->getArticuloId());
+
+            // Ejecutar la consulta de actualización
+            $resultUpdate = mysqli_stmt_execute($stmtUpdate);
+
+            // Cerrar la consulta de actualización
+            mysqli_stmt_close($stmtUpdate);
+        } else {
+            // Error al preparar la consulta de actualización
+            $resultUpdate = false;
+        }
+
+        if ($resultUpdate) {
+            // Confirmar la transacción
+            mysqli_commit($conn);
+        } else {
+            // Error en la actualización del registro, realizar un rollback
+            mysqli_rollback($conn);
+        }
+
+        // Cerrar la conexión
+        mysqli_close($conn);
+
+        return $resultUpdate;
     }
+
+
 
     public function getAllTBArticulo()
     {
@@ -122,7 +223,8 @@ class ArticuloData extends Data
                 $row['tbarticuloserie'],
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
-                $row['tbclienteid']
+                $row['tbclienteid'],
+                $row['tbarticulofoto']
             );
             array_push($array, $currentArticulo);
         }
@@ -168,7 +270,8 @@ class ArticuloData extends Data
                 $row['tbarticuloserie'],
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
-                $row['tbclienteid']
+                $row['tbclienteid'],
+                $row['tbarticulofoto']
             );
             array_push($array, $currentArticulo);
         }
@@ -177,19 +280,29 @@ class ArticuloData extends Data
         return $array;
     }
 
-    public function getArticulosBySubcategoriaId($subcategoriaId){
+    public function getArticulosBySubcategoriaId($subcategoriaId)
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
-    
+
         $querySelect = "SELECT * FROM tbarticulo WHERE tbsubcategoriaid='$subcategoriaId' && tbarticuloactivo = 1;";
-    
+
         $result = mysqli_query($conn, $querySelect);
-    
+
         $array = array();
-    
+
         while ($row = mysqli_fetch_array($result)) {
-            $currentArticulo = new Articulo($row['tbarticuloid'],$row['tbarticulonombre'],$row['tbarticulomarca'],$row['tbarticulomodelo']
-            ,$row['tbarticuloserie'], $row['tbarticuloactivo'],$row['tbsubcategoriaid'],$row['tbclienteid']);
+            $currentArticulo = new Articulo(
+                $row['tbarticuloid'],
+                $row['tbarticulonombre'],
+                $row['tbarticulomarca'],
+                $row['tbarticulomodelo'],
+                $row['tbarticuloserie'],
+                $row['tbarticuloactivo'],
+                $row['tbsubcategoriaid'],
+                $row['tbclienteid'],
+                $row['tbarticulofoto']
+            );
             array_push($array, $currentArticulo);
         }
         mysqli_close($conn);
@@ -226,7 +339,8 @@ class ArticuloData extends Data
                 $row['tbarticuloserie'],
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
-                $row['tbclienteid']
+                $row['tbclienteid'],
+                $row['tbarticulofoto']
             );
             array_push($array, $currentArticulo);
         }
@@ -236,5 +350,44 @@ class ArticuloData extends Data
         mysqli_close($conn);
 
         return $array;
+    }
+
+    public function getArticuloById($id)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbarticuloid = ? AND tbarticuloactivo = 1";
+
+        $stmt = mysqli_prepare($conn, $querySelect);
+
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "i", $id);
+            mysqli_stmt_execute($stmt);
+
+            $result = mysqli_stmt_get_result($stmt);
+
+            if ($row = mysqli_fetch_array($result)) {
+                $articulo = new Articulo(
+                    $row['tbarticuloid'],
+                    $row['tbarticulonombre'],
+                    $row['tbarticulomarca'],
+                    $row['tbarticulomodelo'],
+                    $row['tbarticuloserie'],
+                    $row['tbarticuloactivo'],
+                    $row['tbsubcategoriaid'],
+                    $row['tbclienteid'],
+                    $row['tbarticulofoto']
+                );
+
+                mysqli_stmt_close($stmt);
+                mysqli_close($conn);
+
+                return $articulo;
+            }
+        }
+
+        mysqli_close($conn);
+        return null; // Devuelve null si no se encuentra el artículo
     }
 }
