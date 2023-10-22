@@ -29,9 +29,10 @@ class ArticuloData extends Data
                     tbarticuloactivo, 
                     tbsubcategoriaid, 
                     tbclienteid,
-                    tbarticulofoto
+                    tbarticulofoto,
+                    tbarticulofoto2
                     ) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Preparar la consulta
         $stmt = mysqli_prepare($conn, $queryInsert);
@@ -40,7 +41,7 @@ class ArticuloData extends Data
             // Asignar valores a los parámetros
             mysqli_stmt_bind_param(
                 $stmt,
-                "isssssiis",
+                "isssssiiss",
                 $nextId,
                 $articulo->getArticuloNombre(),
                 $articulo->getArticuloMarca(),
@@ -49,7 +50,8 @@ class ArticuloData extends Data
                 $articulo->getArticuloActivo(),
                 $articulo->getArticuloSubCategoriaId(),
                 $articulo->getClienteId(),
-                $articulo->getArticuloFoto()
+                $articulo->getArticuloFoto(),
+                $articulo->getArticuloFoto2()
             );
 
             // Ejecutar la consulta
@@ -96,7 +98,8 @@ class ArticuloData extends Data
             tbarticuloserie=?, 
             tbarticuloactivo=?, 
             tbsubcategoriaid=?, 
-            tbarticulofoto=? 
+            tbarticulofoto=? ,
+            tbarticulofoto2=?
             WHERE tbarticuloid=?";
 
         $stmt = mysqli_prepare($conn, $queryUpdate);
@@ -104,7 +107,7 @@ class ArticuloData extends Data
         if ($stmt) {
             mysqli_stmt_bind_param(
                 $stmt,
-                "ssssissi",
+                "ssssisssi",
                 $articulo->getArticuloNombre(),
                 $articulo->getArticuloMarca(),
                 $articulo->getArticuloModelo(),
@@ -112,6 +115,7 @@ class ArticuloData extends Data
                 $articulo->getArticuloActivo(),
                 $articulo->getArticuloSubCategoriaId(),
                 $articulo->getArticuloFoto(),
+                $articulo->getArticuloFoto2(),
                 $articulo->getArticuloId()
             );
             $result = mysqli_stmt_execute($stmt);
@@ -224,7 +228,8 @@ class ArticuloData extends Data
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
                 $row['tbclienteid'],
-                $row['tbarticulofoto']
+                $row['tbarticulofoto'],
+                $row['tbarticulofoto2']
             );
             array_push($array, $currentArticulo);
         }
@@ -271,7 +276,8 @@ class ArticuloData extends Data
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
                 $row['tbclienteid'],
-                $row['tbarticulofoto']
+                $row['tbarticulofoto'],
+                $row['tbarticulofoto2']
             );
             array_push($array, $currentArticulo);
         }
@@ -301,7 +307,8 @@ class ArticuloData extends Data
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
                 $row['tbclienteid'],
-                $row['tbarticulofoto']
+                $row['tbarticulofoto'],
+                $row['tbarticulofoto2']
             );
             array_push($array, $currentArticulo);
         }
@@ -340,7 +347,8 @@ class ArticuloData extends Data
                 $row['tbarticuloactivo'],
                 $row['tbsubcategoriaid'],
                 $row['tbclienteid'],
-                $row['tbarticulofoto']
+                $row['tbarticulofoto'],
+                $row['tbarticulofoto2']
             );
             array_push($array, $currentArticulo);
         }
@@ -377,7 +385,8 @@ class ArticuloData extends Data
                     $row['tbarticuloactivo'],
                     $row['tbsubcategoriaid'],
                     $row['tbclienteid'],
-                    $row['tbarticulofoto']
+                    $row['tbarticulofoto'],
+                    $row['tbarticulofoto2']
                 );
 
                 mysqli_stmt_close($stmt);

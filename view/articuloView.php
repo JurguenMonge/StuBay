@@ -90,7 +90,7 @@
 <body>
     <header>
         <h1>Registro Articulo</h1>
-        <h1><?php echo "$clienteNombre!" ?></h1>
+        <h1><?php echo "$clienteNombre" ?></h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
 
@@ -134,6 +134,7 @@
                 <th>Modelo</th>
                 <th>Serie</th>
                 <th>Foto Articulo</th>
+                <th>Foto Articulo 2</th>
             </tr>
             <form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">
                 <tr>
@@ -168,6 +169,7 @@
                     <td><input type="text" name="articulomodeloview" id="articulomodeloview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                     <td><input type="text" name="articuloserieview" id="articuloserieview" pattern="^[A-Za-z0-9\s]+$" title="Solo se permiten letras, números y espacios" />
                     <td><input type="file" name="articulofotoview" id="articulofotoview" />
+                    <td><input type="file" name="articulofoto2view" id="articulofoto2view" />
                     <td><input type="submit" value="Crear" name="create" id="create" /></td>
                 </tr>
             </form>
@@ -217,6 +219,12 @@
                     echo '<img src="' . $current->getArticuloFoto() . '" alt="Imagen actual" width="100" height="100" />';
                 }
                 echo '<input type="file" name="articulofotoview" id="articulofotoview" />';
+                echo '</td>';
+                echo '<td>';
+                if ($current->getArticuloFoto2()) {
+                    echo '<img src="' . $current->getArticuloFoto2() . '" alt="Imagen actual" width="100" height="100" />';
+                }
+                echo '<input type="file" name="articulofoto2view" id="articulofoto2view" />';
                 echo '</td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';
                 echo '<td><input type="submit" value="Eliminar" name="delete" id="delete"/></td>';

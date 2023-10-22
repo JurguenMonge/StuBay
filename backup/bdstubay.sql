@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2023 at 08:11 PM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 7.4.21
+-- Generation Time: Oct 22, 2023 at 07:33 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,20 +36,21 @@ CREATE TABLE `tbarticulo` (
   `tbarticuloactivo` tinyint(4) NOT NULL,
   `tbsubcategoriaid` varchar(100) NOT NULL,
   `tbclienteid` int(11) NOT NULL,
-  `tbarticulofoto` text NOT NULL
+  `tbarticulofoto` text NOT NULL,
+  `tbarticulofoto2` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbarticulo`
 --
 
-INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`, `tbsubcategoriaid`, `tbclienteid`, `tbarticulofoto`) VALUES
-(1, 'Computadora', 'MSI', 'GF63', '1234', 0, '21', 1, ''),
-(2, 'Computadora', 'MSI12', '2010', '4322', 1, '13', 1, ''),
-(3, 'LibroPrueba', 'ED', '3D', '786', 1, '21', 3, ''),
-(4, 'Escritorio', 'Lo', '', '', 1, '14', 2, ''),
-(5, 'Monitor', 'CM190', '2014', '123', 1, '14', 1, ''),
-(6, 'Monitor', 'Samsung', '2022', '118', 1, '14', 1, '../articulosFotos/6534143a4682d_1697911866.jpg');
+INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`, `tbsubcategoriaid`, `tbclienteid`, `tbarticulofoto`, `tbarticulofoto2`) VALUES
+(1, 'Computadora', 'MSI', 'GF63', '1234', 0, '21', 1, '', ''),
+(2, 'Computadora', 'MSI12', '2010', '4322', 1, '13', 1, '', ''),
+(3, 'LibroPrueba', 'ED', '3D', '786', 1, '21', 3, '', ''),
+(4, 'Escritorio', 'Lo', '', '', 1, '14', 2, '', ''),
+(5, 'Monitor', 'CM190', '2014', '123', 1, '14', 1, '', ''),
+(6, 'Monitor de juegos de 32” con resolución UHD y frecuencia de actualización de 144 Hz', 'Samsung', '2023', 'LS32BG702ENXGO', 1, '14', 1, '../articulosFotos/65355cce5cc6c_1697995982.jpg', '../articulosFotos/65355b62b2543_1697995618.jpg');
 
 -- --------------------------------------------------------
 
