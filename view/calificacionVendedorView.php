@@ -26,6 +26,9 @@
         $clientePrimerApellido = $_SESSION['apellido1'];
         $clienteSegundoApellido = $_SESSION['apellido2'];
         $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
+
+        $fechaActual = date('Y-m-d H:i:s');
+        $getSubasta = $subastaBusiness->getAllTBSubastasTerminadas($fechaActual, $clienteId);
     } else {
         echo "No has iniciado sesión";
     }
@@ -85,12 +88,12 @@
                         <select name="subastaidview" id="subastaidview">
                             <option value="">Seleccionar subasta</option>
                             <?php
-                            if (count($getSub) > 0) {
-                                foreach ($getSub as $sub) {
+                            if (count($getSubasta) > 0) {
+                                foreach ($getSubasta as $sub) {
                                     foreach ($getArticulos as $art) {
                                         foreach ($getCliente as $cliente) {
                                             if ($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()) {
-                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '-' . $cliente->getClienteNombre() . '</option>';
+                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '</option>';
                                             }
                                         }
                                     }
