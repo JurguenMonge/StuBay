@@ -58,7 +58,7 @@
                         // `;
                         // });
                         template += `
-                            <span> Ganador = ${data.ganador}</span>
+                            <span>${data.ganador}</span>
                         `;
                         $('#ganador').html(template);
                     }
@@ -111,7 +111,7 @@
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
-            <form method="post" action="../business/calificacionVendedorAction.php">
+            <form method="post" action="../business/calificacionCompradorAction.php">
                 <tr>
                     <td>
                         <input type="hidden" name="clienteidview" id="clienteidview" value="<?php echo $clienteId; ?>" readonly>

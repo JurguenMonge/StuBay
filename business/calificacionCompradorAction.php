@@ -88,8 +88,8 @@ if (isset($_POST['update'])) {
         $_SESSION['msj'] = "Error desconocido";
     }
 } else if (isset($_POST['create'])){
-    echo $_POST['subastaidview'];
-    exit();
+    // echo 'hola'.$_POST['ganador'];
+    // exit();
     if (
         isset($_POST['subastaidview']) &&
         isset($_POST['clienteidview']) &&
