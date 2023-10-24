@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calificacion Comprador</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/alertaSocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <?php
     include '../business/clienteBusiness.php';
@@ -26,15 +30,47 @@
         $clientePrimerApellido = $_SESSION['apellido1'];
         $clienteSegundoApellido = $_SESSION['apellido2'];
         $clienteNombreCompleto = $clienteNombre . ' ' . $clientePrimerApellido . ' ' . $clienteSegundoApellido;
+
+        $fechaActual = date('Y-m-d H:i:s');
+        $getSubasta = $subastaBusiness->getAllTBSubastasTerminadas($fechaActual, $clienteId);
     } else {
         echo "No has iniciado sesión";
     }
     ?>
+    <script>
+        $(document).ready(function() {
+            $('#subastaidview').change(function() {
+                var subastaidview = $(this).val();
+                $.ajax({
+                    url: '../business/calificacionCompradorAction.php',
+                    method: 'POST',
+                    data: {
+                        subastaidview: subastaidview
+                    },
+                    success: function(response) {
+
+                        var data = JSON.parse(response);
+                        console.log(data);
+                        var template = '';
+                        // data.ganador.forEach(ganador => {
+                        //     template += `
+                        //     <span> Ganador = ${ganador.clienteNombre} ${ganador.clientePrimerApellido}</span>
+                        // `;
+                        // });
+                        template += `
+                            <span> Ganador = ${data.ganador}</span>
+                        `;
+                        $('#ganador').html(template);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre "?></h1>
+        <h1><?php echo "$clienteNombre " ?></h1>
         <h1>Registro Calificacion Comprador</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -69,9 +105,9 @@
     <section id="form">
         <table>
             <tr>
-                <th>Comprador</th>
-                <th>Subasta</th>
                 <th>Vendedor</th>
+                <th>Subasta</th>
+                <th>Comprador</th>
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
@@ -85,12 +121,12 @@
                         <select name="subastaidview" id="subastaidview">
                             <option value="">Seleccionar subasta</option>
                             <?php
-                            if (count($getSub) > 0) {
-                                foreach ($getSub as $sub) {
+                            if (count($getSubasta) > 0) {
+                                foreach ($getSubasta as $sub) {
                                     foreach ($getArticulos as $art) {
                                         foreach ($getCliente as $cliente) {
                                             if ($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()) {
-                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '-' . $cliente->getClienteNombre() . '</option>';
+                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '</option>';
                                             }
                                         }
                                     }
@@ -101,7 +137,7 @@
                             ?>
                         </select>
                     </td>
-
+                    <td id="ganador"></td>
                     <td><input type="number" name="calificacionVendedorPuntos" id="calificacionVendedorPuntos" min="1" max="5"></td>
                     <td><textarea name="calificacionVendedorComentarios" id="calificacionVendedorComentarios"></textarea></td>
                     <td><input type="submit" name="create" id="create" value="Registrar"></td>
@@ -111,5 +147,7 @@
         </table>
     </section>
 </body>
+
+
 
 </html>

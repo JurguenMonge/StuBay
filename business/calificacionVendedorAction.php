@@ -1,6 +1,6 @@
 <?php
 
-include '../data/calificacionVendedorBusiness.php';
+include '../business/calificacionVendedorBusiness.php';
 session_start();
 if (isset($_POST['update'])) {
 
@@ -88,7 +88,8 @@ if (isset($_POST['update'])) {
         $_SESSION['msj'] = "Error desconocido";
     }
 } else if (isset($_POST['create'])){
-
+    echo $_POST['subastaidview'];
+    exit();
     if (
         isset($_POST['subastaId']) &&
         isset($_POST['clienteId']) &&

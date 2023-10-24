@@ -102,7 +102,7 @@
     <br><br>
     <a href="calificacionVendedorView.php">Calificar Vendedor</a>
     <br><br>
-    <a href="calificacionCompradorView.php">Calificar Cliente</a>
+    <a href="calificacionCompradorView.php">Calificar Comprador</a>
     <br><br>
     <a href="../session/closesession.php">Cerrar Sesión</a>
 </body>

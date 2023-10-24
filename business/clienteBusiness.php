@@ -54,4 +54,8 @@ class ClienteBusiness{
     public function getClientsById($clienteCorreo){
         return $this->clienteData->getClientsById($clienteCorreo);
     }
+
+    public function getClientsByIdGanador($clienteId){
+        return $this->clienteData->getClientsByIdGanador($clienteId);
+    }
 }
