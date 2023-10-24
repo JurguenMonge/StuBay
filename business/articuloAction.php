@@ -18,7 +18,9 @@ if (isset($_POST['update'])) {
 
         // Verifica si se seleccionó una nueva imagen
         if (isset($_FILES['articulofotoview']) && $_FILES['articulofotoview']['error'] === UPLOAD_ERR_OK) {
-            $directory = "../articulosFotos/";
+            //$directory = "../articulosFotos/";
+            //directory para almacenar las imagenes en la db en linux
+            $directory = "opt/lampp/htdocs/stubay/articulosFotos/";
             $fileExtension = pathinfo($_FILES['articulofotoview']['name'], PATHINFO_EXTENSION);
             $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension;
             $filePath = $directory . $uniqueFileName;
@@ -37,7 +39,8 @@ if (isset($_POST['update'])) {
 
         // Verifica si se seleccionó una nueva imagen
         if (isset($_FILES['articulofoto2view']) && $_FILES['articulofoto2view']['error'] === UPLOAD_ERR_OK) {
-            $directory = "../articulosFotos/";
+            //$directory = "../articulosFotos/";
+            $directory = "opt/lampp/htdocs/stubay/articulosFotos/";
             $fileExtension = pathinfo($_FILES['articulofoto2view']['name'], PATHINFO_EXTENSION);
             $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension;
             $filePath = $directory . $uniqueFileName;
@@ -106,7 +109,8 @@ if (isset($_POST['update'])) {
         $cliente = $_POST['clienteid'];
 
         if (isset($_FILES['articulofotoview']) && $_FILES['articulofotoview']['error'] === UPLOAD_ERR_OK) {
-            $directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
+            //$directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
+            $directory = "opt/lampp/htdocs/stubay/articulosFotos/";
             $fileExtension = pathinfo($_FILES['articulofotoview']['name'], PATHINFO_EXTENSION);
             $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension; // Genera un nombre de archivo único
             $filePath = $directory . $uniqueFileName; // Ruta completa del archivo en la carpeta destino
@@ -119,7 +123,8 @@ if (isset($_POST['update'])) {
         }
 
         if (isset($_FILES['articulofoto2view']) && $_FILES['articulofoto2view']['error'] === UPLOAD_ERR_OK) {
-            $directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
+            //$directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
+            $directory = "opt/lampp/htdocs/stubay/articulosFotos/";
             $fileExtension = pathinfo($_FILES['articulofoto2view']['name'], PATHINFO_EXTENSION);
             $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension; // Genera un nombre de archivo único
             $filePath = $directory . $uniqueFileName; // Ruta completa del archivo en la carpeta destino
