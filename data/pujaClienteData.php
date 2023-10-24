@@ -81,7 +81,7 @@ class PujaClienteData extends Data
     }
 
     public function getTBPujaClienteById($clienteId)
-    {
+    {//Obtiene todas las pujas de un cliente específico por su id de cliente (tbclienteid)
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -169,7 +169,7 @@ class PujaClienteData extends Data
     }
 
     public function getTBPujaClienteGanador($articuloId)
-    {
+    {//Obtiene la puja ganadora de un artículo específico por su id de artículo (tbarticuloid)
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 

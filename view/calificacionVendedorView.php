@@ -34,7 +34,7 @@
 
 <body>
     <header>
-        <h1><?php echo "$clienteNombre" ?></h1>
+        <h1><?php echo "$clienteNombre " ?></h1>
         <h1>Registro Calificacion Vendedor</h1>
         <h2><a href="inicioView.php">Home</a></h2>
     </header>
@@ -69,23 +69,17 @@
     <section id="form">
         <table>
             <tr>
+                <th>Comprador</th>
+                <th>Subasta</th>
                 <th>Vendedor</th>
-                <th>Comprador-Subasta</th>
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
             <form method="post" action="../business/calificacionVendedorAction.php">
                 <tr>
                     <td>
-                        <select name="clienteId" id="clienteId">
-                            <?php
-                            $clienteBusiness = new ClienteBusiness();
-                            $clientes = $clienteBusiness->getAllTBCliente();
-                            foreach ($clientes as $cliente) {
-                                echo '<option value="' . $cliente->getClienteId() . '">' . $cliente->getClienteNombre() . '</option>';
-                            }
-                            ?>
-                        </select>
+                        <input type="hidden" name="clienteidview" id="clienteidview" value="<?php echo $clienteId; ?>" readonly>
+                        <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
                         <select name="subastaidview" id="subastaidview">

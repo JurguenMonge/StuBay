@@ -80,10 +80,6 @@
         </script>
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
-    <a href="calificacionVendedorView.php">Calificar Vendedor</a>
-    <br><br>
-    <a href="calificacionClienteView.php">Calificar Cliente</a>
-    <br><br>
     <a href="clienteView.php">Registro Cliente</a>
     <br><br>
     <a href="clienteDireccionView.php">Registro Dirección Cliente</a>
@@ -103,6 +99,10 @@
     <a href="costoEnvioView.php">Registrar Costo envio</a>
     <br><br>
     <a href="seguirSubastaView.php">Seguir Subasta</a>
+    <br><br>
+    <a href="calificacionVendedorView.php">Calificar Vendedor</a>
+    <br><br>
+    <a href="calificacionCompradorView.php">Calificar Cliente</a>
     <br><br>
     <a href="../session/closesession.php">Cerrar Sesión</a>
 </body>
