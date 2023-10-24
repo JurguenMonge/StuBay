@@ -5,17 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calificacion Vendedor</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/alertaSocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <?php
+    
+    include '../business/calificacionVendedorBusiness.php';
+    include '../business/subastaBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/pujaClienteBusiness.php';
     include '../business/articuloBusiness.php';
+
     $clienteBusiness = new clienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
-    $getSub = $subastaBusiness->getAllTBSubastaNoActivas();
+    //$getSub = $subastaBusiness->getAllTBSubastaNoActivas();
+
+    $pujaClienteBusiness = new PujaClienteBusiness();
+    $getPujas = $pujaClienteBusiness->getAllTBPujaCliente();
     $articuloBusiness = new ArticuloBusiness();
     $getArticulos = $articuloBusiness->getAllTBArticulo();
     include_once("../session/startsession.php");
@@ -72,9 +82,9 @@
     <section id="form">
         <table>
             <tr>
-                <th>Comprador</th>
-                <th>Subasta</th>
                 <th>Vendedor</th>
+                <th>Subasta</th>
+                <th>Comprador</th>
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>

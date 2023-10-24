@@ -69,9 +69,9 @@
     <section id="form">
         <table>
             <tr>
-                <th>Vendedor</th>
-                <th>Subasta</th>
                 <th>Comprador</th>
+                <th>Subasta</th>
+                <th>Vendedor</th>
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
