@@ -111,7 +111,7 @@
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
-            <form method="post" action="../business/calificacionCompradorAction.php">
+            <form method="post" enctype="multipart/form-data" action="../business/calificacionCompradorAction.php">
                 <tr>
                     <td>
                         <input type="hidden" name="clienteidview" id="clienteidview" value="<?php echo $clienteId; ?>" readonly>
@@ -138,9 +138,9 @@
                         </select>
                     </td>
                     <td id="ganador"></td>
-                    <td><input type="number" name="calificacionVendedorPuntos" id="calificacionVendedorPuntos" min="1" max="5"></td>
-                    <td><textarea name="calificacionVendedorComentarios" id="calificacionVendedorComentarios"></textarea></td>
-                    <td><input type="submit" name="create" id="create" value="Registrar"></td>
+                    <td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" min="1" max="5"></td>
+                    <td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview"></textarea></td>
+                    <td><input type="submit" name="create" id="create" value="crear"></td>
                 </tr>
 
             </form>
