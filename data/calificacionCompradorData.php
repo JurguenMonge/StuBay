@@ -1,6 +1,7 @@
 <?php
 
-include '../data/calificacionCompradorData.php';
+include_once 'data.php';
+include '../domain/calificacionComprador.php';
 
 class CalificacionCompradorData extends Data
 {
@@ -10,18 +11,19 @@ class CalificacionCompradorData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
+        // Obtener el próximo ID
         $queryGetLastId = "SELECT MAX(tbcalificacioncompradorid) AS tbcalificacioncompradorid FROM tbcalificacioncomprador";
-        $idCont = mysqli_query($conn, $queryGetLastId);
-        $nextId = 1;
+        $stmt = $conn->prepare($queryGetLastId);
+        $stmt->execute();
+        $stmt->bind_result($nextId);
+        $stmt->fetch();
+        $nextId = $nextId !== null ? $nextId + 1 : 1;
 
-        if ($row = mysqli_fetch_row($idCont)) {
-            $nextId = trim($row[0]) + 1;
-        }
+        $stmt->close(); // Cierra la consulta preparada anterior
 
-        $stmt = $conn->prepare("INSERT INTO tbcalificacioncomprador 
-        VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO tbcalificacioncomprador VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param(
-            "iiidsi", //defino el tipo de dato de cada parametro
+            "iiiisi", //defino el tipo de dato de cada parametro
             $nextId,
             $calificacionComprador->getSubastaId(),
             $calificacionComprador->getClienteId(),
@@ -30,7 +32,8 @@ class CalificacionCompradorData extends Data
             $calificacionComprador->getCalificacionCompradorActivo()
         );
         $result = $stmt->execute();
-        $stmt->close();
+        $stmt->close(); // Cierra la consulta preparada actual
+
         mysqli_close($conn);
         return $result;
     }

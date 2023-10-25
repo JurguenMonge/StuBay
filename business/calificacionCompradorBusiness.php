@@ -2,11 +2,17 @@
 
 include '../data/calificacionCompradorData.php';
 
-class CalificacionCompradorBusiness{
-
+class CalificacionCompradorBusiness
+{
     private $calificacionCompradorData;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->calificacionCompradorData = new CalificacionCompradorData();
+    }
+
+    public function insertTBCalificacionComprador($calificacionComprador)
+    {
+        return $this->calificacionCompradorData->insertTBCalificacionComprador($calificacionComprador);
     }
 }

@@ -38,7 +38,7 @@ if (isset($_POST['update'])) {
 
             $calificacionVendedorBusiness = new CalificacionCompradorBusiness();
 
-            $result = $calificacionVendedorBusiness->updateTBCalificacionComprador($calificacionVendedor);
+            //$result = $calificacionVendedorBusiness->updateTBCalificacionComprador($calificacionVendedor);
 
             if ($result == 1) {
                 header("location: ../view/calificacionVendedorView.php?success=update");
@@ -118,8 +118,8 @@ if (isset($_POST['update'])) {
             strlen($calificacionVendedorPuntos) > 0 &&
             strlen($calificacionVendedorComentarios) > 0
         ) {
-            
-            $calificacionComprador = new CalificacionVendedor(
+
+            $calificacionComprador = new CalificacionComprador(
                 0,
                 $subastaId,
                 $idcomprador,
@@ -133,25 +133,25 @@ if (isset($_POST['update'])) {
             $result = $calificacionCompradorBusiness->insertTBCalificacionComprador($calificacionComprador);
 
             if ($result == 1) {
-                header("location: ../view/calificacionVendedorView.php?success=insert");
+                header("location: ../view/calificacionCompradorView.php?success=insert");
                 session_start();
                 $_SESSION['msj'] = "Se ha insertado correctamente";
             } else if ($result == 0) {
-                header("location: ../view/calificacionVendedorView.php?error=insert");
+                header("location: ../view/calificacionCompradorView.php?error=insert");
                 session_start();
                 $_SESSION['msj'] = "No se pudo insertar";
             } else {
-                header("location: ../view/calificacionVendedorView.php?error=dbError");
+                header("location: ../view/calificacionCompradorView.php?error=dbError");
                 session_start();
                 $_SESSION['msj'] = "Error desconocido";
             }
         } else {
-            header("location: ../view/calificacionVendedorView.php?error=emptyField");
+            header("location: ../view/calificacionCompradorView.php?error=emptyField");
             session_start();
             $_SESSION['msj'] = "Existen campos vacíos";
         }
     } else {
-        header("location: ../view/calificacionVendedorView.php?error=error");
+        header("location: ../view/calificacionCompradorView.php?error=error");
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
