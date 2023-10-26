@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <?php
+    include '../business/calificacionCompradorBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/pujaClienteBusiness.php';
     include '../business/articuloBusiness.php';
-    $clienteBusiness = new clienteBusiness();
+    $clienteBusiness = new ClienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
-    $getSub = $subastaBusiness->getAllTBSubastaNoActivas();
+    //$getSub = $subastaBusiness->getAllTBSubastaNoActivas();
     $articuloBusiness = new ArticuloBusiness();
     $getArticulos = $articuloBusiness->getAllTBArticulo();
     include_once("../session/startsession.php");
@@ -48,19 +49,12 @@
                         subastaidview: subastaidview
                     },
                     success: function(response) {
-
                         var data = JSON.parse(response);
-                        console.log(data);
-                        var template = '';
-                        // data.ganador.forEach(ganador => {
-                        //     template += `
-                        //     <span> Ganador = ${ganador.clienteNombre} ${ganador.clientePrimerApellido}</span>
-                        // `;
-                        // });
-                        template += `
-                            <span>${data.ganador}</span>
-                        `;
-                        $('#ganador').html(template);
+                        var ganador = data.ganador; //aca se obtiene el nombre del ganador de la subasta y se muestra en el campo ganador de la tabla 
+                        var clienteid = data.compradorid; //aca se obtiene el id del ganador de la subasta y se asigna al campo oculto
+                        $('#ganador').html(ganador); //mostrar el nombre del ganador en el campo ganador de la tabla
+                        // Asignar el valor del ganador al campo oculto
+                        $('#ganadorInput').val(clienteid);
                     }
                 });
             });
@@ -138,12 +132,46 @@
                         </select>
                     </td>
                     <td id="ganador"></td>
+                    <input type="hidden" name="compradoridview" id="ganadorInput">
                     <td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" min="1" max="5"></td>
-                    <td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview"></textarea></td>
+                    <td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview" rows="3" cols="40"></textarea></td>
                     <td><input type="submit" name="create" id="create" value="crear"></td>
                 </tr>
-
             </form>
+            <?php
+            error_reporting(0);
+            $calificacionCompradorBusiness = new CalificacionCompradorBusiness();
+            //$getCalifiacionesComprador = $calificacionCompradorBusiness->getTBAllCalificacionComprador();
+            $getCalificacionComprador = $calificacionCompradorBusiness->getCalificacionCompradorByClienteId($clienteId);
+            foreach ($getCalificacionComprador as $current) {
+                echo '<form method="post" enctype="multipart/form-data" action="../business/calificacionCompradorAction.php">';
+                echo '<input type="hidden" name="calificacioncompradoridview" id="calificacioncompradoridview" value="' . $current->getCalificacionCompradorId() . '" readonly>';
+                echo '<tr>';
+                echo '<td><input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
+                echo  $clienteNombreCompleto;
+                foreach ($getArticulos as $art) {
+                    if ($current->getSubastaId() == $art->getArticuloId()) {
+                        echo '<td><input type="hidden" name="subastaidview" id="subastaidview" value="' . $art->getArticuloId() . '" readonly>';
+                        echo $art->getArticuloNombre();
+                        echo '</td>';
+                    }
+                }
+                foreach ($getCliente as $cliente) {
+                    if ($current->getCalificacionCompradorClienteId() == $cliente->getClienteId()) {
+                        $nombreCompleto = $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido();
+                        echo '<td><input type="hidden" name="compradoridview" id="compradoridview" value="' . $cliente->getClienteId() . '" readonly>';
+                        echo $nombreCompleto;
+                        echo '</td>';
+                    }
+                }
+                echo '<td><input type="number" name="calificacioncompradorpuntosview" id="calificacioncompradorpuntosview" value="' . $current->getCalificacionCompradorPuntos() . '" min="1" max="5"></td>';
+                echo '<td><textarea name="calificacioncompradorcomentariosview" id="calificacioncompradorcomentariosview" >' . $current->getCalificacionCompradorComentarios() . '</textarea></td>';
+                echo '<td><input type="submit" name="update" id="update" value="Actualizar"></td>';
+                echo '<td><input type="submit" name="delete" id="delete" value="Eliminar"></td>';
+                echo '</tr>';
+                echo '</form>';
+            }
+            ?>
         </table>
     </section>
 </body>

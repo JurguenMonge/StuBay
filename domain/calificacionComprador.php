@@ -5,18 +5,18 @@ class CalificacionComprador{
     private $calificacionCompradorId;
     private $subastaId;
     private $clienteId;
+    private $calificacionCompradorClienteId;
     private $calificacionCompradorPuntos;
     private $calificacionCompradorComentarios;
-    private $calificacionCompradorActivo;
 
-    function __construct($calificacionCompradorId, $subastaId, $clienteId, $calificacionCompradorPuntos, $calificacionCompradorComentarios, $calificacionCompradorActivo)
+    function __construct($calificacionCompradorId, $subastaId, $clienteId, $calificacionCompradorClienteId, $calificacionCompradorPuntos, $calificacionCompradorComentarios)
     {
         $this->calificacionCompradorId = $calificacionCompradorId;
         $this->subastaId = $subastaId;
         $this->clienteId = $clienteId;
+        $this->calificacionCompradorClienteId = $calificacionCompradorClienteId;
         $this->calificacionCompradorPuntos = $calificacionCompradorPuntos;
         $this->calificacionCompradorComentarios = $calificacionCompradorComentarios;
-        $this->calificacionCompradorActivo = $calificacionCompradorActivo;
     }
 
     //Getters
@@ -35,6 +35,11 @@ class CalificacionComprador{
         return $this->clienteId;
     }
 
+    function getCalificacionCompradorClienteId()
+    {
+        return $this->calificacionCompradorClienteId;
+    }
+
     function getCalificacionCompradorPuntos()
     {
         return $this->calificacionCompradorPuntos;
@@ -45,10 +50,7 @@ class CalificacionComprador{
         return $this->calificacionCompradorComentarios;
     }
 
-    function getCalificacionCompradorActivo()
-    {
-        return $this->calificacionCompradorActivo;
-    }
+    
 
     //Setters
     function setCalificacionCompradorId($calificacionCompradorId)
@@ -66,6 +68,11 @@ class CalificacionComprador{
         $this->clienteId = $clienteId;
     }
 
+    function setCalificacionCompradorClienteId($calificacionCompradorClienteId)
+    {
+        $this->calificacionCompradorClienteId = $calificacionCompradorClienteId;
+    }
+
     function setCalificacionCompradorPuntos($calificacionCompradorPuntos)
     {
         $this->calificacionCompradorPuntos = $calificacionCompradorPuntos;
@@ -74,11 +81,6 @@ class CalificacionComprador{
     function setCalificacionCompradorComentarios($calificacionCompradorComentarios)
     {
         $this->calificacionCompradorComentarios = $calificacionCompradorComentarios;
-    }
-
-    function setCalificacionCompradorActivo($calificacionCompradorActivo)
-    {
-        $this->calificacionCompradorActivo = $calificacionCompradorActivo;
     }
 
 

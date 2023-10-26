@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2023 at 07:33 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.29
+-- Generation Time: Oct 26, 2023 at 05:53 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE TABLE `tbarticulo` (
   `tbclienteid` int(11) NOT NULL,
   `tbarticulofoto` text NOT NULL,
   `tbarticulofoto2` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbarticulo`
@@ -62,10 +62,17 @@ CREATE TABLE `tbcalificacioncomprador` (
   `tbcalificacioncompradorid` int(11) NOT NULL,
   `tbsubastaid` int(11) NOT NULL,
   `tbclienteid` int(11) NOT NULL,
-  `tbcalificacioncompradorpuntos` float NOT NULL,
-  `tbcalificacioncompradorcomentarios` varchar(200) NOT NULL,
-  `tbcalificacioncompradoractivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `tbcalificacioncompradorclienteid` int(11) NOT NULL,
+  `tbcalificacioncompradorpuntos` varchar(200) NOT NULL,
+  `tbcalificacioncompradorcomentarios` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbcalificacioncomprador`
+--
+
+INSERT INTO `tbcalificacioncomprador` (`tbcalificacioncompradorid`, `tbsubastaid`, `tbclienteid`, `tbcalificacioncompradorclienteid`, `tbcalificacioncompradorpuntos`, `tbcalificacioncompradorcomentarios`) VALUES
+(1, 2, 1, 3, '3', 'No hubo problemas');
 
 -- --------------------------------------------------------
 
@@ -80,7 +87,7 @@ CREATE TABLE `tbcalificacionvendedor` (
   `tbcalificacionvendedorpuntos` float NOT NULL,
   `tbcalificacionvendedorcomentarios` varchar(200) NOT NULL,
   `tbcalificacionvendedoractivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -90,9 +97,9 @@ CREATE TABLE `tbcalificacionvendedor` (
 
 CREATE TABLE `tbcategoria` (
   `tbcategoriaid` int(11) NOT NULL,
-  `tbcategoriasigla` varchar(4) COLLATE utf8_spanish2_ci NOT NULL,
-  `tbcategorianombre` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
-  `tbcategoriadescripcion` varchar(1000) COLLATE utf8_spanish2_ci NOT NULL,
+  `tbcategoriasigla` varchar(4) NOT NULL,
+  `tbcategorianombre` varchar(30) NOT NULL,
+  `tbcategoriadescripcion` varchar(1000) NOT NULL,
   `tbcategoriaactivo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -122,14 +129,14 @@ CREATE TABLE `tbcliente` (
   `tbclientepassword` varchar(100) NOT NULL,
   `tbclientefechaingreso` date NOT NULL,
   `tbclienteactivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbcliente`
 --
 
 INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
-(1, 'Giancarlo', 'Arias', 'P', 'arias@gmail.com', '$2y$10$Ah/9AvIaBmUbk5wA7WUSmuOwsx.myiRZn6CuFRo3xqeH6klv4qMaG', '2023-10-03', 1),
+(1, 'Giancarlo', 'Arias', 'Paisano', 'arias@gmail.com', '$2y$10$Ah/9AvIaBmUbk5wA7WUSmuOwsx.myiRZn6CuFRo3xqeH6klv4qMaG', '2023-10-24', 1),
 (2, 'Jurguen', 'Monge', 'Rojas', 'jurguen@gmail.com', '$2y$10$I261MJPaDo1oZmhL5YW1q.IEG5U67qZlG5W9uN2cur4e1Bk6dmcpu', '2023-10-09', 1),
 (3, 'Juan', 'Dolmus', 'Corea', 'dolmus@gmail.com', '$2y$10$e/WGSVRBLE1I4r9euz8p2uqWKW.s7rqP1d1.gpVFIlyksZdYIoga.', '2023-10-09', 1);
 
@@ -146,7 +153,7 @@ CREATE TABLE `tbclientedireccion` (
   `tbclientedireccionlatitud` varchar(200) NOT NULL,
   `tbclientedireccionlongitud` varchar(200) NOT NULL,
   `tbclientedireccionactivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbclientedireccion`
@@ -169,7 +176,7 @@ CREATE TABLE `tbclientetelefono` (
   `tbclientetelefononumero` varchar(100) NOT NULL,
   `tbclientetelefonodescripcion` varchar(100) NOT NULL,
   `tbclientetelefonoactivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbclientetelefono`
@@ -224,9 +231,9 @@ CREATE TABLE `tbpujacliente` (
 --
 
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
-(1, 3, 2, '2023-10-18 17:49:26', '70001', '884.17'),
-(2, 1, 3, '2023-10-19 10:11:13', '950', '884.17'),
-(3, 3, 5, '2023-10-19 10:17:56', '100001', '884.17');
+(1, 3, 2, '2023-10-18 17:49:26', 70001, 884.17),
+(2, 1, 3, '2023-10-19 10:11:13', 950, 884.17),
+(3, 3, 5, '2023-10-19 10:17:56', 100001, 884.17);
 
 -- --------------------------------------------------------
 
@@ -239,7 +246,7 @@ CREATE TABLE `tbpujaseguidor` (
   `tbclienteid` int(11) NOT NULL,
   `tbsubastaid` int(11) NOT NULL,
   `tbsubastaseguidoractivo` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbpujaseguidor`
@@ -260,7 +267,7 @@ CREATE TABLE `tbsubasta` (
   `tbsubastafechahorainicio` datetime NOT NULL,
   `tbsubastafechahorafinal` datetime NOT NULL,
   `tbsubastaprecio` int(11) NOT NULL,
-  `tbsubastaestadoarticulo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tbsubastaestadoarticulo` varchar(50) NOT NULL,
   `tbsubastaarticulodiasuso` int(11) NOT NULL,
   `tbsubastaactivo` tinyint(4) NOT NULL,
   `tbarticuloid` int(11) NOT NULL,
@@ -290,9 +297,9 @@ INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastafechahorainicio`, `tbsubastafe
 
 CREATE TABLE `tbsubcategoria` (
   `tbsubcategoriaid` int(11) NOT NULL,
-  `tbsubcategoriasigla` varchar(4) COLLATE utf8_spanish2_ci NOT NULL,
-  `tbsubcategorianombre` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
-  `tbsubcategoriadescripcion` varchar(1000) COLLATE utf8_spanish2_ci NOT NULL,
+  `tbsubcategoriasigla` varchar(4) NOT NULL,
+  `tbsubcategorianombre` varchar(30) NOT NULL,
+  `tbsubcategoriadescripcion` varchar(1000) NOT NULL,
   `tbsubcategoriaactivo` tinyint(1) NOT NULL,
   `tbcategoriaid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -355,10 +362,28 @@ ALTER TABLE `tbclientetelefono`
   ADD PRIMARY KEY (`tbclientetelefonoid`);
 
 --
+-- Indexes for table `tbpujacliente`
+--
+ALTER TABLE `tbpujacliente`
+  ADD PRIMARY KEY (`tbpujaclienteid`);
+
+--
 -- Indexes for table `tbpujaseguidor`
 --
 ALTER TABLE `tbpujaseguidor`
   ADD PRIMARY KEY (`tbsubastaseguidorid`);
+
+--
+-- Indexes for table `tbsubasta`
+--
+ALTER TABLE `tbsubasta`
+  ADD PRIMARY KEY (`tbsubastaid`);
+
+--
+-- Indexes for table `tbsubcategoria`
+--
+ALTER TABLE `tbsubcategoria`
+  ADD PRIMARY KEY (`tbsubcategoriaid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

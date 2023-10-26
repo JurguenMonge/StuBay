@@ -3,118 +3,132 @@
 include '../business/calificacionCompradorBusiness.php';
 session_start();
 if (isset($_POST['update'])) {
+    // echo 'calificacioncompradorid' . $_POST['calificacioncompradoridview'];
+    // echo '<br>comprador' . $_POST['compradoridview'];
+    // echo '<br>subastaid' . $_POST['subastaidview'];
+    // echo '<br>clienteid' . $_POST['clienteidview'];
+    // echo '<br>puntos' . $_POST['calificacioncompradorpuntosview'];
+    // echo '<br>comentarios' . $_POST['calificacioncompradorcomentariosview'];
 
+    // exit();
     if (
-        isset($_POST['calificacionvendedoridview']) &&
+        isset($_POST['calificacioncompradoridview']) &&
         isset($_POST['subastaidview']) &&
         isset($_POST['clienteidview']) &&
-        isset($_POST['calificacionvendedorpuntosview']) &&
-        isset($_POST['calificacionvendedorcomentariosview'])
+        isset($_POST['compradoridview']) &&
+        isset($_POST['calificacioncompradorpuntosview']) &&
+        isset($_POST['calificacioncompradorcomentariosview'])
     ) {
 
-        $calificacionVendedorId = $_POST['calificacionvendedoridview'];
+        $calificacionCompradorId = $_POST['calificacioncompradoridview'];
         $subastaId = $_POST['subastaidview'];
         $clienteId = $_POST['clienteidview'];
-        $calificacionVendedorPuntos = $_POST['calificacionvendedorpuntosview'];
-        $calificacionVendedorComentarios = $_POST['calificacionvendedorcomentariosview'];
-        $calificacionVendedorActivo = isset($_POST['calificacionvendedorcctivoview']) ? 1 : 0; //si esta activo le asigna 1 y si no 0
+        $compradorId = $_POST['compradoridview'];
+        $calificacionCompradorPuntos = $_POST['calificacioncompradorpuntosview'];
+        $calificacionCompradorComentarios = $_POST['calificacioncompradorcomentariosview'];
 
         if (
 
             strlen($subastaId) > 0 &&
             strlen($clienteId) > 0 &&
-            strlen($calificacionVendedorPuntos) > 0 &&
-            strlen($calificacionVendedorComentarios) > 0
+            strlen($compradorId) > 0 && //comprueba que no esten vacios los campos
+            strlen($calificacionCompradorPuntos) > 0 &&
+            strlen($calificacionCompradorComentarios) > 0
 
         ) {
-            $calificacionVendedor = new CalificacionVendedor(
-                $calificacionVendedorId,
+            $calificacionComprador = new CalificacionComprador(
+                $calificacionCompradorId,
                 $subastaId,
                 $clienteId,
-                $calificacionVendedorPuntos,
-                $calificacionVendedorComentarios,
-                $calificacionVendedorActivo
+                $compradorId,
+                $calificacionCompradorPuntos,
+                $calificacionCompradorComentarios,
             );
 
-            $calificacionVendedorBusiness = new CalificacionCompradorBusiness();
+            $calificacionCompradorBusiness = new CalificacionCompradorBusiness();
 
-            //$result = $calificacionVendedorBusiness->updateTBCalificacionComprador($calificacionVendedor);
+            $result = $calificacionCompradorBusiness->updateTBCalificacionComprador($calificacionComprador);
 
             if ($result == 1) {
-                header("location: ../view/calificacionVendedorView.php?success=update");
+                header("location: ../view/calificacionCompradorView.php?success=update");
                 session_start();
                 $_SESSION['msj'] = "Se ha actualizado correctamente";
             } else if ($result == 2) {
-                header("location: ../view/calificacionVendedorView.php?error=update");
+                header("location: ../view/calificacionCompradorView.php?error=update");
                 session_start();
                 $_SESSION['msj'] = "No se pudo actualizar";
             } else {
-                header("location: ../view/calificacionVendedorView.php?error=dbError");
+                header("location: ../view/calificacionCompradorView.php?error=dbError");
                 session_start();
                 $_SESSION['msj'] = "Error desconocido";
             }
         } else {
-            header("location: ../view/calificacionVendedorView.php?error=emptyField");
+            header("location: ../view/calificacionCompradorView.php?error=emptyField");
             session_start();
             $_SESSION['msj'] = "Existen campos vacíos";
         }
     } else {
-        header("location: ../view/calificacionVendedorView.php?error=error");
+        header("location: ../view/calificacionCompradorView.php?error=error");
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
-} else if (isset($_GET['delete1'])) {
-    $calificacionCompradorId = $_GET['tbcalificacioncompradorid'];
-    $calificacionCompradorBusiness = new CalificacionVendedorBusiness();
-    $result = $calificacionVendedorBusiness->deleteTBCalificacionComprador($calificacionVendedorId);
-    if ($result == $id) {
-        if ($calificacionVendedorId == 1) {
-            header("location: ../view/calificacionVendedorView.php?success=delete");
-            session_start();
-            $_SESSION['msj'] = "Se ha eliminado correctamente";
+} else if (isset($_POST['delete'])) {
+    // echo $_POST['calificacioncompradoridview'];
+    // exit();
+    if (isset($_POST['calificacioncompradoridview'])) {
+
+        $calificacionCompradorId = $_POST['calificacioncompradoridview'];
+
+        if (strlen($calificacionCompradorId) > 0) {
+
+            $calificacionCompradorBusiness = new CalificacionCompradorBusiness();
+
+            $result = $calificacionCompradorBusiness->deleteTBCalificacionComprador($calificacionCompradorId);
+
+            if ($result == 1) {
+                header("location: ../view/calificacionCompradorView.php?success=delete");
+                session_start();
+                $_SESSION['msj'] = "Se ha eliminado correctamente";
+            } else if ($result == 0) {
+                header("location: ../view/calificacionCompradorView.php?error=delete");
+                session_start();
+                $_SESSION['msj'] = "No se pudo eliminar";
+            } else {
+                header("location: ../view/calificacionCompradorView.php?error=dbError");
+                session_start();
+                $_SESSION['msj'] = "Error desconocido";
+            }
         } else {
-            header("location: ../view/calificacionVendedorView.php?error=delete");
+            header("location: ../view/calificacionCompradorView.php?error=emptyField");
             session_start();
-            $_SESSION['msj'] = "No se pudo eliminar";
+            $_SESSION['msj'] = "Existen campos vacíos";
         }
-    } else if ($result == 2) {
-        header("location: ../view/calificacionVendedorView.php?error=delete");
-        session_start();
-        $_SESSION['msj'] = "No se pudo eliminar";
     } else {
-        header("location: ../view/calificacionVendedorView.php?error=dbError");
+        header("location: ../view/calificacionCompradorView.php?error=error");
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
 } else if (isset($_POST['create'])) {
-
+    // echo $_POST['compradoridview'];
+    // exit();
     if (
         isset($_POST['subastaidview']) &&
+        isset($_POST['clienteidview']) &&
+        isset($_POST['compradoridview']) &&
         isset($_POST['calificacionvendedorpuntosview']) &&
         isset($_POST['calificacionvendedorcomentariosview'])
     ) {
 
         $subastaId = $_POST['subastaidview'];
-        //$clienteId = $_POST['clienteidview'];
+        $clienteId = $_POST['clienteidview'];
+        $compradorId = $_POST['compradoridview'];
         $calificacionVendedorPuntos = $_POST['calificacionvendedorpuntosview'];
         $calificacionVendedorComentarios = $_POST['calificacionvendedorcomentariosview'];
-        include '../business/clienteBusiness.php';
-        include '../business/pujaClienteBusiness.php';
-        $pujaClienteBusiness = new PujaClienteBusiness();
-        $clienteBusiness = new ClienteBusiness();
-        $getPujaganador = $pujaClienteBusiness->getPujaClienteGanador($subastaId); //obtiene el id del cliente que gano la subasta
-        $getClienteGanador = $clienteBusiness->getClientsByIdGanador($getPujaganador->getClienteId()); //obtiene el id del cliente que gano la subasta
-        $calificacionVendedorActivo = 1; //si esta activo le asigna 1 y si no 0
 
-        $idcomprador = $getClienteGanador->getClienteId();
-
-        // echo 'Subasta' . $subastaId;
-        // echo '\nPuntos' . $calificacionVendedorPuntos;
-        // echo '\nComent' . $calificacionVendedorComentarios;
-        // echo '\nID' . $idcomprador;
-        // exit();
         if (
             strlen($subastaId) > 0 &&
+            strlen($clienteId) > 0 &&
+            strlen($compradorId) > 0 && //comprueba que no esten vacios los campos
             strlen($calificacionVendedorPuntos) > 0 &&
             strlen($calificacionVendedorComentarios) > 0
         ) {
@@ -122,10 +136,10 @@ if (isset($_POST['update'])) {
             $calificacionComprador = new CalificacionComprador(
                 0,
                 $subastaId,
-                $idcomprador,
+                $clienteId,
+                $compradorId,
                 $calificacionVendedorPuntos,
-                $calificacionVendedorComentarios,
-                $calificacionVendedorActivo
+                $calificacionVendedorComentarios
             );
 
             $calificacionCompradorBusiness = new CalificacionCompradorBusiness();
@@ -167,7 +181,12 @@ if (isset($_POST['update'])) {
 
 
     $getClienteGanador = $clienteBusiness->getClientsByIdGanador($getPujaganador->getClienteId()); //obtiene el id del cliente que gano la subasta
-    $response = array("ganador" => $getClienteGanador->getClienteNombre());
+    //$response = array("ganador" => $getClienteGanador->getClienteNombre());
+    $response = array("compradorid" => $getClienteGanador->getClienteId(), "ganador" => $getClienteGanador->getClienteNombre() . ' ' . $getClienteGanador->getClientePrimerApellido() . ' ' . $getClienteGanador->getClienteSegundoApellido());
+    // Establecer las cabeceras para que el cliente entienda que está recibiendo JSON
+    //header('Content-Type: application/json');//ejemplo de json {"ganador":"Jorge"}
+
+
     echo json_encode($response);
     //$response = array("precioInicial" => $subasta->getSubastaPrecioInicial(), "costoEnvio" => $costoEnvio);
     //echo json_encode($response);
