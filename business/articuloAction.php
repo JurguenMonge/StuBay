@@ -91,15 +91,14 @@ if (isset($_POST['update'])) {
         header("location: ../view/articuloView.php?error=error");
     }
 } else if (isset($_POST['create'])) {
-    //Validaciones
+    // Validaciones
     if (
         isset($_POST['articulonombreview']) && isset($_POST['articulomarcaview'])
         && isset($_POST['articulomodeloview'])
         && isset($_POST['articuloserieview'])
         && isset($_POST['subcategorias'])
     ) {
-
-        //Obtener los datos del formulario
+        // Obtener los datos del formulario
         $articuloNombre = $_POST['articulonombreview'];
         $articuloMarca = $_POST['articulomarcaview'];
         $articuloModelo = $_POST['articulomodeloview'];
@@ -108,35 +107,32 @@ if (isset($_POST['update'])) {
         $articuloSubCategoriaId = $_POST['subcategorias'];
         $cliente = $_POST['clienteid'];
 
+        // Definir la ruta absoluta para el directorio de fotos
+        $directory = "../fotos" . DIRECTORY_SEPARATOR;
+
         if (isset($_FILES['articulofotoview']) && $_FILES['articulofotoview']['error'] === UPLOAD_ERR_OK) {
-            //$directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
-            $directory = realpath("../fotos") . DIRECTORY_SEPARATOR;
             $fileExtension = pathinfo($_FILES['articulofotoview']['name'], PATHINFO_EXTENSION);
-            $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension; // Genera un nombre de archivo único
-            $filePath = $directory . $uniqueFileName; // Ruta completa del archivo en la carpeta destino
+            $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension;
+            $filePath = $directory . $uniqueFileName;
 
-            move_uploaded_file($_FILES['articulofotoview']['tmp_name'], $filePath); // Mover archivo de la carpeta temporal a la carpeta destino
-
-            $articuloFoto = $filePath; // Obtener la ruta completa para guardarla en la base de datos
+            move_uploaded_file($_FILES['articulofotoview']['tmp_name'], $filePath);
+            $articuloFoto = $filePath;
         } else {
             $articuloFoto = null;
         }
 
         if (isset($_FILES['articulofoto2view']) && $_FILES['articulofoto2view']['error'] === UPLOAD_ERR_OK) {
-            //$directory = "../articulosFotos/"; // Ruta de la carpeta destino para copiar el archivo
-            $directory = realpath("../fotos") . DIRECTORY_SEPARATOR;
             $fileExtension = pathinfo($_FILES['articulofoto2view']['name'], PATHINFO_EXTENSION);
-            $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension; // Genera un nombre de archivo único
-            $filePath = $directory . $uniqueFileName; // Ruta completa del archivo en la carpeta destino
+            $uniqueFileName = uniqid() . '_' . time() . '.' . $fileExtension;
+            $filePath = $directory . $uniqueFileName;
 
-            move_uploaded_file($_FILES['articulofoto2view']['tmp_name'], $filePath); // Mover archivo de la carpeta temporal a la carpeta destino
-
-            $articuloFoto2 = $filePath; // Obtener la ruta completa para guardarla en la base de datos
+            move_uploaded_file($_FILES['articulofoto2view']['tmp_name'], $filePath);
+            $articuloFoto2 = $filePath;
         } else {
             $articuloFoto2 = null;
         }
 
-        //Validar variables
+        // Validar variables
         if (strlen($articuloNombre) > 0 && strlen($articuloSubCategoriaId) > 0) {
             $articulo = new Articulo(
                 0,
@@ -167,7 +163,7 @@ if (isset($_POST['update'])) {
     } else {
         header("location: ../view/articuloView.php?error=error");
     }
-} else if (isset($_POST['delete'])) {
+}else if (isset($_POST['delete'])) {
     if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['subcategorias'])) {
 
         $id = $_POST['id'];

@@ -122,7 +122,7 @@
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     }
     ?>
-
+    
     <section id="form">
         <table>
             <tr>
@@ -177,7 +177,7 @@
             <?php
             $articuloBusiness = new ArticuloBusiness();
             $allArticulos = $articuloBusiness->getAllTBArticulo();
-            $articulosByCliente = $articuloBusiness->getArticuloByClienteId($clienteId);
+            $articulosByCliente = $articuloBusiness->getArticuloByClienteIdObject($clienteId);
             foreach ($articulosByCliente as $current) {
                 echo '<form method="post" enctype="multipart/form-data" action="../business/articuloAction.php">';
                 echo '<input type="hidden" name="id" value="' . $current->getArticuloId() . '">';
@@ -215,15 +215,11 @@
                 echo '<td><input type="text" name="modelo" id="modelo" value="' . $current->getArticuloModelo() . '"/></td>';
                 echo '<td><input type="text" name="serie" id="serie" value="' . $current->getArticuloSerie() . '"/></td>';
                 echo '<td>';
-                if ($current->getArticuloFoto()) {
-                    echo '<img src="' . $current->getArticuloFoto() . '" alt="Imagen actual" width="100" height="100" />';
-                }
+                echo '<img src="' . $current->getArticuloFoto() . '" alt="Imagen actual" width="100" height="100" />';
                 echo '<input type="file" name="articulofotoview" id="articulofotoview" />';
                 echo '</td>';
                 echo '<td>';
-                if ($current->getArticuloFoto2()) {
-                    echo '<img src="' . $current->getArticuloFoto2() . '" alt="Imagen actual" width="100" height="100" />';
-                }
+                echo '<img src="' . $current->getArticuloFoto2() . '" alt="Imagen actual" width="100" height="100" />';
                 echo '<input type="file" name="articulofoto2view" id="articulofoto2view" />';
                 echo '</td>';
                 echo '<td><input type="submit" value="Actualizar" name="update" id="update"/></td>';

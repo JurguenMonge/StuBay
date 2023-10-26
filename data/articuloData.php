@@ -360,6 +360,49 @@ class ArticuloData extends Data
         return $array;
     }
 
+    public function getArticuloByClienteIdObject($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset("utf8");
+
+        // Consulta SQL con sentencia preparada para obtener los artículos del cliente por su ID
+        $querySelect = "SELECT * FROM tbarticulo WHERE tbclienteid = ? AND tbarticuloactivo = 1";
+        // Preparar la consulta
+        $stmt = mysqli_prepare($conn, $querySelect);
+
+        // Enlazar el ID del cliente como un entero
+        $stmt->bind_param("i", $clienteId);
+
+        // Ejecutar la consulta
+        $stmt->execute();
+
+        // Obtener el resultado de la consulta
+        $result = $stmt->get_result();
+
+        // Recorrer los resultados y crear objetos de artículo
+        while ($row = $result->fetch_assoc()) {
+            $articulo = new Articulo(
+                $row['tbarticuloid'],
+                $row['tbarticulonombre'],
+                $row['tbarticulomarca'],
+                $row['tbarticulomodelo'],
+                $row['tbarticuloserie'],
+                $row['tbarticuloactivo'],
+                $row['tbsubcategoriaid'],
+                $row['tbclienteid'],
+                $row['tbarticulofoto'],
+                $row['tbarticulofoto2']
+            );
+            $articulos[] = $articulo;
+        }
+
+        // Cerrar la conexión y el stmt
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $articulos;
+    }
+
     public function getArticuloById($id)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
