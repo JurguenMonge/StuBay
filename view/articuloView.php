@@ -230,6 +230,24 @@
             ?>
         </table>
     </section>
+    <br><br>
+    <div>
+        <?php
+        $articuloBusiness = new ArticuloBusiness();
+        $allArticulos = $articuloBusiness->getAllTBArticulo();
+        $articulosByCliente = $articuloBusiness->getArticuloByClienteIdObject($clienteId);
+        foreach ($articulosByCliente as $current) {
+            echo '<img src="' . $current->getArticuloFoto() . '" alt="Imagen articulo" width="100" height="100" />';
+            echo '<form method="post" aenctype="multipart/form-data" action="../business/eventoArticuloAction.php">';
+            echo '<input type="hidden" name="clienteId" value="' . $clienteId . '">';
+            echo '<input type="hidden" name="articuloId" value="' . $current->getArticuloId() . '">';
+            echo '<button type="submit" value="create" name="create" id="create" >Ver</button>';
+            echo '</form>';
+            echo '<br/><br/>';
+        }
+        ?>
+    </div>
+
 </body>
 
 </html>
