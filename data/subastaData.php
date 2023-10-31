@@ -214,6 +214,34 @@ class SubastaData extends Data
         return $subasta;
     }
 
+    public function getSubastaByArticuloId($articuloid)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 && tbarticuloid=$articuloid;";
+        $result = mysqli_query($conn, $querySelect);
+
+        $subasta = null;
+
+        while ($row = mysqli_fetch_array($result)) {
+            $subasta = new Subasta(
+                $row['tbsubastaid'],
+                $row['tbsubastafechahorainicio'],
+                $row['tbsubastafechahorafinal'],
+                $row['tbsubastaprecio'],
+                $row['tbsubastaestadoarticulo'],
+                $row['tbsubastaarticulodiasuso'],
+                $row['tbsubastaactivo'],
+                $row['tbarticuloid'],
+                $row['tbclienteid']
+            );
+        }
+
+        mysqli_close($conn);
+        return $subasta;
+    }
+
     public function getTBSubastaByClienteId($clienteId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);

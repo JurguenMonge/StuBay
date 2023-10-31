@@ -376,6 +376,11 @@
             </table>
         </div>
     </div>
+    <br><br><br>
+    <div>
+        Filtrado de productos
+        
+    </div>
 
     <script>
         // JavaScript para mostrar el modal del historial de pujas

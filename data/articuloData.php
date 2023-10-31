@@ -442,4 +442,23 @@ class ArticuloData extends Data
         mysqli_close($conn);
         return null; // Devuelve null si no se encuentra el artículo
     }
+
+    public function filtrar($id){
+        $articulo = $this->getArticuloById($id);
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $consulta = "SELECT tbarticuloid FROM tbarticulo WHERE tbarticulonombre LIKE '%" . $articulo->getArticuloNombre() . "%' OR 	tbarticulomarca LIKE '%".$articulo->getArticuloMarca()."%' OR tbarticulomodelo LIKE '%" . $articulo->getArticuloModelo() . "%' OR tbarticuloserie LIKE '%" . $articulo->getArticuloSerie() . "%' OR tbsubcategoriaid LIKE '%" . $articulo->getArticuloSubCategoriaId() . "%' AND tbarticuloactivo = 1";
+        $resultados = $conn->query($consulta);
+
+        $articulosid = array();
+        while ($fila = mysqli_fetch_array($resultados)) {
+            $articulosid[] = $fila['tbarticuloid'];
+        }
+
+        mysqli_close($conn);
+        return $articulosid;
+    }
+    
+
 }
