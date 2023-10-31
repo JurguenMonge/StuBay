@@ -71,10 +71,11 @@ class CalificacionVendedorData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8'); //set the charset to utf8 to support spanish characters
 
-        $updateStmt = $conn->prepare("UPDATE tbcalificacionvendedor WHERE tbcalificacionvendedorid = ?");
-        $updateStmt->bind_param("i", $calificacionVendedorId);
-        $result = $updateStmt->execute();
-        $updateStmt->close();
+        $queryDelete = "DELETE FROM tbcalificacionvendedor WHERE tbcalificacionvendedorid = ?";
+        $stmt = $conn->prepare($queryDelete);
+        $stmt->bind_param("i", $calificacionVendedorId);
+        $result = $stmt->execute();
+        $stmt->close(); // Cierra la consulta preparada actual
         mysqli_close($conn);
         return $result;
     }

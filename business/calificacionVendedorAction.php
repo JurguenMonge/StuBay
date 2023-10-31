@@ -72,28 +72,29 @@ if (isset($_POST['update'])) {
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
-} else if (isset($_GET['delete'])) {
-    $calificacionVendedorId = $_GET['tbcalificacionvendedorid'];
-    $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
-    $result = $calificacionVendedorBusiness->deleteTBCalificacionVendedor($calificacionVendedorId);
-    if ($result == $id) {
-        if ($calificacionVendedorId == 1) {
-            header("location: ../view/calificacionVendedorView.php?success=delete");
-            session_start();
-            $_SESSION['msj'] = "Se ha eliminado correctamente";
-        } else {
-            header("location: ../view/calificacionVendedorView.php?error=delete");
-            session_start();
-            $_SESSION['msj'] = "No se pudo eliminar";
+} else if (isset($_POST['delete'])) {
+    if (isset($_POST['calificacionvendedoridview'])){
+        $calificacionVendedorId = $_POST['calificacionvendedoridview'];
+
+        if (strlen($calificacionVendedorId) > 0){
+            $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
+
+            $result = $calificacionVendedorBusiness->deleteTBCalificacionVendedor($calificacionVendedorId);
+
+            if ($result == 1) {
+                header("location: ../view/calificacionVendedorView.php?success=delete");
+                session_start();
+                $_SESSION['msj'] = "Se ha eliminado correctamente";
+            } else if ($result == 0) {
+                header("location: ../view/calificacionVendedorView.php?error=delete");
+                session_start();
+                $_SESSION['msj'] = "No se pudo eliminar";
+            } else {
+                header("location: ../view/calificacionVendedorView.php?error=dbError");
+                session_start();
+                $_SESSION['msj'] = "Error desconocido";
+            }
         }
-    } else if ($result == 2) {
-        header("location: ../view/calificacionVendedorView.php?error=delete");
-        session_start();
-        $_SESSION['msj'] = "No se pudo eliminar";
-    } else {
-        header("location: ../view/calificacionVendedorView.php?error=dbError");
-        session_start();
-        $_SESSION['msj'] = "Error desconocido";
     }
 } else if (isset($_POST['create'])) {
     //   echo '<br> cliente id'. $_POST['clienteidview'];
