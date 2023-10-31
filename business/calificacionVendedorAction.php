@@ -3,49 +3,57 @@
 include '../business/calificacionVendedorBusiness.php';
 session_start();
 if (isset($_POST['update'])) {
-
-    if(
-        isset($_POST['calificacionVendedorId']) &&
-        isset($_POST['subastaId']) &&
-        isset($_POST['clienteId']) &&
-        isset($_POST['calificacionVendedorPuntos']) &&
-        isset($_POST['calificacionVendedorComentarios'])
+    if (
+        isset($_POST['calificacionvendedoridview']) &&
+        isset($_POST['subastaidview']) &&
+        isset($_POST['clienteidview']) &&
+        isset($_POST['vendedoridview']) &&
+        isset($_POST['calificacionvendedorpuntosview']) &&
+        isset($_POST['calificacionvendedorcomentariosview'])
     ) {
+        echo '<br> calificacionvendedorid' . $_POST['calificacionvendedoridview'];
+        echo '<br> subastaid' . $_POST['subastaidview'];
+        echo '<br> clienteid' . $_POST['clienteidview'];
+        echo '<br> vendedorid' . $_POST['vendedoridview'];
+        echo '<br> calificacionvendedorpuntos' . $_POST['calificacionvendedorpuntosview'];
+        echo '<br> calificacionvendedorcomentarios' . $_POST['calificacionvendedorcomentariosview'];
+        exit();
+        $calificacionVendedorId = $_POST['calificacionvendedoridview'];
+        $subastaId = $_POST['subastaidview'];
+        $clienteId = $_POST['clienteidview'];
+        $calificacionVendedorClienteId = $_POST['vendedoridview'];
+        $calificacionVendedorPuntos = $_POST['calificacionvendedorpuntosview'];
+        $calificacionVendedorComentarios = $_POST['calificacionvendedorcomentariosview'];
 
-        $calificacionVendedorId = $_POST['calificacionVendedorId'];
-        $subastaId = $_POST['subastaId'];
-        $clienteId = $_POST['clienteId'];
-        $calificacionVendedorPuntos = $_POST['calificacionVendedorPuntos'];
-        $calificacionVendedorComentarios = $_POST['calificacionVendedorComentarios'];
-        $calificacionVendedorActivo = isset($_POST['calificacionVendedorActivo']) ? 1 : 0;//si esta activo le asigna 1 y si no 0
 
         if (
-            
+            strlen($calificacionVendedorId) > 0 &&
             strlen($subastaId) > 0 &&
             strlen($clienteId) > 0 &&
+            strlen($calificacionVendedorClienteId) > 0 &&
             strlen($calificacionVendedorPuntos) > 0 &&
             strlen($calificacionVendedorComentarios) > 0
-            
+
         ) {
-            $calificacionVendedor = new CalificacionVendedor(
+            $calificacionVendedor = 
+            new CalificacionVendedor(
                 $calificacionVendedorId,
                 $subastaId,
                 $clienteId,
+                $calificacionVendedorClienteId,
                 $calificacionVendedorPuntos,
-                $calificacionVendedorComentarios,
-                $calificacionVendedorActivo
+                $calificacionVendedorComentarios
             );
-            
+
             $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
 
             $result = $calificacionVendedorBusiness->updateTBCalificacionVendedor($calificacionVendedor);
 
-            if ($result == 1 )
-            {
+            if ($result == 1) {
                 header("location: ../view/calificacionVendedorView.php?success=update");
                 session_start();
                 $_SESSION['msj'] = "Se ha actualizado correctamente";
-            } else if ($result == 2){
+            } else if ($result == 2) {
                 header("location: ../view/calificacionVendedorView.php?error=update");
                 session_start();
                 $_SESSION['msj'] = "No se pudo actualizar";
@@ -64,12 +72,12 @@ if (isset($_POST['update'])) {
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
-} else if (isset($_GET['delete1'])){
+} else if (isset($_GET['delete'])) {
     $calificacionVendedorId = $_GET['tbcalificacionvendedorid'];
     $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
     $result = $calificacionVendedorBusiness->deleteTBCalificacionVendedor($calificacionVendedorId);
-    if ($result == $id){
-        if($calificacionVendedorId ==1){
+    if ($result == $id) {
+        if ($calificacionVendedorId == 1) {
             header("location: ../view/calificacionVendedorView.php?success=delete");
             session_start();
             $_SESSION['msj'] = "Se ha eliminado correctamente";
@@ -78,7 +86,7 @@ if (isset($_POST['update'])) {
             session_start();
             $_SESSION['msj'] = "No se pudo eliminar";
         }
-    } else if ($result == 2){
+    } else if ($result == 2) {
         header("location: ../view/calificacionVendedorView.php?error=delete");
         session_start();
         $_SESSION['msj'] = "No se pudo eliminar";
@@ -87,36 +95,43 @@ if (isset($_POST['update'])) {
         session_start();
         $_SESSION['msj'] = "Error desconocido";
     }
-} else if (isset($_POST['create'])){
-    echo $_POST['subastaidview'];
-    exit();
+} else if (isset($_POST['create'])) {
+    //   echo '<br> cliente id'. $_POST['clienteidview'];
+    //   echo '<br> subastaid'.$_POST['subastaidview'];
+    //   echo '<br> vendedoridview'.$_POST['vendedoridview'];
+    //     echo '<br> calificacionvendedorpuntosview'.$_POST['calificacionvendedorpuntosview'];
+    //     echo '<br> calificacionvendedorcomentariosview'.$_POST['calificacionvendedorcomentariosview'];
+    //   exit();
     if (
-        isset($_POST['subastaId']) &&
-        isset($_POST['clienteId']) &&
-        isset($_POST['calificacionVendedorPuntos']) &&
-        isset($_POST['calificacionVendedorComentarios'])
+        isset($_POST['subastaidview']) &&
+        isset($_POST['clienteidview']) &&
+        isset($_POST['vendedoridview']) &&
+        isset($_POST['calificacionvendedorpuntosview']) &&
+        isset($_POST['calificacionvendedorcomentariosview'])
     ) {
 
-        $subastaId = $_POST['subastaId'];
-        $clienteId = $_POST['clienteId'];
-        $calificacionVendedorPuntos = $_POST['calificacionVendedorPuntos'];
-        $calificacionVendedorComentarios = $_POST['calificacionVendedorComentarios'];
-        $calificacionVendedorActivo =  1;//si esta activo le asigna 1 y si no 0
+        $subastaId = $_POST['subastaidview'];
+        $clienteId = $_POST['clienteidview'];
+        $calificacionVendedorId = $_POST['vendedoridview'];
+        $calificacionVendedorPuntos = $_POST['calificacionvendedorpuntosview'];
+        $calificacionVendedorComentarios = $_POST['calificacionvendedorcomentariosview'];
 
         if (
             strlen($subastaId) > 0 &&
             strlen($clienteId) > 0 &&
+            strlen($calificacionVendedorId) > 0 &&
             strlen($calificacionVendedorPuntos) > 0 &&
             strlen($calificacionVendedorComentarios) > 0
         ) {
-            $calificacionVendedor = new CalificacionVendedor(
-                0,
-                $subastaId,
-                $clienteId,
-                $calificacionVendedorPuntos,
-                $calificacionVendedorComentarios,
-                $calificacionVendedorActivo
-            );
+            $calificacionVendedor =
+                new CalificacionVendedor(
+                    0,
+                    $subastaId,
+                    $clienteId,
+                    $calificacionVendedorId,
+                    $calificacionVendedorPuntos,
+                    $calificacionVendedorComentarios
+                );
 
             $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
 
@@ -144,5 +159,27 @@ if (isset($_POST['update'])) {
         header("location: ../view/calificacionVendedorView.php?error=error");
         session_start();
         $_SESSION['msj'] = "Error desconocido";
-    } 
+    }
+}else if (isset($_POST['subastaidview'])) {
+    //aca recibe el 3 del ajax de subastaidview y lo guarda en la variable subastaid, obtenido de la tbpujacliente
+    $subastaId = $_POST['subastaidview'];
+    include '../business/clienteBusiness.php';
+    include '../business/pujaClienteBusiness.php';
+    $pujaClienteBusiness = new PujaClienteBusiness();
+    $clienteBusiness = new ClienteBusiness();
+    $subastaBusiness = new SubastaBusiness();
+    //$getPujaClienteById = $pujaClienteBusiness->getTBPujaClienteByArticulo($subastaId);//obtiene el id del cliente que gano la subasta
+    //$getPujaganador = $pujaClienteBusiness->getPujaClienteGanador($subastaId); //obtiene el id del cliente que gano la subasta
+
+
+    // $getClienteGanador = $clienteBusiness->getClientsByIdGanador($getPujaganador->getClienteId()); //obtiene el id del cliente que gano la subasta
+    // $response = array( "vendedor" => $getClienteGanador->getClienteNombre());
+
+    //aca necesito obtener el id del vendedor, para poder obtener el nombre del vendedor desde la tabla de subasta y mostrarlo en la tabla de calificacion vendedor
+    $getSubasta = $subastaBusiness->getTBSubastaById($subastaId);
+    $getVendedor = $clienteBusiness->getClientsByIdGanador($getSubasta->getSubastaVendedorId());
+    $response = array("vendedorid" => $getVendedor->getClienteId(),"vendedor" => $getVendedor->getClienteNombre() . ' ' . $getVendedor->getClientePrimerApellido() . ' ' . $getVendedor->getClienteSegundoApellido());
+
+    echo json_encode($response);
+
 }

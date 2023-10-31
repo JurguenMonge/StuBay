@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calificacion Vendedor</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/alertaSocket.js"></script>
@@ -14,7 +15,6 @@
     <?php
     
     include '../business/calificacionVendedorBusiness.php';
-    include '../business/subastaBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/pujaClienteBusiness.php';
     include '../business/articuloBusiness.php';
@@ -24,8 +24,6 @@
     $subastaBusiness = new SubastaBusiness();
     //$getSub = $subastaBusiness->getAllTBSubastaNoActivas();
 
-    $pujaClienteBusiness = new PujaClienteBusiness();
-    $getPujas = $pujaClienteBusiness->getAllTBPujaCliente();
     $articuloBusiness = new ArticuloBusiness();
     $getArticulos = $articuloBusiness->getAllTBArticulo();
     include_once("../session/startsession.php");
@@ -42,7 +40,41 @@
     } else {
         echo "No has iniciado sesión";
     }
+
+    $pujaClienteBusiness = new PujaClienteBusiness();
+    $getPujaCliente = $pujaClienteBusiness->getTBPujaClienteById($clienteId);
     ?>
+    <script>
+        $(document).ready(function() {
+            $('#subastaidview').change(function() {
+                var subastaidview = $(this).val();
+                $.ajax({
+                    url: '../business/calificacionVendedorAction.php',
+                    method: 'POST',
+                    data: {
+                        subastaidview: subastaidview
+                    },
+                    success: function(response) {
+                        var data = JSON.parse(response);
+                        if (data.error) {
+                            // Manejar error si lo hay
+                            toastr.error(data.error);
+                        } else {
+                            var vendedor = data.vendedor; // Obtener el nombre del ganador de la subasta
+                            var vendedorid = data.vendedorid; // Obtener el ID del ganador de la subasta
+                            $('#vendedor').html(vendedor); // Mostrar el nombre del ganador en la tabla
+                            // Asignar el valor del ganador al campo oculto
+                            $('#vendedorInput').val(vendedorid);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Manejar errores de la petición AJAX
+                        toastr.error('Error en la petición AJAX: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -82,9 +114,9 @@
     <section id="form">
         <table>
             <tr>
-                <th>Vendedor</th>
-                <th>Subasta</th>
                 <th>Comprador</th>
+                <th>Subasta</th>
+                <th>Vendedor</th>
                 <th>Puntos</th>
                 <th>Comentarios</th>
             </tr>
@@ -98,13 +130,11 @@
                         <select name="subastaidview" id="subastaidview">
                             <option value="">Seleccionar subasta</option>
                             <?php
-                            if (count($getSubasta) > 0) {
-                                foreach ($getSubasta as $sub) {
+                            if (count($getPujaCliente) > 0) {
+                                foreach ($getPujaCliente as $sub) {
                                     foreach ($getArticulos as $art) {
-                                        foreach ($getCliente as $cliente) {
-                                            if ($sub->getSubastaArticuloId() == $art->getArticuloId() && $sub->getSubastaVendedorId() == $cliente->getClienteId()) {
-                                                echo '<option value="' . $sub->getSubastaArticuloId() . '">' . $art->getArticuloNombre() . '</option>';
-                                            }
+                                        if ($sub->getArticuloId() == $art->getArticuloId()) {
+                                            echo '<option value="' . $art->getArticuloId() . '">' . $art->getArticuloNombre() . '</option>';
                                         }
                                     }
                                 }
@@ -114,13 +144,46 @@
                             ?>
                         </select>
                     </td>
-
-                    <td><input type="number" name="calificacionVendedorPuntos" id="calificacionVendedorPuntos" min="1" max="5"></td>
-                    <td><textarea name="calificacionVendedorComentarios" id="calificacionVendedorComentarios"></textarea></td>
-                    <td><input type="submit" name="create" id="create" value="Registrar"></td>
+                    <td id="vendedor"></td>
+                    <input type="hidden" name="vendedoridview" id="vendedorInput">
+                    <td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" min="1" max="5"></td>
+                    <td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview"></textarea></td>
+                    <td><input type="submit" name="create" id="create" value="Crear"></td>
                 </tr>
-
             </form>
+            <?php
+             error_reporting(0);
+             $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
+             $getCalificacionVendedor = $calificacionVendedorBusiness->getCalificacionVendedorClienteById($clienteId);
+             foreach($getCalificacionVendedor as $current){
+                 echo '<form method="post" enctype="multipart/form-data" action="../business/calificacionVendedorAction.php">';
+                 echo '<input type="text" name="calificacionvendedoridview" id="calificacionvendedoridview" value="' . $current->getCalificacionVendedorClienteId() . '" readonly>';
+                 echo '<tr>';
+                 echo '<td><input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
+                 echo $clienteNombreCompleto;
+                 foreach($getArticulos as $art) {
+                     if ($current->getSubastaId() == $art->getArticuloId()){
+                        echo '<td><input type="hidden" name="subastaidview" id="subastaidview" value="' . $art->getArticuloId() . '" readonly>';
+                         echo $art->getArticuloNombre();
+                         echo '<td>';
+                     }
+                 }
+                    foreach($getCliente as $cliente){
+                        if($current->getCalificacionVendedorClienteId() == $cliente->getClienteId()){
+                            echo '<td><input type="hidden" name="vendedoridview" id="vendedoridview" value="' . $cliente->getClienteId() . '" readonly>';
+                            echo $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido();
+                            echo '</td>';
+                        }
+                    }
+                    echo '<td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" value="' . $current->getCalificacionVendedorPuntos() . '" min="1" max="5"></td>';
+                    echo '<td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview" rows="3" cols="40">' . $current->getCalificacionVendedorComentarios() . '</textarea></td>';
+                    echo '<td><input type="submit" name="update" id="update" value="Actualizar"></td>';
+                    echo '<td><input type="submit" name="delete" id="delete" value="Eliminar"></td>';
+                    echo '</tr>';
+                    echo '</form>';
+
+             }
+            ?>
         </table>
     </section>
 </body>

@@ -159,7 +159,7 @@ class SubastaData extends Data
 
 
     public function getTBSubastaById($subastaId)
-    {
+    {//aca se retorna un objeto de tipo subasta
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 

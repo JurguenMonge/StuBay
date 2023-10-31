@@ -6,17 +6,18 @@ class CalificacionVendedor
     private $calificacionVendedorId;
     private $subastaId;
     private $clienteId;
+    private $calificacionVendedorClienteId;
     private $calificacionVendedorPuntos;
     private $calificacionVendedorComentarios;
-    private $calificacionVendedorActivo;
 
-    function __construct($calificacionVendedorId, $subastaId, $clienteId, $calificacionVendedorPuntos, $calificacionVendedorComentarios, $calificacionVendedorActivo)
+    function __construct($calificacionVendedorId, $subastaId, $clienteId, $calificacionVendedorClienteId, $calificacionVendedorPuntos, $calificacionVendedorComentarios)
     {
         $this->calificacionVendedorId = $calificacionVendedorId;
         $this->subastaId = $subastaId;
         $this->clienteId = $clienteId;
+        $this->calificacionVendedorClienteId = $calificacionVendedorClienteId;
         $this->calificacionVendedorPuntos = $calificacionVendedorPuntos;
-        $this->calificacionVendedorActivo = $calificacionVendedorActivo;
+        $this->calificacionVendedorComentarios = $calificacionVendedorComentarios;
     }
 
     //Getters
@@ -35,6 +36,11 @@ class CalificacionVendedor
         return $this->clienteId;
     }
 
+    function getCalificacionVendedorClienteId()
+    {
+        return $this->calificacionVendedorClienteId;
+    }
+
     function getCalificacionVendedorPuntos()
     {
         return $this->calificacionVendedorPuntos;
@@ -45,10 +51,7 @@ class CalificacionVendedor
         return $this->calificacionVendedorComentarios;
     }
 
-    function getCalificacionVendedorActivo()
-    {
-        return $this->calificacionVendedorActivo;
-    }
+
 
     //Setters
     function setCalificacionVendedorId($calificacionVendedorId)
@@ -66,6 +69,11 @@ class CalificacionVendedor
         $this->clienteId = $clienteId;
     }
 
+    function setCalificacionVendedorClienteId($calificacionVendedorClienteId)
+    {
+        $this->calificacionVendedorClienteId = $calificacionVendedorClienteId;
+    }
+
     function setCalificacionVendedorPuntos($calificacionVendedorPuntos)
     {
         $this->calificacionVendedorPuntos = $calificacionVendedorPuntos;
@@ -76,8 +84,4 @@ class CalificacionVendedor
         $this->calificacionVendedorComentarios = $calificacionVendedorComentarios;
     }
 
-    function setCalificacionVendedorActivo($calificacionVendedorActivo)
-    {
-        $this->calificacionVendedorActivo = $calificacionVendedorActivo;
-    }
 }

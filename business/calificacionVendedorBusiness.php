@@ -29,4 +29,10 @@ class CalificacionVendedorBusiness{
     public function getClienteById($calificacionVendedorId){
         return $this->calificacionVendedorData->getClienteById($calificacionVendedorId);
     }
+
+    public function getCalificacionVendedorClienteById($calificacionVendedorId)
+    {
+        return $this->calificacionVendedorData->getCalificacionVendedorClienteById($calificacionVendedorId);
+    }
+    
 }

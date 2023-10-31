@@ -85,7 +85,7 @@ class PujaClienteData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbpujacliente WHERE tbclienteid = ? AND tbpujaclienteactivo = 1";
+        $querySelect = "SELECT * FROM tbpujacliente WHERE tbclienteid = ?";
 
         $stmt = $conn->prepare($querySelect);
         $stmt->bind_param("i", $clienteId);
