@@ -235,8 +235,7 @@
         <?php
         $articuloBusiness = new ArticuloBusiness();
         $allArticulos = $articuloBusiness->getAllTBArticulo();
-        $articulosByCliente = $articuloBusiness->getArticuloByClienteIdObject($clienteId);
-        foreach ($articulosByCliente as $current) {
+        foreach ($allArticulos as $current) {
             echo '<img src="' . $current->getArticuloFoto() . '" alt="Imagen articulo" width="100" height="100" />';
             echo '<form method="post" aenctype="multipart/form-data" action="../business/eventoArticuloAction.php">';
             echo '<input type="hidden" name="clienteId" value="' . $clienteId . '">';
