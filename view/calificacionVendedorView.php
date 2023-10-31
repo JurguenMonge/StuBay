@@ -157,7 +157,7 @@
              $getCalificacionVendedor = $calificacionVendedorBusiness->getCalificacionVendedorClienteById($clienteId);
              foreach($getCalificacionVendedor as $current){
                  echo '<form method="post" enctype="multipart/form-data" action="../business/calificacionVendedorAction.php">';
-                 echo '<input type="text" name="calificacionvendedoridview" id="calificacionvendedoridview" value="' . $current->getCalificacionVendedorClienteId() . '" readonly>';
+                 echo '<input type="hidden" name="calificacionvendedoridview" id="calificacionvendedoridview" value="' . $current->getCalificacionVendedorId() . '" readonly>';
                  echo '<tr>';
                  echo '<td><input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
                  echo $clienteNombreCompleto;

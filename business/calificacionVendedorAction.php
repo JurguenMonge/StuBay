@@ -11,13 +11,13 @@ if (isset($_POST['update'])) {
         isset($_POST['calificacionvendedorpuntosview']) &&
         isset($_POST['calificacionvendedorcomentariosview'])
     ) {
-        echo '<br> calificacionvendedorid' . $_POST['calificacionvendedoridview'];
-        echo '<br> subastaid' . $_POST['subastaidview'];
-        echo '<br> clienteid' . $_POST['clienteidview'];
-        echo '<br> vendedorid' . $_POST['vendedoridview'];
-        echo '<br> calificacionvendedorpuntos' . $_POST['calificacionvendedorpuntosview'];
-        echo '<br> calificacionvendedorcomentarios' . $_POST['calificacionvendedorcomentariosview'];
-        exit();
+        // echo '<br> calificacionvendedorid' . $_POST['calificacionvendedoridview'];
+        // echo '<br> subastaid' . $_POST['subastaidview'];
+        // echo '<br> clienteid' . $_POST['clienteidview'];
+        // echo '<br> vendedorid' . $_POST['vendedoridview'];
+        // echo '<br> calificacionvendedorpuntos' . $_POST['calificacionvendedorpuntosview'];
+        // echo '<br> calificacionvendedorcomentarios' . $_POST['calificacionvendedorcomentariosview'];
+        // exit();
         $calificacionVendedorId = $_POST['calificacionvendedoridview'];
         $subastaId = $_POST['subastaidview'];
         $clienteId = $_POST['clienteidview'];
