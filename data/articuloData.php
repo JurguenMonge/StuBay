@@ -443,8 +443,7 @@ class ArticuloData extends Data
         return null; // Devuelve null si no se encuentra el artículo
     }
 
-    public function filtrar($id){
-        $articulo = $this->getArticuloById($id);
+    public function filtrar($articulo){
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 

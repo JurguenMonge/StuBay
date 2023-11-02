@@ -377,10 +377,32 @@
         </div>
     </div>
     <br><br><br>
-    <div>
+    <div id="resultado">
         Filtrado de productos
         
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#subastaArticuloView').change(function() {
+                recargarLista();
+            });
+        })
+
+        function recargarLista() {
+            $.ajax({
+                type: "POST",
+                url: "../business/articuloAction.php",
+                data: "valor=" + $('#subastaArticuloView').val(),
+                success: function(r) {
+                    $('#resultado').html(r);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error en la solicitud AJAX: " + errorThrown);
+                },
+            });
+        }
+    </script>
 
     <script>
         // JavaScript para mostrar el modal del historial de pujas

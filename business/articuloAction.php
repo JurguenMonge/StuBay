@@ -219,4 +219,45 @@ if (isset($_POST['update'])) {
     } else {
         echo json_encode(array("error" => "Error en la consulta"));
     }
+}else  if(isset($_POST['valor'])){
+    $id = $_POST['valor'];
+    $articuloBusiness = new ArticuloBusiness();
+    $currentArticulo = $articuloBusiness->getArticuloById($id);
+    $getAllArticulos = $articuloBusiness->getAllTBArticulo();
+    $articulosId = $articuloBusiness->filtrar($currentArticulo);
+    include '../business/subastaBusiness.php';
+    $subastaBusiness = new SubastaBusiness();
+    echo 'Filtrado de productos';
+    echo '<table border="1">
+            <tr>
+                <th>Articulo</th>
+                <th>Fecha y Hora Inicio</th>
+                <th>Fecha y Hora Final</th>
+                <th>Precio inicial</th>
+                <th>Estado del articulo</th>
+            </tr>';
+
+        foreach ($articulosId as $id) {
+            $subastas = $subastaBusiness->getAllSubastaByArticuloId($id);
+            foreach ($subastas as $subasta) {
+                $articulo = $articuloBusiness->getArticuloById($subasta->getSubastaArticuloId());
+                $precioInicial = $subasta->getSubastaPrecioInicial();
+                $precioSinSimboloComas = str_replace(['₡', ','], '', $precioInicial);
+                $precioComoFloat = (float)($precioSinSimboloComas / 100);
+                $precioFormateado = '₡' . number_format($precioComoFloat, 2, ',', '.');
+                echo '<tr>';
+                foreach($getAllArticulos as $articulo){
+                    if ($subasta->getSubastaArticuloId() == $articulo->getArticuloId()){
+                        echo '<td>' . $articulo->getArticuloNombre() . '-'. $articulo->getArticuloMarca().'</td>';
+                    }
+                }
+                echo '<td>' . $subasta->getSubastaFechaHoraInicio() . '</td>';
+                echo '<td>' . $subasta->getSubastaFechaHoraFinal() . '</td>';
+                echo '<td>' . $precioFormateado . '</td>';
+                echo '<td>' . ($subasta->getSubastaEstadoArticulo() == 'Nuevo' ? 'Nuevo' : 'Usado') . '</td>';
+                echo '</tr>';
+            }
+        }
+        echo '</table>';
+
 }

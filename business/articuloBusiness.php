@@ -45,4 +45,8 @@ class ArticuloBusiness{
     public function getArticuloById($id){
         return $this->articuloData->getArticuloById($id);
     }
+
+    public function filtrar($articulo){
+        return $this->articuloData->filtrar($articulo);
+    }
 }

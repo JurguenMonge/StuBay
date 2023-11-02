@@ -55,6 +55,10 @@ class SubastaBusiness {
         return $this->subastaData->checkSubastaArticulo($articuloId);
     }
 
+    public function getAllSubastaByArticuloId($articuloId){
+        return $this->subastaData->getAllSubastaByArticuloId($articuloId);
+    }
+
     public function getAllTBSubastaNoActivas(){
         return $this->subastaData->getAllTBSubastaNoActivas();
     }
