@@ -112,7 +112,7 @@ class SubastaData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 ORDER BY tbsubastafechahorafinal DESC;";
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 ORDER BY tbsubastafechahorafinal;";
         $result = mysqli_query($conn, $querySelect);
 
         $array = array();
