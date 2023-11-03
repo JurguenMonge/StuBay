@@ -27,7 +27,7 @@
 
     $getCli = $clienteBusiness->getAllTBCliente();
     $getArt = $articuloBusiness->getAllTBArticulo();
-    $getSub = $subastaBusiness->getAllTBSubasta();
+    $getSub = $subastaBusiness->getAllTBSubastaOrdenadas();
 
     date_default_timezone_set('America/Costa_Rica');
 

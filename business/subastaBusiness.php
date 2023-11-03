@@ -27,6 +27,10 @@ class SubastaBusiness {
         return $this->subastaData->getAllTBSubasta();
     }
 
+    public function getAllTBSubastaOrdenadas(){
+        return $this->subastaData->getAllTBSubastaOrdenadas();
+    }
+
     public function getAllTBSubastasTerminadas($fechaActual, $clienteId){
         return $this->subastaData->getAllTBSubastasTerminadas($fechaActual, $clienteId);
     }

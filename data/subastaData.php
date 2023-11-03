@@ -107,6 +107,35 @@ class SubastaData extends Data
         return $array;
     }
 
+    public function getAllTBSubastaOrdenadas()
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbsubasta WHERE tbsubastaactivo = 1 ORDER BY tbsubastafechahorafinal DESC;";
+        $result = mysqli_query($conn, $querySelect);
+
+        $array = array();
+
+        while ($row = mysqli_fetch_array($result)) {
+            $currentSubasta = new Subasta(
+                $row['tbsubastaid'],
+                $row['tbsubastafechahorainicio'],
+                $row['tbsubastafechahorafinal'],
+                $row['tbsubastaprecio'],
+                $row['tbsubastaestadoarticulo'],
+                $row['tbsubastaarticulodiasuso'],
+                $row['tbsubastaactivo'],
+                $row['tbarticuloid'],
+                $row['tbclienteid']
+            );
+            array_push($array, $currentSubasta);
+        }
+
+        mysqli_close($conn);
+        return $array;
+    }
+
     public function getAllTBSubastasTerminadas($fechaActual, $clienteId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
