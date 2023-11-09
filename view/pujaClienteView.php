@@ -321,6 +321,74 @@
                     <td>
                         <button onclick="sendMessage()" type="submit" value="Crear" name="create" id="create">Crear</button>
                     </td>
+            </form>
+
+        </table>
+    </section>
+    <br><br>
+    <section id="form">
+        <br>
+        <table>
+            <tr>
+                <th>Nombre del Cliente</th>
+                <th>Subasta</th>
+                <th>Articulo de intercambio</th>
+
+                <th></th>
+            </tr>
+
+            <form method="post" enctype="multipart/form-data" action="../business/intercambioAction.php">
+                <tr>
+                    <td>
+                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId ?>" />
+                        <input type="hidden" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>" />
+                        <span><?php echo $clienteNombreCompleto; ?></span>
+                    </td>
+                    <td>
+                        <select name="articuloIdView" id="articuloIdView">
+                            <option value="">Seleccionar subasta</option>
+                            <?php
+                            $currentDate = date("Y-m-d H:i:s");
+
+                            if (count($getArt) > 0 && count($getSub) > 0) {
+                                foreach ($getSub as $subasta) {
+                                    if ($subasta->getSubastaVendedorId() != $clienteId) {
+                                        foreach ($getArt as $articulo) {
+
+                                            if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
+                                                echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo '<option value="">Ninguna categoria registrada</option>';
+                            }
+                            ?>
+                        </select>
+                    </td>
+
+                    <div class="input-container">
+                        <input required type="hidden" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
+                    </div>
+
+                    
+
+                    <td>
+                    <select name="articulointercambio" id="articulointercambio">
+                    <option value="">Seleccionar articulo</option>
+                        <?php        
+                            $getAeticulos = $articuloBusiness->getArticuloByClienteId($clienteId);          
+                            foreach ($getAeticulos as $articulo) {
+                                echo '<option value="' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                            }
+                        ?>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input type="submit" value="intercambio" name="intercambio" id="intercambio"/>
+                    </td>
                 </tr>
             </form>
 
