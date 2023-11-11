@@ -48,6 +48,10 @@ class PujaClienteBusiness
         return $this->pujaClienteData->getPujaClienteGanador($articuloId);
     }
 
+    public function obtenerInformacionCompras($clienteId){
+        return $this->pujaClienteData->obtenerInformacionCompras($clienteId);
+    }
+
     public function calcularDistanciaClienteVendedor($latCliente, $lonCliente, $latVendedor, $lonVendedor) {
         // Radio de la Tierra en kilómetros
         $radioTierra = 6371;

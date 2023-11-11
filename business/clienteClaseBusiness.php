@@ -31,4 +31,9 @@ class ClienteClaseBusiness
     {
         return $this->clienteClaseData->getAllTBClienteClase();
     }
+
+    public function getClienteClaseIdByCriterio($criterio)
+    {
+        return $this->clienteClaseData->getClienteClaseIdByCriterio($criterio);
+    }
 }

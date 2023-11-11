@@ -81,7 +81,7 @@ class PujaClienteData extends Data
     }
 
     public function getTBPujaClienteById($clienteId)
-    {//Obtiene todas las pujas de un cliente específico por su id de cliente (tbclienteid)
+    { //Obtiene todas las pujas de un cliente específico por su id de cliente (tbclienteid)
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -112,6 +112,60 @@ class PujaClienteData extends Data
 
         return $array;
     }
+
+    public function obtenerInformacionCompras($clienteId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Obtener la cantidad y monto total de compras
+        $queryCompras = "SELECT COUNT(*) AS cantidadCompras, SUM(tbpujaclienteoferta) AS montoCompras
+                     FROM tbpujacliente
+                     WHERE tbclienteid = ?";
+
+        $stmtCompras = $conn->prepare($queryCompras);
+        $stmtCompras->bind_param("i", $clienteId);
+        $stmtCompras->execute();
+        $resultCompras = $stmtCompras->get_result();
+
+        $compras = $resultCompras->fetch_assoc();
+        $cantidadCompras = $compras['cantidadCompras'];
+        $montoCompras = $compras['montoCompras'];
+
+        $stmtCompras->close();
+
+        // Obtener la última compra del cliente
+        $queryUltimaCompra = "SELECT MAX(tbpujaclientefecha) AS ultimaCompra
+                          FROM tbpujacliente
+                          WHERE tbclienteid = ?";
+
+        $stmtUltimaCompra = $conn->prepare($queryUltimaCompra);
+        $stmtUltimaCompra->bind_param("i", $clienteId);
+        $stmtUltimaCompra->execute();
+        $resultUltimaCompra = $stmtUltimaCompra->get_result();
+
+        $ultimaCompra = $resultUltimaCompra->fetch_assoc()['ultimaCompra'];
+        $stmtUltimaCompra->close();
+
+        // Calcular la frecuencia de compra
+        $frecuenciaCompra = null;
+
+        if ($ultimaCompra) {
+            $fechaActual = new DateTime();
+            $fechaUltimaCompra = new DateTime($ultimaCompra);
+            $diferencia = $fechaActual->diff($fechaUltimaCompra);
+            $frecuenciaCompra = $diferencia->days;
+        }
+
+        mysqli_close($conn);
+
+        return [
+            'cantidadCompras' => $cantidadCompras,
+            'montoCompras' => $montoCompras,
+            'frecuenciaCompra' => $frecuenciaCompra,
+        ];
+    }
+
 
     public function getTBPujaClienteByArticulo($articuloId)
     {
@@ -169,7 +223,7 @@ class PujaClienteData extends Data
     }
 
     public function getTBPujaClienteGanador($articuloId)
-    {//Obtiene la puja ganadora de un artículo específico por su id de artículo (tbarticuloid)
+    { //Obtiene la puja ganadora de un artículo específico por su id de artículo (tbarticuloid)
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
@@ -218,11 +272,11 @@ class PujaClienteData extends Data
 
         $querySelect = "SELECT pc.* 
         FROM tbpujacliente pc
-        WHERE pc.tbarticuloid = ".$articuloId."
+        WHERE pc.tbarticuloid = " . $articuloId . "
         AND pc.tbpujaclienteoferta = (
             SELECT MAX(tbpujaclienteoferta) 
             FROM tbpujacliente 
-            WHERE tbarticuloid = ".$articuloId."
+            WHERE tbarticuloid = " . $articuloId . "
         )";
 
         $result = mysqli_query($conn, $querySelect);

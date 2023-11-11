@@ -22,6 +22,11 @@ class CompradorPerfilBusiness
         return $this->compradorPerfilData->actualizarTBCompradorPerfil($compradorPerfil);
     }
 
+    public function actualizarTBCompradorPerfilById($compradorPerfil)
+    {
+        return $this->compradorPerfilData->actualizarTBCompradorPerfilById($compradorPerfil);
+    }
+
     public function eliminarTBCompradorPerfil($compradorPerfilId)
     {
         return $this->compradorPerfilData->eliminarTBCompradorPerfil($compradorPerfilId);
@@ -30,5 +35,10 @@ class CompradorPerfilBusiness
     public function getAllTBCompradorPerfil()
     {
         return $this->compradorPerfilData->getAllTBCompradorPerfil();
+    }
+
+    public function existeCompradorPerfil($idComprador)
+    {
+        return $this->compradorPerfilData->existeCompradorPerfil($idComprador);
     }
 }

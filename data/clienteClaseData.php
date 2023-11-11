@@ -12,19 +12,11 @@ class ClienteClaseData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryGetLastId = "SELECT MAX(tbclienteclaseid) AS tbclienteclaseid FROM tbclienteclase";
-        $idCont = mysqli_query($conn, $queryGetLastId);
-        $nextId = 1;
-
-        if ($row = mysqli_fetch_row($idCont)) {
-            $nextId = isset($row[0]) ? intval($row[0]) + 1 : 1;
-        }
-
-
-        $queryInsert = "INSERT INTO tbclienteclase VALUES (" .
+        $queryInsert = "INSERT INTO tbclienteclase (tbclienteclasenombre, tbclienteclasevalor, tbclienteclaseestado) VALUES ('" .
             $clienteclase->getNombre() . "','" .
             $clienteclase->getValor() . "'," .
             $clienteclase->getEstado() . ");";
+
 
         $result = mysqli_query($conn, $queryInsert);
         mysqli_close($conn);
@@ -56,7 +48,7 @@ class ClienteClaseData extends Data
 
         $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
         mysqli_close($conn); // cerrar la conexión
-        return $result; 
+        return $result;
     }
 
     public function getAllTBClienteClase()
@@ -72,12 +64,37 @@ class ClienteClaseData extends Data
 
         // recorrer el resultado y llenar el array
         while ($row = mysqli_fetch_array($result)) {
-            $currentClienteClase = new ClienteClase($row['tbclienteclaseid'], $row['tbclienteclasenombre'], $row['tbclienteclasevalor'], $row['tbclienteclaseestado']);
+            $currentClienteClase = new ClienteClase($row['tbclienteclaseid'], $row['tbclienteclasevalor'], $row['tbclienteclasenombre'], $row['tbclienteclaseestado']);
             array_push($array, $currentClienteClase);
         }
 
         mysqli_close($conn); // cerrar la conexión
         return $array; // devolver el array
+    }
+
+    public function getClienteClaseIdByCriterio($criterio)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $query = "SELECT tbclienteclaseid FROM tbclienteclase WHERE tbclienteclasenombre = ? AND tbclienteclaseestado = 1;";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $criterio);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $clienteClaseId = $row['tbclienteclaseid'];
+        } else {
+            $clienteClaseId = null;
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $clienteClaseId;
     }
 
     public function getTBClienteClaseById($id)

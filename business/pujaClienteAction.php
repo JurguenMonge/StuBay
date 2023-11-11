@@ -4,6 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 */
 include '../business/pujaClienteBusiness.php';
+include '../business/compradorPerfilBusiness.php';
+include '../business/clienteCategoriaBusiness.php';
+include '../business/clienteClaseBusiness.php';
 
 if (isset($_POST['update'])) {
 
@@ -112,6 +115,7 @@ if (isset($_POST['update'])) {
         $pujaClienteOferta = $_POST['pujaClienteOfertaView'];
         $pujaClienteEnvio = $_POST['pujaClienteEnvioView'];
         $pujaClienteBusiness = new PujaClienteBusiness();
+        $compradorPerfilBusiness = new CompradorPerfilBusiness();
         $precioMaximoPujaActual = $pujaClienteBusiness->getPrecioMaximoByArticuloId($articuloId);
 
         if ($pujaClienteOferta <= $precioMaximoPujaActual) {
@@ -123,7 +127,7 @@ if (isset($_POST['update'])) {
             if (
                 strlen($clienteId) > 0 && strlen($articuloId) > 0 && strlen($pujaClienteFecha) > 0
                 && strlen($pujaClienteOferta) > 0 && strlen($pujaClienteEnvio) > 0
-            ) { 
+            ) {
 
                 $pujaCliente = new PujaCliente(
                     0,
@@ -133,6 +137,38 @@ if (isset($_POST['update'])) {
                     $pujaClienteOferta,
                     $pujaClienteEnvio
                 );
+
+                $compradorPerfil = null;
+                $cantidadCompra = 0;
+                if ($compradorPerfilBusiness->existeCompradorPerfil($clienteId)) {
+                    $infoCompra = $pujaClienteBusiness->obtenerInformacionCompras($clienteId);
+                    $cantidadCompra = $infoCompra['cantidadCompras'];
+                    $montoCompra = $infoCompra['montoCompras'];
+                    $frecuenciaCompra = $infoCompra['frecuenciaCompra'];
+                    $compradorPerfil = new CompradorPerfil(0,$cantidadCompra, $montoCompra, $frecuenciaCompra, 0, $clienteId);
+                    $compradorPerfilBusiness->actualizarTBCompradorPerfilById($compradorPerfil);
+                } else {
+                    $compradorPerfil = new CompradorPerfil(0, 1, $pujaClienteOferta, 0, 0, $clienteId);
+                    $compradorPerfilBusiness->insertarTBCompradorPerfil($compradorPerfil);
+                }
+
+                if ($compradorPerfil != null) {
+                    $clienteCategoriaBusiness = new ClienteCategoriaBusiness();
+                    $clienteClaseBusiness = new ClienteClaseBusiness();
+                    $criterio = '';
+
+                    if ($cantidadCompra < 5) {
+                        $criterio = 'Esporádico';
+                    } elseif ($cantidadCompra >= 5 && $cantidadCompra < 10) {
+                        $criterio = 'Regular';
+                    } elseif ($cantidadCompra >= 10) {
+                        $criterio = 'Bueno';
+                    }
+                    $clienteClaseId = $clienteClaseBusiness->getClienteClaseIdByCriterio($criterio);
+
+                    $clienteCategoria = new ClienteCategoria($clienteId, $clienteClaseId);
+                    $clienteCategoriaBusiness->insertarTBClienteCategoria($clienteCategoria);
+                }
 
                 $result = $pujaClienteBusiness->insertarTBPujaCliente($pujaCliente);
                 if ($result == 1) {
@@ -190,4 +226,4 @@ if (isset($_POST['update'])) {
     }
 
     echo '</table>';
-} 
+}

@@ -104,6 +104,8 @@
     <br><br>
     <a href="calificacionCompradorView.php">Calificar Comprador</a>
     <br><br>
+    <a href="clienteClaseView.php">Registrar Clase</a>
+    <br><br>
     <a href="../session/closesession.php">Cerrar Sesión</a>
 </body>
 

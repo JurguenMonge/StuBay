@@ -12,7 +12,7 @@ class ClienteCategoriaData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryInsert = "INSERT INTO tbclientecategoria VALUES (" .
+        $queryInsert = "INSERT INTO tbclientecategoria(tbclienteid, tbclaseid) VALUES ('" .
             $clienteCategoria->getIdCliente() . "'," .
             $clienteCategoria->getIdClase() . ");";
 
@@ -43,4 +43,49 @@ class ClienteCategoriaData extends Data
         return $array; // devolver el array
     }
 
+    public function getClienteCategoriaByIdCliente($idCliente)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT * FROM tbclientecategoria WHERE tbclienteid = ? LIMIT 1;";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("i", $idCliente);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $clienteCategoria = null;
+
+        if ($row = mysqli_fetch_array($result)) {
+            $clienteCategoria = new ClienteCategoria($row['tbclienteid'], $row['tbclaseid']);
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $clienteCategoria;
+    }
+
+    public function getClienteCategoriaByClaseId($claseId)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $query = "SELECT * FROM tbclientecategoria WHERE tbclaseid = ?;";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $claseId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $exists = $result->num_rows > 0;
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $exists;
+    }
 }

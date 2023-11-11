@@ -21,8 +21,7 @@ class CompradorPerfilData extends Data
         }
 
 
-        $queryInsert = "INSERT INTO tbcompradorperfil VALUES (" .
-            $compradorPerfil->getCriterio() . "','" .
+        $queryInsert = "INSERT INTO tbcompradorperfil(tbcompradorperfildevolucion, tbcompradorperfilfrecuencia, tbcompradorperfilmontocompra, tbcompradorperfilcantidadcompra, tbcompradorid) VALUES ('" .
             $compradorPerfil->getDevolucion() . "','" .
             $compradorPerfil->getFrecuenciaCompra() . "','" .
             $compradorPerfil->getMontoCompra() . "','" .
@@ -38,13 +37,28 @@ class CompradorPerfilData extends Data
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
         $conn->set_charset('utf8');
-        $queryUpdate = "UPDATE tbcompradorperfil SET tbcompradorperfilcriterio = '" . $compradorPerfil->getCriterio() .
-            "', tbcompradorperfildevolucion = '" . $compradorPerfil->getDevolucion() .
+        $queryUpdate = "UPDATE tbcompradorperfil SET tbcompradorperfildevolucion = '" . $compradorPerfil->getDevolucion() .
             "', tbcompradorperfilfrecuencia = '" . $compradorPerfil->getFrecuenciaCompra() .
             "', tbcompradorperfilmontocompra = '" . $compradorPerfil->getMontoCompra() .
             "', tbcompradorperfilcantidadcompra = '" . $compradorPerfil->getCantidadCompra() .
             "', tbcompradorid = " . $compradorPerfil->getIdComprador() .
             " WHERE tbcompradorperfilid = " . $compradorPerfil->getIdCompradorPerfil() . ";";
+
+        $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+
+        return $result;
+    }
+
+    public function actualizarTBCompradorPerfilById($compradorPerfil)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db); //connect to the database
+        $conn->set_charset('utf8');
+        $queryUpdate = "UPDATE tbcompradorperfil SET tbcompradorperfildevolucion = '" . $compradorPerfil->getDevolucion() .
+            "', tbcompradorperfilfrecuencia = '" . $compradorPerfil->getFrecuenciaCompra() .
+            "', tbcompradorperfilmontocompra = '" . $compradorPerfil->getMontoCompra() .
+            "', tbcompradorperfilcantidadcompra = " . $compradorPerfil->getCantidadCompra() .
+            " WHERE tbcompradorid = " . $compradorPerfil->getIdComprador() . ";";
 
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);
@@ -62,7 +76,7 @@ class CompradorPerfilData extends Data
 
         $result = mysqli_query($conn, $queryUpdate); // ejecutar la consulta y obtener el resultado
         mysqli_close($conn); // cerrar la conexión
-        return $result; 
+        return $result;
     }
 
     public function getAllTBCompradorPerfil()
@@ -78,13 +92,40 @@ class CompradorPerfilData extends Data
 
         // recorrer el resultado y llenar el array
         while ($row = mysqli_fetch_array($result)) {
-            $currentCompradorPerfil = new CompradorPerfil($row['tbcompradorperfilid'], $row['tbcompradorperfilcriterio'], $row['tbcompradorperfildevolucion'], $row['tbcompradorperfilfrecuencia'], $row['tbcompradorperfilmontocompra'], $row['tbcompradorperfilcantidadcompra'], $row['tbcompradorid']);
+            $currentCompradorPerfil = new CompradorPerfil($row['tbcompradorperfilid'], $row['tbcompradorperfildevolucion'], $row['tbcompradorperfilfrecuencia'], $row['tbcompradorperfilmontocompra'], $row['tbcompradorperfilcantidadcompra'], $row['tbcompradorid']);
             array_push($array, $currentCompradorPerfil);
         }
 
         mysqli_close($conn); // cerrar la conexión
         return $array; // devolver el array
     }
+
+    public function existeCompradorPerfil($idComprador)
+    {
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        // Consulta para verificar si existe un comprador con el ID dado en tbcompradorperfil
+        $querySelect = "SELECT COUNT(*) AS count FROM tbcompradorperfil WHERE tbcompradorid = $idComprador";
+
+        $result = mysqli_query($conn, $querySelect);
+
+        // Verificar si la consulta se ejecutó correctamente
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $count = $row['count'];
+
+            mysqli_close($conn);
+
+            // Si count es mayor que 0, significa que existe un comprador con ese ID en tbcompradorperfil
+            return $count > 0;
+        } else {
+            // Si hay un error en la consulta, puedes manejarlo según tus necesidades (lanzar una excepción, devolver false, etc.)
+            mysqli_close($conn);
+            return false;
+        }
+    }
+
 
     public function getTBCompradorPerfilById($id)
     {
@@ -100,7 +141,7 @@ class CompradorPerfilData extends Data
 
         // si se obtuvo un resultado, llenar el objeto estudiante
         if ($row = mysqli_fetch_array($result)) {
-            $compradorPerfil = new CompradorPerfil($row['tbcompradorperfilid'], $row['tbcompradorperfilcriterio'], $row['tbcompradorperfildevolucion'], $row['tbcompradorperfilfrecuencia'], $row['tbcompradorperfilmontocompra'], $row['tbcompradorperfilcantidadcompra'], $row['tbcompradorid']);
+            $compradorPerfil = new CompradorPerfil($row['tbcompradorperfilid'], $row['tbcompradorperfildevolucion'], $row['tbcompradorperfilfrecuencia'], $row['tbcompradorperfilmontocompra'], $row['tbcompradorperfilcantidadcompra'], $row['tbcompradorid']);
         }
 
         mysqli_close($conn); // cerrar la conexión

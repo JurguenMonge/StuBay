@@ -13,16 +13,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <?php
-    
+
     include '../business/calificacionVendedorBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/pujaClienteBusiness.php';
     include '../business/articuloBusiness.php';
+    include '../business/clienteCategoriaBusiness.php';
+    include '../business/clienteClaseBusiness.php';
 
     $clienteBusiness = new clienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
+    $clienteCategoriaBusiness = new ClienteCategoriaBusiness();
+    $clienteClaseBusiness = new ClienteClaseBusiness();
     //$getSub = $subastaBusiness->getAllTBSubastaNoActivas();
+    $getClienteCategoria;
+    $getClienteClase = $clienteClaseBusiness->getAllTBClienteClase();
 
     $articuloBusiness = new ArticuloBusiness();
     $getArticulos = $articuloBusiness->getAllTBArticulo();
@@ -111,6 +117,24 @@
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
 
+    <div style="position: absolute; top: 0; right: 0; padding: 10px;">
+        <label>Categoría Vendedor:</label>
+        <span style="font-weight: bold; color: black;">
+            <?php
+            $getClienteCategoria = $clienteCategoriaBusiness->getClienteCategoriaByIdCliente($clienteId);
+            if ($getClienteCategoria != null) {
+                foreach ($getClienteClase as $current) {
+                    if ($getClienteCategoria->getIdClase() == $current->getIdClase()) {
+                        echo $current->getNombre();
+                    }
+                }
+            } else {
+                echo 'Ninguno';
+            }
+            ?>
+        </span>
+    </div>
+
     <section id="form">
         <table>
             <tr>
@@ -152,37 +176,36 @@
                 </tr>
             </form>
             <?php
-             error_reporting(0);
-             $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
-             $getCalificacionVendedor = $calificacionVendedorBusiness->getCalificacionVendedorClienteById($clienteId);
-             foreach($getCalificacionVendedor as $current){
-                 echo '<form method="post" enctype="multipart/form-data" action="../business/calificacionVendedorAction.php">';
-                 echo '<input type="hidden" name="calificacionvendedoridview" id="calificacionvendedoridview" value="' . $current->getCalificacionVendedorId() . '" readonly>';
-                 echo '<tr>';
-                 echo '<td><input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
-                 echo $clienteNombreCompleto;
-                 foreach($getArticulos as $art) {
-                     if ($current->getSubastaId() == $art->getArticuloId()){
+            error_reporting(0);
+            $calificacionVendedorBusiness = new CalificacionVendedorBusiness();
+            $getCalificacionVendedor = $calificacionVendedorBusiness->getCalificacionVendedorClienteById($clienteId);
+            foreach ($getCalificacionVendedor as $current) {
+                echo '<form method="post" enctype="multipart/form-data" action="../business/calificacionVendedorAction.php">';
+                echo '<input type="hidden" name="calificacionvendedoridview" id="calificacionvendedoridview" value="' . $current->getCalificacionVendedorId() . '" readonly>';
+                echo '<tr>';
+                echo '<td><input type="hidden" name="clienteidview" id="clienteidview" value="' . $current->getClienteId() . '" readonly>';
+                echo $clienteNombreCompleto;
+                foreach ($getArticulos as $art) {
+                    if ($current->getSubastaId() == $art->getArticuloId()) {
                         echo '<td><input type="hidden" name="subastaidview" id="subastaidview" value="' . $art->getArticuloId() . '" readonly>';
-                         echo $art->getArticuloNombre();
-                         echo '<td>';
-                     }
-                 }
-                    foreach($getCliente as $cliente){
-                        if($current->getCalificacionVendedorClienteId() == $cliente->getClienteId()){
-                            echo '<td><input type="hidden" name="vendedoridview" id="vendedoridview" value="' . $cliente->getClienteId() . '" readonly>';
-                            echo $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido();
-                            echo '</td>';
-                        }
+                        echo $art->getArticuloNombre();
+                        echo '<td>';
                     }
-                    echo '<td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" value="' . $current->getCalificacionVendedorPuntos() . '" min="1" max="5"></td>';
-                    echo '<td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview" rows="3" cols="40">' . $current->getCalificacionVendedorComentarios() . '</textarea></td>';
-                    echo '<td><input type="submit" name="update" id="update" value="Actualizar"></td>';
-                    echo '<td><input type="submit" name="delete" id="delete" value="Eliminar"></td>';
-                    echo '</tr>';
-                    echo '</form>';
-
-             }
+                }
+                foreach ($getCliente as $cliente) {
+                    if ($current->getCalificacionVendedorClienteId() == $cliente->getClienteId()) {
+                        echo '<td><input type="hidden" name="vendedoridview" id="vendedoridview" value="' . $cliente->getClienteId() . '" readonly>';
+                        echo $cliente->getClienteNombre() . ' ' . $cliente->getClientePrimerApellido() . ' ' . $cliente->getClienteSegundoApellido();
+                        echo '</td>';
+                    }
+                }
+                echo '<td><input type="number" name="calificacionvendedorpuntosview" id="calificacionvendedorpuntosview" value="' . $current->getCalificacionVendedorPuntos() . '" min="1" max="5"></td>';
+                echo '<td><textarea name="calificacionvendedorcomentariosview" id="calificacionvendedorcomentariosview" rows="3" cols="40">' . $current->getCalificacionVendedorComentarios() . '</textarea></td>';
+                echo '<td><input type="submit" name="update" id="update" value="Actualizar"></td>';
+                echo '<td><input type="submit" name="delete" id="delete" value="Eliminar"></td>';
+                echo '</tr>';
+                echo '</form>';
+            }
             ?>
         </table>
     </section>

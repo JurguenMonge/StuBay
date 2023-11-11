@@ -3,18 +3,16 @@
 class CompradorPerfil{
     
     private $idCompradorPerfil;
-    private $criterio;
     private $cantidadCompra;
     private $montoCompra;
     private $frecuenciaCompra;
     private $devolucion;
     private $idComprador;
 
-    function __construct($idCompradorPerfil, $criterio, $cantidadCompra, $montoCompra, $frecuenciaCompra, $devolucion, $idComprador)
+    function __construct($idCompradorPerfil, $cantidadCompra, $montoCompra, $frecuenciaCompra, $devolucion, $idComprador)
     {
         $this->idCompradorPerfil = $idCompradorPerfil;
         $this->cantidadCompra = $cantidadCompra;
-        $this->criterio = $criterio;
         $this->montoCompra = $montoCompra;
         $this->frecuenciaCompra = $frecuenciaCompra;
         $this->devolucion = $devolucion;
@@ -30,9 +28,6 @@ class CompradorPerfil{
         return $this->cantidadCompra;
     }
 
-    function getCriterio(){
-        return $this->criterio;
-    }
 
     function getMontoCompra(){
         return $this->montoCompra;
@@ -57,10 +52,6 @@ class CompradorPerfil{
 
     function setCantidadCompra($cantidadCompra){
         $this->cantidadCompra = $cantidadCompra;
-    }
-
-    function setCriterio($criterio){
-        $this->criterio = $criterio;
     }
 
     function setMontoCompra($montoCompra){

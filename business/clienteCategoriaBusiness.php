@@ -21,4 +21,14 @@ class ClienteCategoriaBusiness
     {
         return $this->clienteCategoriaData->getAllTBClienteCategorias();
     }
+
+    public function getClienteCategoriaByClaseId($claseId)
+    {
+        return $this->clienteCategoriaData->getClienteCategoriaByClaseId($claseId);
+    }
+
+    public function getClienteCategoriaByIdCliente($clienteId)
+    {
+        return $this->clienteCategoriaData->getClienteCategoriaByIdCliente($clienteId);
+    }
 }
