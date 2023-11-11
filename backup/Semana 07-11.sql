@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 11-11-2023 a las 02:14:45
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 31-10-2023 a las 16:49:16
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -51,9 +51,7 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`,
 (4, 'Escritorio', 'Lo', '', '', 1, '14', 2, '', ''),
 (5, 'Monitor', 'CM190', '2014', '123', 1, '14', 1, '', ''),
 (6, 'Monitor de juegos de 32” con resolución UHD y frecuencia de actualización de 144 Hz', 'Samsung', '2023', 'LS32BG702ENXGO', 1, '14', 1, '../articulosFotos/65355cce5cc6c_1697995982.jpg', '../articulosFotos/65355b62b2543_1697995618.jpg'),
-(7, 'COmputadora', 'MSI', '', '', 1, '14', 2, '../fotos/653fe25c61d75_1698685532.jpg', '../fotos/653fe25c61dc9_1698685532.jpg'),
-(8, 'Impresora', 'NA', 'NA', 'NA', 1, '14', 3, '../fotos/65403f8182daf_1698709377.png', '../fotos/65403f8182e21_1698709377.png'),
-(9, 'Telefono', 'Samsung', 'A34', 'A3483', 1, '112', 3, '../fotos/654534d3d56a4_1699034323.webp', '../fotos/654534d3d5712_1699034323.webp');
+(7, 'COmputadora', 'MSI', '', '', 1, '14', 2, '../fotos/653fe25c61d75_1698685532.jpg', '../fotos/653fe25c61dc9_1698685532.jpg');
 
 -- --------------------------------------------------------
 
@@ -76,7 +74,7 @@ CREATE TABLE `tbcalificacioncomprador` (
 
 INSERT INTO `tbcalificacioncomprador` (`tbcalificacioncompradorid`, `tbsubastaid`, `tbclienteid`, `tbcalificacioncompradorclienteid`, `tbcalificacioncompradorpuntos`, `tbcalificacioncompradorcomentarios`) VALUES
 (1, 2, 1, 3, '3', 'No hubo problemas'),
-(2, 3, 2, 1, '5', 'Todo bien');
+(2, 3, 2, 1, '5', 'TOdo bienm');
 
 -- --------------------------------------------------------
 
@@ -88,10 +86,17 @@ CREATE TABLE `tbcalificacionvendedor` (
   `tbcalificacionvendedorid` int(11) NOT NULL,
   `tbsubastaid` int(11) NOT NULL,
   `tbclienteid` int(11) NOT NULL,
-  `tbcalificacionvendedorpuntos` float NOT NULL,
-  `tbcalificacionvendedorcomentarios` varchar(200) NOT NULL,
-  `tbcalificacionvendedoractivo` tinyint(4) NOT NULL
+  `tbcalificacionvendedorclienteid` int(11) NOT NULL,
+  `tbcalificacionvendedorpuntos` int(11) NOT NULL,
+  `tbcalificacionvendedorcomentarios` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tbcalificacionvendedor`
+--
+
+INSERT INTO `tbcalificacionvendedor` (`tbcalificacionvendedorid`, `tbsubastaid`, `tbclienteid`, `tbcalificacionvendedorclienteid`, `tbcalificacionvendedorpuntos`, `tbcalificacionvendedorcomentarios`) VALUES
+(1, 3, 1, 3, 2, 'El artículo no estaba como se describió');
 
 -- --------------------------------------------------------
 
@@ -147,30 +152,6 @@ INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapell
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbclientecategoria`
---
-
-CREATE TABLE `tbclientecategoria` (
-  `tbclienteid` int(11) NOT NULL,
-  `tbclienteclaseid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tbclienteclase`
---
-
-CREATE TABLE `tbclienteclase` (
-  `tbclienteclaseid` int(11) NOT NULL,
-  `tbclienteclasenombre` varchar(255) NOT NULL,
-  `tbclienteclasevalor` int(11) NOT NULL,
-  `tbclienteclaseestado` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tbclientedireccion`
 --
 
@@ -213,22 +194,6 @@ CREATE TABLE `tbclientetelefono` (
 INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclientetelefononumero`, `tbclientetelefonodescripcion`, `tbclientetelefonoactivo`) VALUES
 (1, '1', '83469905-83147350', 'cel propio-cel amigo', 1),
 (2, '1', '60058595', 'cel propio', 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tbcompradorperfil`
---
-
-CREATE TABLE `tbcompradorperfil` (
-  `tbcompradorperfilid` int(11) NOT NULL,
-  `tbcompradorperfilcriterio` varchar(255) NOT NULL,
-  `tbcompradorperfildevolucion` int(11) NOT NULL,
-  `tbcompradorperfilfrecuencia` decimal(13,2) NOT NULL,
-  `tbcompradorperfilmontocompra` decimal(13,2) NOT NULL,
-  `tbcompradorperfilcantidadcompra` int(11) NOT NULL,
-  `tbcompradorid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
 
@@ -277,23 +242,7 @@ INSERT INTO `tbeventoarticulo` (`id`, `tbarticuloid`, `tbclienteid`) VALUES
 (3, 4, 2),
 (4, 7, 2),
 (5, 4, 2),
-(6, 7, 2),
-(7, 3, 3),
-(8, 3, 3),
-(9, 3, 3),
-(10, 8, 3),
-(11, 3, 3),
-(12, 8, 3),
-(13, 3, 3),
-(14, 2, 3),
-(15, 7, 3),
-(16, 8, 3),
-(17, 2, 3),
-(18, 3, 3),
-(19, 6, 3),
-(20, 7, 3),
-(21, 2, 3),
-(22, 6, 3);
+(6, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -365,13 +314,13 @@ CREATE TABLE `tbsubasta` (
 INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastafechahorainicio`, `tbsubastafechahorafinal`, `tbsubastaprecio`, `tbsubastaestadoarticulo`, `tbsubastaarticulodiasuso`, `tbsubastaactivo`, `tbarticuloid`, `tbclienteid`) VALUES
 (1, '2023-08-09 19:43:56', '2023-08-22 19:43:56', 70000, 'Usado', 0, 1, 2, 1),
 (2, '2023-08-31 03:55:02', '2023-10-13 03:55:02', 70000, 'Usado', 0, 1, 3, 2),
-(3, '2023-08-30 21:45:00', '2023-11-08 09:45:00', 900, 'Usado', 0, 1, 3, 3),
-(4, '2023-08-31 07:52:00', '2023-11-22 07:52:00', 760000, '', 0, 1, 2, 2),
+(3, '2023-08-30 21:45:00', '2023-10-19 09:45:00', 900, 'Usado', 0, 1, 3, 3),
+(4, '2023-08-31 07:52:00', '2023-09-02 07:52:00', 760000, '', 0, 1, 2, 2),
 (5, '2023-08-31 08:56:00', '2023-09-16 08:56:00', 760995, 'Usado', 0, 0, 2, 1),
 (6, '2023-09-11 18:49:00', '2023-09-13 18:49:00', 100000, 'Nuevo', 0, 0, 2, 1),
 (7, '2023-09-11 18:53:00', '2023-09-20 18:53:00', 100000, 'Usado', 10, 0, 2, 2),
 (8, '2023-09-12 18:53:00', '2023-09-13 18:53:00', 100000, 'Usado', 15, 0, 2, 1),
-(9, '2023-10-17 01:02:00', '2023-11-08 10:30:00', 100000, 'Nuevo', 0, 1, 5, 1);
+(9, '2023-10-17 01:02:00', '2023-10-19 10:30:00', 100000, 'Nuevo', 0, 1, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -395,7 +344,7 @@ CREATE TABLE `tbsubcategoria` (
 INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubcategorianombre`, `tbsubcategoriadescripcion`, `tbsubcategoriaactivo`, `tbcategoriaid`) VALUES
 (1, '21', 'Libros y revistas', 'Variado', 1, 2),
 (2, '32', 'Ropa Deportiva', 'Disponible', 1, 3),
-(3, '13', 'Audio', 'Variado', 1, 1),
+(3, '13', 'Audios', 'Variado', 1, 1),
 (4, '14', 'Computadoras', 'Computadoras inteligentes', 1, 1),
 (5, '25', 'otrogg', 'fgsfgs', 1, 2),
 (6, '16', 'fsdvsd', 'dsf', 0, 1),
@@ -403,8 +352,7 @@ INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubc
 (8, '38', 'prueba', 'fsf', 1, 3),
 (9, '29', 'gf', 'ss', 0, 2),
 (10, '110', 'prueba', 'prueba', 0, 1),
-(11, '311', 'otro', 'otro2', 0, 3),
-(12, '112', 'Celulares', 'Nuevos y usados', 1, 1);
+(11, '311', 'otro', 'otro2', 0, 3);
 
 --
 -- Índices para tablas volcadas
@@ -435,12 +383,6 @@ ALTER TABLE `tbcliente`
   ADD PRIMARY KEY (`tbclienteid`);
 
 --
--- Indices de la tabla `tbclienteclase`
---
-ALTER TABLE `tbclienteclase`
-  ADD PRIMARY KEY (`tbclienteclaseid`);
-
---
 -- Indices de la tabla `tbclientedireccion`
 --
 ALTER TABLE `tbclientedireccion`
@@ -451,12 +393,6 @@ ALTER TABLE `tbclientedireccion`
 --
 ALTER TABLE `tbclientetelefono`
   ADD PRIMARY KEY (`tbclientetelefonoid`);
-
---
--- Indices de la tabla `tbcompradorperfil`
---
-ALTER TABLE `tbcompradorperfil`
-  ADD PRIMARY KEY (`tbcompradorperfilid`);
 
 --
 -- Indices de la tabla `tbpujacliente`
@@ -481,22 +417,6 @@ ALTER TABLE `tbsubasta`
 --
 ALTER TABLE `tbsubcategoria`
   ADD PRIMARY KEY (`tbsubcategoriaid`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `tbclienteclase`
---
-ALTER TABLE `tbclienteclase`
-  MODIFY `tbclienteclaseid` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `tbcompradorperfil`
---
-ALTER TABLE `tbcompradorperfil`
-  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
