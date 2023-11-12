@@ -262,6 +262,46 @@ class PujaClienteData extends Data
         return $array;
     }
 
+    public function getTBPujaClienteGanadorById($clienteId)
+    { 
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $querySelect = "SELECT pc.* 
+                    FROM tbpujacliente pc
+                    WHERE pc.tbclienteid = ?
+                    AND pc.tbpujaclienteoferta = (
+                        SELECT MAX(tbpujaclienteoferta) 
+                        FROM tbpujacliente 
+                        WHERE tbclienteid = ?
+                    )";
+
+        $stmt = $conn->prepare($querySelect);
+        $stmt->bind_param("ii", $clienteId, $clienteId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $array = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $pujaCliente = new PujaCliente(
+                $row['tbpujaclienteid'],
+                $row['tbclienteid'],
+                $row['tbarticuloid'],
+                $row['tbpujaclientefecha'],
+                $row['tbpujaclienteoferta'],
+                $row['tbpujaclienteenvio']
+            );
+            array_push($array, $pujaCliente);
+        }
+
+        $stmt->close();
+        mysqli_close($conn);
+
+        return $array;
+    }
+
     public function getPujaClienteGanador($articuloId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);

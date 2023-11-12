@@ -28,7 +28,7 @@ if(isset($_POST['intercambio'])){
         }else {
             header("location: ../view/pujaClienteView.php?error=emptyField");
         }
-    }else {
+    }else { 
         header("location: ../view/pujaClienteView.php?error=error");
     }
 }

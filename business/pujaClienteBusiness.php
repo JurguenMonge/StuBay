@@ -44,6 +44,10 @@ class PujaClienteBusiness
         return $this->pujaClienteData->getTBPujaClienteGanador($id);
     }
 
+    public function getTBPujaClienteGanadorById($id){
+        return $this->pujaClienteData->getTBPujaClienteGanadorById($id);
+    }
+
     public function getPujaClienteGanador($articuloId){
         return $this->pujaClienteData->getPujaClienteGanador($articuloId);
     }

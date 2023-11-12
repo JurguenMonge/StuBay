@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-11-2023 a las 02:14:45
+-- Tiempo de generación: 12-11-2023 a las 07:15:41
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -168,6 +168,14 @@ CREATE TABLE `tbclienteclase` (
   `tbclienteclaseestado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `tbclienteclase`
+--
+
+INSERT INTO `tbclienteclase` (`tbclienteclaseid`, `tbclienteclasenombre`, `tbclienteclasevalor`, `tbclienteclaseestado`) VALUES
+(1, 'Bueno', 4, 1),
+(2, 'Esporádico', 10, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -258,6 +266,30 @@ INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbdevolucion`
+--
+
+CREATE TABLE `tbdevolucion` (
+  `tbdevolucionid` int(11) NOT NULL,
+  `tbdevolucionjustificacion` varchar(255) NOT NULL,
+  `tbsubastaid` int(11) NOT NULL,
+  `tbclienteid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tbdevolucion`
+--
+
+INSERT INTO `tbdevolucion` (`tbdevolucionid`, `tbdevolucionjustificacion`, `tbsubastaid`, `tbclienteid`) VALUES
+(1, 'Porque no funciona', 1, 2),
+(2, 'asd', 3, 1),
+(3, 'No sirve', 3, 1),
+(4, 'asdasdasd', 3, 1),
+(5, 'asd', 3, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbeventoarticulo`
 --
 
@@ -294,6 +326,29 @@ INSERT INTO `tbeventoarticulo` (`id`, `tbarticuloid`, `tbclienteid`) VALUES
 (20, 7, 3),
 (21, 2, 3),
 (22, 6, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbintercambio`
+--
+
+CREATE TABLE `tbintercambio` (
+  `tbintercambioid` int(11) NOT NULL,
+  `tbarticuloid` int(11) NOT NULL,
+  `tbvendedorid` int(11) NOT NULL,
+  `tbclienteid` int(11) NOT NULL,
+  `tbsubastaid` int(11) NOT NULL,
+  `compradoractivo` tinyint(4) NOT NULL,
+  `vendedoractivo` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tbintercambio`
+--
+
+INSERT INTO `tbintercambio` (`tbintercambioid`, `tbarticuloid`, `tbvendedorid`, `tbclienteid`, `tbsubastaid`, `compradoractivo`, `vendedoractivo`) VALUES
+(1, 1, 1, 2, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -490,7 +545,7 @@ ALTER TABLE `tbsubcategoria`
 -- AUTO_INCREMENT de la tabla `tbclienteclase`
 --
 ALTER TABLE `tbclienteclase`
-  MODIFY `tbclienteclaseid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tbclienteclaseid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tbcompradorperfil`
