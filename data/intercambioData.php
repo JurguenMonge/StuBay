@@ -53,4 +53,105 @@ class IntercambioData extends Data {
 
         return $result;
     }
+
+
+    public function getIntercambiosByCliente($clienteid){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        if (!$conn) {
+            die("Error de conexión: " . mysqli_connect_error());
+        }
+    
+        $conn->set_charset('utf8');
+        
+        $querySelect = "SELECT * FROM tbintercambio WHERE tbvendedorid = " . $clienteid . " AND compradoractivo = 1 AND vendedoractivo = 0";
+    
+        $result = mysqli_query($conn, $querySelect);
+    
+        if (!$result) {
+            die("Error en la consulta: " . mysqli_error($conn));
+        }
+    
+        $intercambios = array();
+    
+        while ($row = mysqli_fetch_assoc($result)) {
+            $intercambio = new Intercambio(
+                $row['tbintercambioid'],
+                $row['tbarticuloid'],
+                $row['tbvendedorid'],
+                $row['tbclienteid'],
+                $row['tbsubastaid'],
+                $row['compradoractivo'],
+                $row['vendedoractivo']
+            );
+            $intercambios[] = $intercambio;
+        }
+    
+        mysqli_close($conn);
+    
+        return $intercambios;
+    }
+
+    public function getIntercambiosRechazadosByCliente($clienteid){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        if (!$conn) {
+            die("Error de conexión: " . mysqli_connect_error());
+        }
+    
+        $conn->set_charset('utf8');
+        
+        $querySelect = "SELECT * FROM tbintercambio WHERE tbvendedorid = " . $clienteid . " AND compradoractivo = 0 AND vendedoractivo = 1";
+    
+        $result = mysqli_query($conn, $querySelect);
+    
+        if (!$result) {
+            die("Error en la consulta: " . mysqli_error($conn));
+        }
+    
+        $intercambios = array();
+    
+        while ($row = mysqli_fetch_assoc($result)) {
+            $intercambio = new Intercambio(
+                $row['tbintercambioid'],
+                $row['tbarticuloid'],
+                $row['tbvendedorid'],
+                $row['tbclienteid'],
+                $row['tbsubastaid'],
+                $row['compradoractivo'],
+                $row['vendedoractivo']
+            );
+            $intercambios[] = $intercambio;
+        }
+    
+        mysqli_close($conn);
+    
+        return $intercambios;
+    }
+    
+
+    public function aceptarIntercambio($intercambioid){
+        
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryUpdate = "UPDATE tbintercambio SET vendedoractivo ='" . 1 .
+            " WHERE tbintercambioid =" . $intercambioid . ";";
+
+        $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+        return $result;
+    
+    }
+
+    public function rechazarIntercambio($intercambioid){
+        $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
+        $conn->set_charset('utf8');
+
+        $queryUpdate = "UPDATE tbintercambio 
+        SET vendedoractivo = 1, compradoractivo = 0
+        WHERE tbintercambioid = " . $intercambioid . ";";
+
+        $result = mysqli_query($conn, $queryUpdate);
+        mysqli_close($conn);
+        return $result;
+    }
 }

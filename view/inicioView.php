@@ -108,6 +108,8 @@
     <br><br>
     <a href="devolucionView.php">Devolucion</a>
     <br><br>
+    <a href="notificacionView.php">Notificaciones</a>
+    <br><br>
     <a href="../session/closesession.php">Cerrar Sesión</a>
 </body>
 
