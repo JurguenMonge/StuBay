@@ -25,6 +25,11 @@ class IntercambioBusiness{
         return $this->intercambioData->getIntercambiosRechazadosByCliente($clienteid);
     }
 
+    public function getIntercambiosAceptadosByCliente($clienteid)
+    {
+        return $this->intercambioData->getIntercambiosAceptadosByCliente($clienteid);
+    }
+
     public function aceptarIntercambio($intercambioid)
     {
         return $this->intercambioData->aceptarIntercambio($intercambioid);

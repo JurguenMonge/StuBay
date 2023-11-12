@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notificacion</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alertaSocket.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <?php
     error_reporting(0);
     include '../business/intercambioBusiness.php';
@@ -111,7 +116,26 @@
                     foreach ($getArticulos as $articulo) {
                         if ($intercambio->getSubasta() ==  $subasta->getSubastaId() && $subasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
                             echo '<tr>';
-                            echo '<td><span> Mala suerte! Te rechazaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                            echo '<td><span> ¡Mala suerte! Te rechazaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                            echo '</tr>';
+                        }
+                    }
+                }
+            }
+            ?>
+    </table>
+    </section>
+    <br><br><br>
+    <section>
+    <table border="1">
+        <?php
+            $getIntercambios = $intercambioBusiness->getIntercambiosAceptadosByCliente($clienteId);
+            foreach ($getIntercambios as $intercambio) {
+                foreach ($getSubastas as $subasta) {
+                    foreach ($getArticulos as $articulo) {
+                        if ($intercambio->getSubasta() ==  $subasta->getSubastaId() && $subasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
+                            echo '<tr>';
+                            echo '<td><span> ¡Buena suerte! Te aceptaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
                             echo '</tr>';
                         }
                     }
