@@ -213,7 +213,7 @@ class ArticuloData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $querySelect = "SELECT * FROM tbarticulo WHERE tbarticuloactivo = 1;";
+        $querySelect = "SELECT * FROM tbarticulo;";
         $result = mysqli_query($conn, $querySelect);
 
         $array = array();

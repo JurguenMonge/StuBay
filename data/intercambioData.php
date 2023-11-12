@@ -133,8 +133,7 @@ class IntercambioData extends Data {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        $queryUpdate = "UPDATE tbintercambio SET vendedoractivo ='" . 1 .
-            " WHERE tbintercambioid =" . $intercambioid . ";";
+        $queryUpdate = "UPDATE tbintercambio SET vendedoractivo = 1 WHERE tbintercambioid =" . $intercambioid . ";";
 
         $result = mysqli_query($conn, $queryUpdate);
         mysqli_close($conn);
