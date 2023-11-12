@@ -14,7 +14,7 @@ if(isset($_POST['create'])){
         $compradorActivo = 1;
         $vendedorActivo = 0;
         if(true){
-            $intercambio = new Intercambio(0,1,1,2,1,1,0);
+            $intercambio = new Intercambio(0,$articulo,$vendedor,$comprador,$subasta,$compradorActivo,$vendedorActivo);
             $intercambioBusiness = new IntercambioBusiness();
             $result = $intercambioBusiness->insertarTBIntercambio($intercambio);
             if ($result == 1) {
