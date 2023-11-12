@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-11-2023 a las 07:15:41
+-- Tiempo de generación: 12-11-2023 a las 20:18:24
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -152,8 +152,15 @@ INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapell
 
 CREATE TABLE `tbclientecategoria` (
   `tbclienteid` int(11) NOT NULL,
-  `tbclienteclaseid` int(11) NOT NULL
+  `tbclaseid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbclientecategoria`
+--
+
+INSERT INTO `tbclientecategoria` (`tbclienteid`, `tbclaseid`) VALUES
+(3, 2);
 
 -- --------------------------------------------------------
 
@@ -230,13 +237,19 @@ INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclient
 
 CREATE TABLE `tbcompradorperfil` (
   `tbcompradorperfilid` int(11) NOT NULL,
-  `tbcompradorperfilcriterio` varchar(255) NOT NULL,
   `tbcompradorperfildevolucion` int(11) NOT NULL,
   `tbcompradorperfilfrecuencia` decimal(13,2) NOT NULL,
   `tbcompradorperfilmontocompra` decimal(13,2) NOT NULL,
   `tbcompradorperfilcantidadcompra` int(11) NOT NULL,
   `tbcompradorid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbcompradorperfil`
+--
+
+INSERT INTO `tbcompradorperfil` (`tbcompradorperfilid`, `tbcompradorperfildevolucion`, `tbcompradorperfilfrecuencia`, `tbcompradorperfilmontocompra`, `tbcompradorperfilcantidadcompra`, `tbcompradorid`) VALUES
+(1, 0, 0.00, 770000.00, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -372,7 +385,8 @@ CREATE TABLE `tbpujacliente` (
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
 (1, 3, 2, '2023-10-18 17:49:26', 70001, 884.17),
 (2, 1, 3, '2023-10-19 10:11:13', 950, 884.17),
-(3, 3, 5, '2023-10-19 10:17:56', 100001, 884.17);
+(3, 3, 5, '2023-10-19 10:17:56', 100001, 884.17),
+(4, 3, 2, '2023-11-12 13:16:49', 770000, 3591.07);
 
 -- --------------------------------------------------------
 
@@ -551,7 +565,7 @@ ALTER TABLE `tbclienteclase`
 -- AUTO_INCREMENT de la tabla `tbcompradorperfil`
 --
 ALTER TABLE `tbcompradorperfil`
-  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

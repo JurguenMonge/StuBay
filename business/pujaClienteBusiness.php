@@ -52,8 +52,8 @@ class PujaClienteBusiness
         return $this->pujaClienteData->getPujaClienteGanador($articuloId);
     }
 
-    public function obtenerInformacionCompras($clienteId){
-        return $this->pujaClienteData->obtenerInformacionCompras($clienteId);
+    public function obtenerInformacionCompras($clienteId, $articuloId){
+        return $this->pujaClienteData->obtenerInformacionCompras($clienteId, $articuloId);
     }
 
     public function calcularDistanciaClienteVendedor($latCliente, $lonCliente, $latVendedor, $lonVendedor) {

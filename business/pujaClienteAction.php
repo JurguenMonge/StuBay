@@ -7,6 +7,7 @@ include '../business/pujaClienteBusiness.php';
 include '../business/compradorPerfilBusiness.php';
 include '../business/clienteCategoriaBusiness.php';
 include '../business/clienteClaseBusiness.php';
+include '../business/devolucionBusiness.php';
 
 if (isset($_POST['update'])) {
 
@@ -139,16 +140,22 @@ if (isset($_POST['update'])) {
                 );
 
                 $compradorPerfil = null;
+                $devolucionBusiness = new DevolucionBusiness();
+                $cantidadDevoluciones = $devolucionBusiness->getCantidadDevolucionesPorClienteYSubasta($clienteId, $articuloId);
+                
                 $cantidadCompra = 0;
                 if ($compradorPerfilBusiness->existeCompradorPerfil($clienteId)) {
-                    $infoCompra = $pujaClienteBusiness->obtenerInformacionCompras($clienteId);
+                    $infoCompra = $pujaClienteBusiness->obtenerInformacionCompras($clienteId, $articuloId);
                     $cantidadCompra = $infoCompra['cantidadCompras'];
-                    $montoCompra = $infoCompra['montoCompras'];
+                    $montoCompra = $infoCompra['montoCompras']+$pujaClienteOferta;
                     $frecuenciaCompra = $infoCompra['frecuenciaCompra'];
-                    $compradorPerfil = new CompradorPerfil(0,$cantidadCompra, $montoCompra, $frecuenciaCompra, 0, $clienteId);
+
+                    $compradorPerfil = new CompradorPerfil(0, $cantidadCompra, $montoCompra, $frecuenciaCompra, $cantidadDevoluciones, $clienteId);
+                    
+
                     $compradorPerfilBusiness->actualizarTBCompradorPerfilById($compradorPerfil);
                 } else {
-                    $compradorPerfil = new CompradorPerfil(0, 1, $pujaClienteOferta, 0, 0, $clienteId);
+                    $compradorPerfil = new CompradorPerfil(0, 1, $pujaClienteOferta, 0, $cantidadDevoluciones, $clienteId);
                     $compradorPerfilBusiness->insertarTBCompradorPerfil($compradorPerfil);
                 }
 

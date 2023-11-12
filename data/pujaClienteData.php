@@ -113,7 +113,7 @@ class PujaClienteData extends Data
         return $array;
     }
 
-    public function obtenerInformacionCompras($clienteId)
+    public function obtenerInformacionCompras($clienteId, $articuloId)
     {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
@@ -121,10 +121,10 @@ class PujaClienteData extends Data
         // Obtener la cantidad y monto total de compras
         $queryCompras = "SELECT COUNT(*) AS cantidadCompras, SUM(tbpujaclienteoferta) AS montoCompras
                      FROM tbpujacliente
-                     WHERE tbclienteid = ?";
+                     WHERE tbclienteid = ? AND tbarticuloid=?";
 
         $stmtCompras = $conn->prepare($queryCompras);
-        $stmtCompras->bind_param("i", $clienteId);
+        $stmtCompras->bind_param("ii", $clienteId, $articuloId);
         $stmtCompras->execute();
         $resultCompras = $stmtCompras->get_result();
 

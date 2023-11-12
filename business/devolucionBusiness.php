@@ -15,5 +15,9 @@ class DevolucionBusiness{
         return $this->devolucionData->insertarTBDevolucion($devolucion);
     }
 
+    public function getCantidadDevolucionesPorClienteYSubasta($idCliente, $subastaId)
+    {
+        return $this->devolucionData->getCantidadDevolucionesPorClienteYSubasta($idCliente, $subastaId);
+    }
 
 }
