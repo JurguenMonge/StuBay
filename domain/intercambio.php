@@ -11,13 +11,13 @@ class Intercambio {
 
    function __construct($intercambioId,$articulo,$vendedor,$comprador,$subasta,$compradorActivo,$vendedorActivo)
    {
-        $this->$intercambioId = $intercambioId;
-        $this->$articulo = $articulo;
-        $this->$vendedor = $vendedor;
-        $this->$comprador = $comprador;
-        $this->$subasta = $subasta;
-        $this->$compradorActivo = $compradorActivo;
-        $this->$vendedorActivo = $vendedorActivo;
+        $this->intercambioId = $intercambioId;
+        $this->articulo = $articulo;
+        $this->vendedor = $vendedor;
+        $this->comprador = $comprador;
+        $this->subasta = $subasta;
+        $this->compradorActivo = $compradorActivo;
+        $this->vendedorActivo = $vendedorActivo;
    }
 
 

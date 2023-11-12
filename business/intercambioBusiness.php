@@ -10,7 +10,7 @@ class IntercambioBusiness{
         $this->intercambioData = new IntercambioData();
     }
 
-    public function intsertarTBIntercambio($intercambio)
+    public function insertarTBIntercambio($intercambio)
     {
         return $this->intercambioData->insertarTBIntercambio($intercambio);
     }

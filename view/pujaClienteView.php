@@ -326,7 +326,7 @@
         </table>
     </section>
     <br><br>
-    <section id="form">
+    <section>
         <br>
         <table>
             <tr>
@@ -340,12 +340,12 @@
             <form method="post" enctype="multipart/form-data" action="../business/intercambioAction.php">
                 <tr>
                     <td>
-                        <input type="hidden" name="clienteIdView" id="clienteIdView" value="<?php echo $clienteId ?>" />
-                        <input type="hidden" name="clienteNombreView" id="clienteNombreView" value="<?php echo $clienteNombre; ?>" />
+                        <input type="hidden" name="clienteid" id="clienteid" value="<?php echo $clienteId ?>" />
+                        <input type="hidden" name="clientenombre" id="clientenombre" value="<?php echo $clienteNombre; ?>" />
                         <span><?php echo $clienteNombreCompleto; ?></span>
                     </td>
                     <td>
-                        <select name="articuloIdView" id="articuloIdView">
+                        <select name="subastaid" id="subastaid">
                             <option value="">Seleccionar subasta</option>
                             <?php
                             $currentDate = date("Y-m-d H:i:s");
@@ -356,7 +356,7 @@
                                         foreach ($getArt as $articulo) {
 
                                             if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
-                                                echo '<option value="' . $subasta->getSubastaId() . '-' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                                echo '<option value="' . $subasta->getSubastaId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                                             }
                                         }
                                     }
@@ -368,18 +368,12 @@
                         </select>
                     </td>
 
-                    <div class="input-container">
-                        <input required type="hidden" name="subastaIdView" id="subastaIdView" maxlength="1000" readonly />
-                    </div>
-
-                    
-
                     <td>
                     <select name="articulointercambio" id="articulointercambio">
                     <option value="">Seleccionar articulo</option>
                         <?php        
-                            $getAeticulos = $articuloBusiness->getArticuloByClienteId($clienteId);          
-                            foreach ($getAeticulos as $articulo) {
+                            $getArticulos = $articuloBusiness->getArticuloByClienteId($clienteId);          
+                            foreach ($getArticulos as $articulo) {
                                 echo '<option value="' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
                             }
                         ?>
@@ -387,7 +381,7 @@
                     </td>
 
                     <td>
-                        <input type="submit" value="intercambio" name="intercambio" id="intercambio"/>
+                        <input type="submit" value="Crear" name="create" id="create"/>
                     </td>
                 </tr>
             </form>
