@@ -14,6 +14,65 @@
     session_start();
     ?>
 
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .send-button {
+            text-align: center;
+        }
+
+        .send-button input {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .send-button a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            color: #333;
+            text-decoration: none;
+        }
+    </style>
 
 </head>
 
@@ -56,17 +115,16 @@
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
 
-    <form method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php">
+<form method="POST" enctype="multipart/form-data" action="../StuBay/business/clienteAction.php">
         <div class="col-12">
-            <input type="text" id="clientecorreoview" name="clientecorreoview" placeholder="Ingrese  correo" required="">
-
+            <input type="text" id="clientecorreoview" name="clientecorreoview" placeholder="Ingrese correo" required="">
         </div>
         <input type="password" id="clientepasswordview" name="clientepasswordview" placeholder="Contraseña" required="">
         <div class="send-button">
             <input type="submit" id="login" name="login" value="Ingresar">
         </div>
-        <a href="view/registroClienteView.php" style="display: inline-block; margin-right: 10px;">Registrarse</a>
-        <a href="view/reactivarCuenta.php" style="display: inline-block;">Reactivar cuenta</a>
+        <a href="view/registroClienteView.php">Registrarse</a>
+        <a href="view/reactivarCuenta.php">Reactivar cuenta</a>
     </form>
 </body>
 
