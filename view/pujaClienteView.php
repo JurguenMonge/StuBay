@@ -210,6 +210,10 @@
             padding-left: 25px;
             /* Añade un espacio a la izquierda del campo para el símbolo */
         }
+
+        #intercambioVueltoDinero {
+        padding-left: 25px; /* Añade un espacio a la izquierda del campo para el símbolo */
+    }
     </style>
 
 
@@ -389,6 +393,76 @@
         </table>
     </section>
     <br><br>
+
+    <section>
+        <br>
+        <table>
+            <tr>
+                <th>Nombre del Cliente</th>
+                <th>Subasta</th>
+                <th>Articulo de intercambio</th>
+                <th>Vuelto</th>
+                <th></th>
+            </tr>
+
+            <form method="post" enctype="multipart/form-data" action="../business/intercambioVueltoAction.php">
+                <tr>
+                    <td>
+                        <input type="hidden" name="clienteid" id="clienteid" value="<?php echo $clienteId ?>" />
+                        <input type="hidden" name="clientenombre" id="clientenombre" value="<?php echo $clienteNombre; ?>" />
+                        <span><?php echo $clienteNombreCompleto; ?></span>
+                    </td>
+                    <td>
+                        <select name="subastaid" id="subastaid">
+                            <option value="">Seleccionar subasta</option>
+                            <?php
+                            $currentDate = date("Y-m-d H:i:s");
+
+                            if (count($getArt) > 0 && count($getSub) > 0) {
+                                foreach ($getSub as $subasta) {
+                                    if ($subasta->getSubastaVendedorId() != $clienteId) {
+                                        foreach ($getArt as $articulo) {
+
+                                            if ($articulo->getArticuloId() == $subasta->getSubastaArticuloId() && $subasta->getSubastaActivo() == 1 && $subasta->getSubastaFechaHoraFinal() > $currentDate) {
+                                                echo '<option value="' . $subasta->getSubastaId() .  '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo '<option value="">Ninguna categoria registrada</option>';
+                            }
+                            ?>
+                        </select>
+                    </td>
+
+                    <td>
+                    <select name="articulointercambiovuelto" id="articulointercambiovuelto">
+                    <option value="">Seleccionar articulo</option>
+                        <?php        
+                            $getArticulos = $articuloBusiness->getArticuloByClienteId($clienteId);
+                            foreach ($getArticulos as $articulo) {
+                                echo '<option value="' . $articulo->getArticuloId() . '">' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '</option>';
+                            }
+                        ?>
+                        </select>
+                    </td>
+
+                    <td>
+                        <div class="input-container">
+                            <span class="currency-symbol">₡</span>
+                            <input required type="text" name="intercambiovueltodinero" id="intercambiovueltodinero" min="0" step="0.01" />
+                        </div>
+                    </td>
+                            
+                    <td>
+                        <input type="submit" value="Crear" name="create" id="create"/>
+                    </td>
+                </tr>
+            </form>
+
+        </table>
+    </section>
     <div id="resultado">
 
     </div>

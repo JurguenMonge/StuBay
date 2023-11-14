@@ -13,9 +13,11 @@
     <?php
     error_reporting(0);
     include '../business/intercambioBusiness.php';
+    include '../business/intercambioVueltoBusiness.php';
     include '../business/clienteBusiness.php';
     include '../business/articuloBusiness.php';
     $intercambioBusiness = new IntercambioBusiness();
+    $intercambioVueltoBusiness = new IntercambioVueltoBusiness();
     $clienteBusiness = new ClienteBusiness();
     $subastaBusiness = new SubastaBusiness();
     $articuloBusiness = new ArticuloBusiness();
@@ -134,6 +136,83 @@
                 foreach ($getSubastas as $subasta) {
                     foreach ($getArticulos as $articulo) {
                         if ($intercambio->getSubasta() ==  $subasta->getSubastaId() && $subasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
+                            echo '<tr>';
+                            echo '<td><span> ¡Buena suerte! Te aceptaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                            echo '</tr>';
+                        }
+                    }
+                }
+            }
+            ?>
+    </table>
+    </section>
+    
+    <table border="1">
+        <tr>
+            <th>Articulo a cambio</th>
+            <th>Vuelto</th>
+            <th>Cliente</th>
+            <th>Subasta</th>
+        </tr>
+
+        <?php
+        $getIntercambiosVuelto = $intercambioVueltoBusiness->getIntercambiosVueltoByCliente($clienteId);
+        foreach ($getIntercambiosVuelto as $intercambioVuelto) {
+            foreach ($getSubastas as $subasta) {
+                foreach ($getArticulos as $articulo) {
+                    foreach ($getClientes as $cliente) {
+                        if ($intercambioVuelto->getArticulo() ==  $articulo->getArticuloId() && $subasta->getSubastaId() == $intercambioVuelto->getSubasta() && $intercambioVuelto->getComprador() == $cliente->getClienteId()) {
+                            echo '<form method="post" enctype="multipart/form-data" action="../business/intercambioVueltoAction.php" ">';
+                            echo '<input type="hidden" name="clienteidview" value="' . $clienteId . '">';
+                            echo '<input type="hidden" name="intercambioid" id="intercambioid" value="' . $intercambioVuelto->getIntercambioVueltoId() . '">';
+                            echo '<tr>';
+                            echo '<td><span> ' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                            echo '<td><span> ' .  $intercambioVuelto->getIntercambioVueltoDinero() . '</span></td>';
+                            echo '<td><span> ' . $cliente->getClienteNombre() . '</span></td>';
+                            foreach ($getArticulos as $articulo) {
+                                if($articulo->getArticuloId() == $subasta->getSubastaArticuloId()){
+                                    echo '<td><span> ' .  $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                                }
+                            }      
+                            echo '<td><input type="submit" value="Aceptar" name="aceptar" id="aceptar"/></td>';
+                            echo '<td><input type="submit" value="Rechazar" name="rechazar" id="rechazar"/></td>';
+                            echo '</tr>';
+                            echo '</form>';
+                        }
+                    }
+                }
+            }
+        }
+        ?>
+    </table>
+    <br><br><br>
+    <section>
+    <table border="1">
+        <?php
+            $getIntercambiosVuelto = $intercambioVueltoBusiness->getIntercambiosVueltoRechazadosByCliente($clienteId);
+            foreach ($getIntercambiosVuelto as $intercambioVuelto) {
+                foreach ($getSubastas as $subasta) {
+                    foreach ($getArticulos as $articulo) {
+                        if ($intercambioVuelto->getSubasta() ==  $subasta->getSubastaId() && $subasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
+                            echo '<tr>';
+                            echo '<td><span> ¡Mala suerte! Te rechazaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
+                            echo '</tr>';
+                        }
+                    }
+                }
+            }
+            ?>
+    </table>
+    </section>
+    <br><br><br>
+    <section>
+    <table border="1">
+        <?php
+            $getIntercambiosVuelto = $intercambioVueltoBusiness->getIntercambiosVueltoAceptadosByCliente($clienteId);
+            foreach ($getIntercambiosVuelto as $intercambioVuelto) {
+                foreach ($getSubastas as $subasta) {
+                    foreach ($getArticulos as $articulo) {
+                        if ($intercambioVuelto->getSubasta() ==  $subasta->getSubastaId() && $subasta->getSubastaArticuloId() == $articulo->getArticuloId()) {
                             echo '<tr>';
                             echo '<td><span> ¡Buena suerte! Te aceptaron el intercambio en la subasta = ' . $articulo->getArticuloNombre() . '-' . $articulo->getArticuloMarca() . '-' . $articulo->getArticuloModelo() . '-' . $articulo->getArticuloSerie() . '</span></td>';
                             echo '</tr>';
