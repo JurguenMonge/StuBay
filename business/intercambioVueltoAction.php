@@ -2,19 +2,21 @@
 include '../business/intercambioVueltoBusiness.php';
 session_start();
 if(isset($_POST['create'])){
+    // 
+    
     if(true){
         include '../business/subastaBusiness.php';
         $subasta = $_POST['subastaid'];
-        $articulo = $_POST['articulointercambio'];
+        $articulo = $_POST['articulointercambiovuelto'];
         $comprador = $_POST['clienteid'];
-        $articulointercambiovuelto = $_POST['articulointercambiovuelto'];
+        $dinero = $_POST['intercambiovueltodinero'];
         $subastaBusiness = new SubastaBusiness();
         $getSubasta = $subastaBusiness->getTBSubastaById($subasta);
         $vendedor = $getSubasta->getSubastaVendedorId();
         $compradorActivo = 1;
         $vendedorActivo = 0;
         if(true){
-            $intercambioVuelto = new IntercambioVuelto(0,$articulo,$vendedor,$comprador,$subasta,$compradorActivo,$vendedorActivo,$articulointercambiovuelto);
+            $intercambioVuelto = new IntercambioVuelto(0,$articulo,$vendedor,$comprador,$subasta,$dinero,$compradorActivo,$vendedorActivo);
             $intercambioVueltoBusiness = new IntercambioVueltoBusiness();
             $result = $intercambioVueltoBusiness->insertarTBIntercambioVuelto($intercambioVuelto);
             if ($result == 1) {

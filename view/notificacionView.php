@@ -71,7 +71,7 @@
         </script>
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
-
+    <h1>Intercambios sin vuelto</h1>
     <table border="1">
         <tr>
             <th>Articulo a cambio</th>
@@ -146,7 +146,8 @@
             ?>
     </table>
     </section>
-    
+    <br><br><br>
+    <h1>Intercambios con vuelto</h1>
     <table border="1">
         <tr>
             <th>Articulo a cambio</th>

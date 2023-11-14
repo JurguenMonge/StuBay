@@ -330,6 +330,8 @@
         </table>
     </section>
     <br><br>
+
+    <h2 style="text-align: center;">Solicitar Intercambio</h2>
     <section>
         <br>
         <table>
@@ -393,7 +395,8 @@
         </table>
     </section>
     <br><br>
-
+    
+    <h2 style="text-align: center;">Solicitar Intercambio con Vuelto</h2>
     <section>
         <br>
         <table>
@@ -450,7 +453,7 @@
 
                     <td>
                         <div class="input-container">
-                            <span class="currency-symbol">₡</span>
+                           
                             <input required type="text" name="intercambiovueltodinero" id="intercambiovueltodinero" min="0" step="0.01" />
                         </div>
                     </td>
