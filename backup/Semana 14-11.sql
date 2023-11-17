@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 17-11-2023 a las 19:19:10
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Nov 14, 2023 at 05:44 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bdstubay`
+-- Database: `bdstubay`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbarticulo`
+-- Table structure for table `tbarticulo`
 --
 
 CREATE TABLE `tbarticulo` (
@@ -41,7 +41,7 @@ CREATE TABLE `tbarticulo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbarticulo`
+-- Dumping data for table `tbarticulo`
 --
 
 INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`, `tbarticulomodelo`, `tbarticuloserie`, `tbarticuloactivo`, `tbsubcategoriaid`, `tbclienteid`, `tbarticulofoto`, `tbarticulofoto2`) VALUES
@@ -58,7 +58,7 @@ INSERT INTO `tbarticulo` (`tbarticuloid`, `tbarticulonombre`, `tbarticulomarca`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcalificacioncomprador`
+-- Table structure for table `tbcalificacioncomprador`
 --
 
 CREATE TABLE `tbcalificacioncomprador` (
@@ -71,7 +71,7 @@ CREATE TABLE `tbcalificacioncomprador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbcalificacioncomprador`
+-- Dumping data for table `tbcalificacioncomprador`
 --
 
 INSERT INTO `tbcalificacioncomprador` (`tbcalificacioncompradorid`, `tbsubastaid`, `tbclienteid`, `tbcalificacioncompradorclienteid`, `tbcalificacioncompradorpuntos`, `tbcalificacioncompradorcomentarios`) VALUES
@@ -81,7 +81,7 @@ INSERT INTO `tbcalificacioncomprador` (`tbcalificacioncompradorid`, `tbsubastaid
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcalificacionvendedor`
+-- Table structure for table `tbcalificacionvendedor`
 --
 
 CREATE TABLE `tbcalificacionvendedor` (
@@ -96,7 +96,7 @@ CREATE TABLE `tbcalificacionvendedor` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcategoria`
+-- Table structure for table `tbcategoria`
 --
 
 CREATE TABLE `tbcategoria` (
@@ -108,7 +108,7 @@ CREATE TABLE `tbcategoria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `tbcategoria`
+-- Dumping data for table `tbcategoria`
 --
 
 INSERT INTO `tbcategoria` (`tbcategoriaid`, `tbcategoriasigla`, `tbcategorianombre`, `tbcategoriadescripcion`, `tbcategoriaactivo`) VALUES
@@ -121,7 +121,7 @@ INSERT INTO `tbcategoria` (`tbcategoriaid`, `tbcategoriasigla`, `tbcategorianomb
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcliente`
+-- Table structure for table `tbcliente`
 --
 
 CREATE TABLE `tbcliente` (
@@ -136,7 +136,7 @@ CREATE TABLE `tbcliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbcliente`
+-- Dumping data for table `tbcliente`
 --
 
 INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapellido`, `tbclientesegundoapellido`, `tbclientecorreo`, `tbclientepassword`, `tbclientefechaingreso`, `tbclienteactivo`) VALUES
@@ -147,7 +147,7 @@ INSERT INTO `tbcliente` (`tbclienteid`, `tbclientenombre`, `tbclienteprimerapell
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbclientecategoria`
+-- Table structure for table `tbclientecategoria`
 --
 
 CREATE TABLE `tbclientecategoria` (
@@ -155,10 +155,17 @@ CREATE TABLE `tbclientecategoria` (
   `tbclaseid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Dumping data for table `tbclientecategoria`
+--
+
+INSERT INTO `tbclientecategoria` (`tbclienteid`, `tbclaseid`) VALUES
+(3, 2);
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbclienteclase`
+-- Table structure for table `tbclienteclase`
 --
 
 CREATE TABLE `tbclienteclase` (
@@ -169,18 +176,17 @@ CREATE TABLE `tbclienteclase` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `tbclienteclase`
+-- Dumping data for table `tbclienteclase`
 --
 
 INSERT INTO `tbclienteclase` (`tbclienteclaseid`, `tbclienteclasenombre`, `tbclienteclasevalor`, `tbclienteclaseestado`) VALUES
-(1, 'Bueno', 10, 1),
-(2, 'Regular', 5, 1),
-(3, 'Esporádico', 1, 1);
+(1, 'Bueno', 4, 1),
+(2, 'Esporádico', 10, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbclientedireccion`
+-- Table structure for table `tbclientedireccion`
 --
 
 CREATE TABLE `tbclientedireccion` (
@@ -193,7 +199,7 @@ CREATE TABLE `tbclientedireccion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbclientedireccion`
+-- Dumping data for table `tbclientedireccion`
 --
 
 INSERT INTO `tbclientedireccion` (`tbclientedireccionid`, `tbclienteid`, `tbclientedireccionbarrio`, `tbclientedireccionlatitud`, `tbclientedireccionlongitud`, `tbclientedireccionactivo`) VALUES
@@ -204,7 +210,7 @@ INSERT INTO `tbclientedireccion` (`tbclientedireccionid`, `tbclienteid`, `tbclie
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbclientetelefono`
+-- Table structure for table `tbclientetelefono`
 --
 
 CREATE TABLE `tbclientetelefono` (
@@ -216,7 +222,7 @@ CREATE TABLE `tbclientetelefono` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbclientetelefono`
+-- Dumping data for table `tbclientetelefono`
 --
 
 INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclientetelefononumero`, `tbclientetelefonodescripcion`, `tbclientetelefonoactivo`) VALUES
@@ -226,7 +232,7 @@ INSERT INTO `tbclientetelefono` (`tbclientetelefonoid`, `tbclienteid`, `tbclient
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcompradorperfil`
+-- Table structure for table `tbcompradorperfil`
 --
 
 CREATE TABLE `tbcompradorperfil` (
@@ -238,10 +244,17 @@ CREATE TABLE `tbcompradorperfil` (
   `tbcompradorid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Dumping data for table `tbcompradorperfil`
+--
+
+INSERT INTO `tbcompradorperfil` (`tbcompradorperfilid`, `tbcompradorperfildevolucion`, `tbcompradorperfilfrecuencia`, `tbcompradorperfilmontocompra`, `tbcompradorperfilcantidadcompra`, `tbcompradorid`) VALUES
+(1, 0, 0.00, 770000.00, 1, 3);
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbcostoenvio`
+-- Table structure for table `tbcostoenvio`
 --
 
 CREATE TABLE `tbcostoenvio` (
@@ -252,7 +265,7 @@ CREATE TABLE `tbcostoenvio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `tbcostoenvio`
+-- Dumping data for table `tbcostoenvio`
 --
 
 INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `tbcostoenvioestado`) VALUES
@@ -266,7 +279,7 @@ INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbdevolucion`
+-- Table structure for table `tbdevolucion`
 --
 
 CREATE TABLE `tbdevolucion` (
@@ -277,20 +290,20 @@ CREATE TABLE `tbdevolucion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbdevolucion`
+-- Dumping data for table `tbdevolucion`
 --
 
 INSERT INTO `tbdevolucion` (`tbdevolucionid`, `tbdevolucionjustificacion`, `tbsubastaid`, `tbclienteid`) VALUES
 (1, 'Porque no funciona', 1, 2),
-(2, 'asd', 2, 3),
-(3, 'No sirve', 2, 3),
-(4, 'asdasdasd', 2, 3),
-(5, 'asd', 2, 3);
+(2, 'asd', 3, 1),
+(3, 'No sirve', 3, 1),
+(4, 'asdasdasd', 3, 1),
+(5, 'asd', 3, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbeventoarticulo`
+-- Table structure for table `tbeventoarticulo`
 --
 
 CREATE TABLE `tbeventoarticulo` (
@@ -300,7 +313,7 @@ CREATE TABLE `tbeventoarticulo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbeventoarticulo`
+-- Dumping data for table `tbeventoarticulo`
 --
 
 INSERT INTO `tbeventoarticulo` (`id`, `tbarticuloid`, `tbclienteid`) VALUES
@@ -330,7 +343,7 @@ INSERT INTO `tbeventoarticulo` (`id`, `tbarticuloid`, `tbclienteid`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbintercambio`
+-- Table structure for table `tbintercambio`
 --
 
 CREATE TABLE `tbintercambio` (
@@ -344,7 +357,7 @@ CREATE TABLE `tbintercambio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbintercambio`
+-- Dumping data for table `tbintercambio`
 --
 
 INSERT INTO `tbintercambio` (`tbintercambioid`, `tbarticuloid`, `tbvendedorid`, `tbclienteid`, `tbsubastaid`, `compradoractivo`, `vendedoractivo`) VALUES
@@ -353,7 +366,7 @@ INSERT INTO `tbintercambio` (`tbintercambioid`, `tbarticuloid`, `tbvendedorid`, 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbintercambiovuelto`
+-- Table structure for table `tbintercambiovuelto`
 --
 
 CREATE TABLE `tbintercambiovuelto` (
@@ -368,16 +381,16 @@ CREATE TABLE `tbintercambiovuelto` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbintercambiovuelto`
+-- Dumping data for table `tbintercambiovuelto`
 --
 
 INSERT INTO `tbintercambiovuelto` (`tbintercambiovueltoid`, `tbarticuloid`, `tbvendedorid`, `tbclienteid`, `tbsubastaid`, `tbintercambiovueltodinero`, `tbintercambiovueltocompradoractivo`, `tbintercambiovueltovendedoractivo`) VALUES
-(1, 6, 2, 1, 4, 15000, 1, 1);
+(1, 6, 2, 1, 4, 15000, 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbpujacliente`
+-- Table structure for table `tbpujacliente`
 --
 
 CREATE TABLE `tbpujacliente` (
@@ -390,18 +403,19 @@ CREATE TABLE `tbpujacliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `tbpujacliente`
+-- Dumping data for table `tbpujacliente`
 --
 
 INSERT INTO `tbpujacliente` (`tbpujaclienteid`, `tbclienteid`, `tbarticuloid`, `tbpujaclientefecha`, `tbpujaclienteoferta`, `tbpujaclienteenvio`) VALUES
 (1, 3, 2, '2023-10-18 17:49:26', 70001, 884.17),
 (2, 1, 3, '2023-10-19 10:11:13', 950, 884.17),
-(3, 3, 5, '2023-10-19 10:17:56', 100001, 884.17);
+(3, 3, 5, '2023-10-19 10:17:56', 100001, 884.17),
+(4, 3, 2, '2023-11-12 13:16:49', 770000, 3591.07);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbpujaseguidor`
+-- Table structure for table `tbpujaseguidor`
 --
 
 CREATE TABLE `tbpujaseguidor` (
@@ -412,7 +426,7 @@ CREATE TABLE `tbpujaseguidor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tbpujaseguidor`
+-- Dumping data for table `tbpujaseguidor`
 --
 
 INSERT INTO `tbpujaseguidor` (`tbsubastaseguidorid`, `tbclienteid`, `tbsubastaid`, `tbsubastaseguidoractivo`) VALUES
@@ -422,7 +436,7 @@ INSERT INTO `tbpujaseguidor` (`tbsubastaseguidorid`, `tbclienteid`, `tbsubastaid
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbsubasta`
+-- Table structure for table `tbsubasta`
 --
 
 CREATE TABLE `tbsubasta` (
@@ -438,7 +452,7 @@ CREATE TABLE `tbsubasta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `tbsubasta`
+-- Dumping data for table `tbsubasta`
 --
 
 INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastafechahorainicio`, `tbsubastafechahorafinal`, `tbsubastaprecio`, `tbsubastaestadoarticulo`, `tbsubastaarticulodiasuso`, `tbsubastaactivo`, `tbarticuloid`, `tbclienteid`) VALUES
@@ -455,7 +469,7 @@ INSERT INTO `tbsubasta` (`tbsubastaid`, `tbsubastafechahorainicio`, `tbsubastafe
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbsubcategoria`
+-- Table structure for table `tbsubcategoria`
 --
 
 CREATE TABLE `tbsubcategoria` (
@@ -468,7 +482,7 @@ CREATE TABLE `tbsubcategoria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `tbsubcategoria`
+-- Dumping data for table `tbsubcategoria`
 --
 
 INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubcategorianombre`, `tbsubcategoriadescripcion`, `tbsubcategoriaactivo`, `tbcategoriaid`) VALUES
@@ -486,102 +500,102 @@ INSERT INTO `tbsubcategoria` (`tbsubcategoriaid`, `tbsubcategoriasigla`, `tbsubc
 (12, '112', 'Celulares', 'Nuevos y usados', 1, 1);
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `tbarticulo`
+-- Indexes for table `tbarticulo`
 --
 ALTER TABLE `tbarticulo`
   ADD PRIMARY KEY (`tbarticuloid`);
 
 --
--- Indices de la tabla `tbcalificacioncomprador`
+-- Indexes for table `tbcalificacioncomprador`
 --
 ALTER TABLE `tbcalificacioncomprador`
   ADD PRIMARY KEY (`tbcalificacioncompradorid`);
 
 --
--- Indices de la tabla `tbcalificacionvendedor`
+-- Indexes for table `tbcalificacionvendedor`
 --
 ALTER TABLE `tbcalificacionvendedor`
   ADD PRIMARY KEY (`tbcalificacionvendedorid`);
 
 --
--- Indices de la tabla `tbcliente`
+-- Indexes for table `tbcliente`
 --
 ALTER TABLE `tbcliente`
   ADD PRIMARY KEY (`tbclienteid`);
 
 --
--- Indices de la tabla `tbclienteclase`
+-- Indexes for table `tbclienteclase`
 --
 ALTER TABLE `tbclienteclase`
   ADD PRIMARY KEY (`tbclienteclaseid`);
 
 --
--- Indices de la tabla `tbclientedireccion`
+-- Indexes for table `tbclientedireccion`
 --
 ALTER TABLE `tbclientedireccion`
   ADD PRIMARY KEY (`tbclientedireccionid`);
 
 --
--- Indices de la tabla `tbclientetelefono`
+-- Indexes for table `tbclientetelefono`
 --
 ALTER TABLE `tbclientetelefono`
   ADD PRIMARY KEY (`tbclientetelefonoid`);
 
 --
--- Indices de la tabla `tbcompradorperfil`
+-- Indexes for table `tbcompradorperfil`
 --
 ALTER TABLE `tbcompradorperfil`
   ADD PRIMARY KEY (`tbcompradorperfilid`);
 
 --
--- Indices de la tabla `tbintercambio`
+-- Indexes for table `tbintercambio`
 --
 ALTER TABLE `tbintercambio`
   ADD PRIMARY KEY (`tbintercambioid`);
 
 --
--- Indices de la tabla `tbpujacliente`
+-- Indexes for table `tbpujacliente`
 --
 ALTER TABLE `tbpujacliente`
   ADD PRIMARY KEY (`tbpujaclienteid`);
 
 --
--- Indices de la tabla `tbpujaseguidor`
+-- Indexes for table `tbpujaseguidor`
 --
 ALTER TABLE `tbpujaseguidor`
   ADD PRIMARY KEY (`tbsubastaseguidorid`);
 
 --
--- Indices de la tabla `tbsubasta`
+-- Indexes for table `tbsubasta`
 --
 ALTER TABLE `tbsubasta`
   ADD PRIMARY KEY (`tbsubastaid`);
 
 --
--- Indices de la tabla `tbsubcategoria`
+-- Indexes for table `tbsubcategoria`
 --
 ALTER TABLE `tbsubcategoria`
   ADD PRIMARY KEY (`tbsubcategoriaid`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `tbclienteclase`
+-- AUTO_INCREMENT for table `tbclienteclase`
 --
 ALTER TABLE `tbclienteclase`
-  MODIFY `tbclienteclaseid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `tbclienteclaseid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `tbcompradorperfil`
+-- AUTO_INCREMENT for table `tbcompradorperfil`
 --
 ALTER TABLE `tbcompradorperfil`
-  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

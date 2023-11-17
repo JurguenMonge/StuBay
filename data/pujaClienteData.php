@@ -118,10 +118,10 @@ class PujaClienteData extends Data
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 
-        // Obtener la cantidad y monto total de compras
+        // Obtener la cantidad y monto total de compras en los últimos 30 días
         $queryCompras = "SELECT COUNT(*) AS cantidadCompras, SUM(tbpujaclienteoferta) AS montoCompras
                      FROM tbpujacliente
-                     WHERE tbclienteid = ? AND tbarticuloid=?";
+                     WHERE tbclienteid = ? AND tbarticuloid = ? AND tbpujaclientefecha >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
 
         $stmtCompras = $conn->prepare($queryCompras);
         $stmtCompras->bind_param("ii", $clienteId, $articuloId);
@@ -134,10 +134,10 @@ class PujaClienteData extends Data
 
         $stmtCompras->close();
 
-        // Obtener la última compra del cliente
+        // Obtener la última compra del cliente en los últimos 30 días
         $queryUltimaCompra = "SELECT MAX(tbpujaclientefecha) AS ultimaCompra
                           FROM tbpujacliente
-                          WHERE tbclienteid = ?";
+                          WHERE tbclienteid = ? AND tbpujaclientefecha >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
 
         $stmtUltimaCompra = $conn->prepare($queryUltimaCompra);
         $stmtUltimaCompra->bind_param("i", $clienteId);
@@ -147,7 +147,7 @@ class PujaClienteData extends Data
         $ultimaCompra = $resultUltimaCompra->fetch_assoc()['ultimaCompra'];
         $stmtUltimaCompra->close();
 
-        // Calcular la frecuencia de compra
+        // Calcular la frecuencia de compra en los últimos 30 días
         $frecuenciaCompra = null;
 
         if ($ultimaCompra) {
@@ -157,14 +157,29 @@ class PujaClienteData extends Data
             $frecuenciaCompra = $diferencia->days;
         }
 
+        // Obtener el promedio de todas las compras en los últimos 30 días
+        $queryPromedioCompras = "SELECT AVG(tbpujaclienteoferta) AS promedioCompras
+                             FROM tbpujacliente
+                             WHERE tbpujaclientefecha >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+        $stmtPromedioCompras = $conn->prepare($queryPromedioCompras);
+        $stmtPromedioCompras->execute();
+        $resultPromedioCompras = $stmtPromedioCompras->get_result();
+
+        $promedioCompras = $resultPromedioCompras->fetch_assoc()['promedioCompras'];
+        $stmtPromedioCompras->close();
+
         mysqli_close($conn);
 
         return [
             'cantidadCompras' => $cantidadCompras,
             'montoCompras' => $montoCompras,
             'frecuenciaCompra' => $frecuenciaCompra,
+            'promedioCompras' => $promedioCompras,
         ];
     }
+
+
 
 
     public function getTBPujaClienteByArticulo($articuloId)
@@ -263,7 +278,7 @@ class PujaClienteData extends Data
     }
 
     public function getTBPujaClienteGanadorById($clienteId)
-    { 
+    {
         $conn = mysqli_connect($this->server, $this->user, $this->password, $this->db);
         $conn->set_charset('utf8');
 

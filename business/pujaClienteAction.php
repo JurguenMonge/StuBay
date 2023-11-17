@@ -140,16 +140,20 @@ if (isset($_POST['update'])) {
                 );
 
                 $compradorPerfil = null;
+                
                 $devolucionBusiness = new DevolucionBusiness();
                 $cantidadDevoluciones = $devolucionBusiness->getCantidadDevolucionesPorClienteYSubasta($clienteId, $articuloId);
-                
+                $promedioCompras = 0;
                 $cantidadCompra = 0;
+
+                $infoCompra = $pujaClienteBusiness->obtenerInformacionCompras($clienteId, $articuloId);
+                $promedioCompras = $infoCompra['promedioCompras'];
+
                 if ($compradorPerfilBusiness->existeCompradorPerfil($clienteId)) {
-                    $infoCompra = $pujaClienteBusiness->obtenerInformacionCompras($clienteId, $articuloId);
+                    
                     $cantidadCompra = $infoCompra['cantidadCompras'];
                     $montoCompra = $infoCompra['montoCompras']+$pujaClienteOferta;
                     $frecuenciaCompra = $infoCompra['frecuenciaCompra'];
-
                     $compradorPerfil = new CompradorPerfil(0, $cantidadCompra, $montoCompra, $frecuenciaCompra, $cantidadDevoluciones, $clienteId);
                     
 
@@ -166,9 +170,9 @@ if (isset($_POST['update'])) {
 
                     if ($cantidadCompra < 5) {
                         $criterio = 'Esporádico';
-                    } elseif ($cantidadCompra >= 5 && $cantidadCompra < 10) {
+                    } else if ($cantidadCompra >= 5 && $cantidadCompra < 10) {
                         $criterio = 'Regular';
-                    } elseif ($cantidadCompra >= 10) {
+                    } else if ($cantidadCompra >= 10) {
                         $criterio = 'Bueno';
                     }
                     $clienteClaseId = $clienteClaseBusiness->getClienteClaseIdByCriterio($criterio);
