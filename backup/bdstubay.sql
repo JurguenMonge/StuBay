@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-11-2023 a las 19:19:10
+-- Tiempo de generación: 19-11-2023 a las 13:23:40
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -262,6 +262,28 @@ INSERT INTO `tbcostoenvio` (`tbcostoenvioid`, `tbcostoenviokm`, `tbclienteid`, `
 (4, 5, 2, 1),
 (5, 1, 1, 1),
 (6, 1, 3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbcriterio`
+--
+
+CREATE TABLE `tbcriterio` (
+  `tbcriterioid` int(11) NOT NULL,
+  `tbcriterionombre` varchar(255) NOT NULL,
+  `tbcriteriovalor` int(11) NOT NULL,
+  `tbcriterioestado` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tbcriterio`
+--
+
+INSERT INTO `tbcriterio` (`tbcriterioid`, `tbcriterionombre`, `tbcriteriovalor`, `tbcriterioestado`) VALUES
+(1, 'Buenisimo', 10, 0),
+(2, 'Malo', 2, 1),
+(3, 'Bueno', 6, 1);
 
 -- --------------------------------------------------------
 
