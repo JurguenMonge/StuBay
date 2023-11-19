@@ -106,6 +106,8 @@
     <br><br>
     <a href="clienteClaseView.php">Registrar Clase</a>
     <br><br>
+    <a href="criterioView.php">Registrar Criterio</a>
+    <br><br>
     <a href="devolucionView.php">Devolucion</a>
     <br><br>
     <a href="notificacionView.php">Notificaciones</a>
