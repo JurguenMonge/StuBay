@@ -17,6 +17,14 @@
     include '../business/clienteBusiness.php';
     include '../business/pujaClienteBusiness.php';
     include '../business/articuloBusiness.php';
+    include '../business/clienteCriterioBusiness.php';
+    include '../business/criterioBusiness.php';
+
+    $clienteCriterioBusiness = new ClienteCriterioBusiness();
+    $criterioBusiness = new CriterioBusiness();
+    $getClienteCriterio;
+    $getCriterio = $criterioBusiness->getAllTBCriterio();
+
     $clienteBusiness = new ClienteBusiness();
     $getCliente = $clienteBusiness->getAllTBCliente();
     $subastaBusiness = new SubastaBusiness();
@@ -95,6 +103,24 @@
         </script>
     <?php unset($_SESSION['error']); // Eliminar la variable de sesión
     } ?>
+
+    <div style="position: absolute; top: 0; right: 0; padding: 10px;">
+        <label>Puntaje:</label>
+        <span style="font-weight: bold; color: black;">
+            <?php
+            $getClienteCriterio = $clienteCriterioBusiness->getClienteCriterioByIdCliente($clienteId);
+            if ($getClienteCriterio != null) {
+                foreach ($getCriterio as $current) {
+                    if ($getClienteCriterio->getIdCriterio() == $current->getIdCriterio()) {
+                        echo $current->getValor();
+                    }
+                }
+            } else {
+                echo 'Ninguno';
+            }
+            ?>
+        </span>
+    </div>
 
     <section id="form">
         <table>

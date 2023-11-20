@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-11-2023 a las 13:23:40
+-- Tiempo de generación: 20-11-2023 a las 05:43:12
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -180,6 +180,17 @@ INSERT INTO `tbclienteclase` (`tbclienteclaseid`, `tbclienteclasenombre`, `tbcli
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbclientecriterio`
+--
+
+CREATE TABLE `tbclientecriterio` (
+  `tbclienteid` int(11) NOT NULL,
+  `tbcriterioid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbclientedireccion`
 --
 
@@ -281,9 +292,8 @@ CREATE TABLE `tbcriterio` (
 --
 
 INSERT INTO `tbcriterio` (`tbcriterioid`, `tbcriterionombre`, `tbcriteriovalor`, `tbcriterioestado`) VALUES
-(1, 'Buenisimo', 10, 0),
-(2, 'Malo', 2, 1),
-(3, 'Bueno', 6, 1);
+(1, 'Bueno', 6, 1),
+(2, 'Malo', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -603,7 +613,7 @@ ALTER TABLE `tbclienteclase`
 -- AUTO_INCREMENT de la tabla `tbcompradorperfil`
 --
 ALTER TABLE `tbcompradorperfil`
-  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `tbcompradorperfilid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

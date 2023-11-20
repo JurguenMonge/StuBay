@@ -94,15 +94,15 @@ class CriterioData extends Data
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            $clienteClaseId = $row['tbcriterioid'];
+            $clienteCriterioId = $row['tbcriterioid'];
         } else {
-            $clienteClaseId = null;
+            $clienteCriterioId = null;
         }
 
         $stmt->close();
         mysqli_close($conn);
 
-        return $clienteClaseId;
+        return $clienteCriterioId;
     }
 
     public function getTBCriterioById($id)
@@ -125,4 +125,5 @@ class CriterioData extends Data
         mysqli_close($conn); // cerrar la conexión
         return $clienteClase;
     }
+
 }
